@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Project Sortir{% endblock %}</title>
+    {# Run `composer require symfony/webpack-encore-bundle`
+           and uncomment the following Encore helpers to start using Symfony UX #}
+    {% block stylesheets %}
+        {#{{ encore_entry_link_tags('app') }}#}
+    {% endblock %}
+
+    {% block javascripts %}
+        {#{{ encore_entry_script_tags('app') }}#}
+    {% endblock %}
+</head>
+<body style="padding-left: 5px; padding-right: 5px">
+{% block body %}
+    <SCRIPT LANGUAGE="JavaScript">
+        var maintenant=new Date();
+        var mois = maintenant.getMonth();
+        var jour = maintenant.getDay();
+        var annee = maintenant.getFullYear();
+    </SCRIPT>
+    <div>
+        {#Titre de la page #}
+        <div style='text-align: left'>
+            <h1>Sortir.com</h1>
+        </div>
+        {#Lien en dessous du titre à droite #}
+        <div style="text-align: right">
+            <tr>
+                <th><a href="#">Villes</a></th>
+                <th><a href="#">Sites</a></th>
+                <th><a href="#">Accueil</a></th>
+                <th><a href="#">Mon profil</a></th>
+                <th><a href="#">Me déconnecter</a></th>
+            </tr>
+            <br>
+            <h3>Date du jour : <script> write(jour + '/' + mois + '/' + annee ) </script> </h3>
+
+        </div>
+    </div>
+{% endblock %}
+</body>
+</html>
