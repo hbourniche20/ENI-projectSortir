@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h1 class="text-center">
+                {{ user.pseudo }}
+            </h1>
+        </div>
+        <div class="row justify-content-center esup">
+            <div class="col-3">
+                La photo ici
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col col-4"> Prénom :</div>
+                    <div class="col">{{ user.prenom }}</div>
+                </div>
+                <div class="row">
+                    <div class="col col-4"> Nom :</div>
+                    <div class="col">{{ user.nom }}</div>
+                </div>
+                <div class="row">
+                    <div class="col col-4"> Téléphone :</div>
+                    <div class="col">{{ user.tel }}</div>
+                </div>
+                <div class="row">
+                    <div class="col col-4"> Email :</div>
+                    <div class="col">{{ user.email }}</div>
+                </div>
+                <div class="row">
+                    <div class="col col-4"> Ville de rattachement :</div>
+                    <div class="col">Ville</div>
+                </div>
+            </div>
+        </div>
+        <div class="row esup">
+            <div class="text-center">
+                <a href="{{ path('home_page') }}" role="button" class="btn btn-primary">Retour</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
