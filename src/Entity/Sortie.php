@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
  */
@@ -61,11 +64,23 @@ class Sortie
      */
     private $site;
 
-    public function __construct(Ville $organisateur)
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sortiesOrga")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $organisateur;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=user::class, inversedBy="sorties")
+     */
+    private $inscrits;
+
+    public function __construct(Ville $villeOrganisatrice)
     {
+        $this->inscrits = new ArrayCollection();
         $this->dateSortie = new \DateTime();
         $this->dateLimiteInscription = new \DateTime();
-        $this->villeOrganisatrice = $organisateur;
+        $this->villeOrganisatrice = $villeOrganisatrice;
     }
 
     public function getId(): ?int
@@ -177,6 +192,42 @@ class Sortie
     public function setSite(?Site $site): self
     {
         $this->site = $site;
+
+        return $this;
+    }
+
+    public function getOrganisateur(): ?User
+    {
+        return $this->organisateur;
+    }
+
+    public function setOrganisateur(?User $organisateur): self
+    {
+        $this->organisateur = $organisateur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|user[]
+     */
+    public function getInscrits(): Collection
+    {
+        return $this->inscrits;
+    }
+
+    public function addInscrit(user $inscrit): self
+    {
+        if (!$this->inscrits->contains($inscrit)) {
+            $this->inscrits[] = $inscrit;
+        }
+
+        return $this;
+    }
+
+    public function removeInscrit(user $inscrit): self
+    {
+        $this->inscrits->removeElement($inscrit);
 
         return $this;
     }
