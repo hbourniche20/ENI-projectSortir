@@ -2,8 +2,15 @@
 
 namespace App\Form;
 
+use App\Entity\Site;
+use App\Entity\Ville;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SortieType extends AbstractType
@@ -12,12 +19,36 @@ class SortieType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('dateSortie')
-            ->add('dateLimiteInscription')
+            ->add('dateSortie', DateTimeType::class)
+            ->add('dateLimiteInscription', DateType::class)
             ->add('nbPlaces')
             ->add('duree')
             ->add('description')
-        ;
+            ->add('villeAccueil', EntityType::class, [
+                'class' => Ville::class,
+                'placeholder' => '-- selectionner une ville --',
+                'choice_label' => 'nom',
+                'label'=>'Destination'
+            ])
+            // TODO MAKE SITE TYPE DYNAMIC
+            ->add('site', EntityType::class,[
+                'class' => Site::class,
+                'placeholder' => '-- selectionner un lieu --',
+                'choice_label' => 'nom',
+                'label'=>'Lieu'
+            ]);
+
+
+        $builder->addEventListener(
+            FormEvents::POST_SET_DATA,
+            function (FormEvent $event) {
+                $form = $event->getForm()->get('villeAccueil');
+                echo 'event listener';
+                $data = $form->getData();
+                echo $data;
+//                var_dump($data);
+            }
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

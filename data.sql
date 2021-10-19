@@ -1,4 +1,5 @@
 -- Init Users
+select * from user;
 INSERT INTO user(id, email, pseudo, prenom, nom, tel, roles, password) VALUES (0, 'Email@Inconnu', 'Inconnu', 'Inconnu','Inconnu','0000000000','[]','');
 
 -- Init villes

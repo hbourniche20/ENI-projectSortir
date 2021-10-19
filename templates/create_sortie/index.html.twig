@@ -27,9 +27,16 @@
         <div class="group-item description">
             {{ form_row(sortieForm.description) }}
         </div>
-
-        <button>Valider</button>
     </div>
+    <div class="group">
+        <div class="group-item drop-down">
+            {{ form_row(sortieForm.villeAccueil) }}
+        </div>
+        <div class="group-item drop-down">
+            {{ form_row(sortieForm.site) }}
+        </div>
+    </div>
+        <button>Valider</button>
 
     {{ form_end(sortieForm) }}
 {% endblock %}

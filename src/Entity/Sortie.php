@@ -2,9 +2,6 @@
 
 namespace App\Entity;
 
-use App\Repository\SortieRepository;
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
  */
@@ -63,6 +60,13 @@ class Sortie
      * @ORM\ManyToOne(targetEntity=Site::class, inversedBy="sorties")
      */
     private $site;
+
+    public function __construct(Ville $organisateur)
+    {
+        $this->dateSortie = new \DateTime();
+        $this->dateLimiteInscription = new \DateTime();
+        $this->villeOrganisatrice = $organisateur;
+    }
 
     public function getId(): ?int
     {
@@ -153,14 +157,14 @@ class Sortie
         return $this;
     }
 
-    public function getVilleAcceuil(): ?Ville
+    public function getVilleAccueil(): ?Ville
     {
-        return $this->ville;
+        return $this->villeAccueil;
     }
 
-    public function setVilleAcceuil(?Ville $ville): self
+    public function setVilleAccueil(?Ville $ville): self
     {
-        $this->ville = $ville;
+        $this->villeAccueil = $ville;
 
         return $this;
     }
