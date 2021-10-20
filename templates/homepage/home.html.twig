@@ -22,8 +22,8 @@
                     {% for sortie in sorties %}
                     <tr>
                         <td>{{ sortie.getNom }}</td>
-                        <td>{{ sortie.getDateSortie|date("m/d/Y") }}</td>
-                        <td>{{ sortie.getDateLimiteInscription|date("m/d/Y") }}</td>
+                        <td>{{ sortie.getDateSortie|date("d/m/Y") }}</td>
+                        <td>{{ sortie.getDateLimiteInscription|date("d/m/Y") }}</td>
                         <td style="text-align: center">{{ sortie.getNbPlaces }}</td>
                         <td>{{ sortie.getNom }}</td>
                         <td>{{ NULL }}</td>
