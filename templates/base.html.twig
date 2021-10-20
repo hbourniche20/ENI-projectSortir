@@ -49,7 +49,7 @@
 
                     </li>
                 </ul>
-                <span class="white">Date du jour : {{ "now"|date("m/d/Y") }}</span> &nbsp;
+                <span style="color: white">Date du jour : {{ "now"|date("m/d/Y") }}</span> &nbsp;
                 {% if app.user %}
                     <a class="btn btn-danger" role="button" href="{{ path('app_logout') }}">Déconnexion</a>
                 {% else %}
