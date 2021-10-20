@@ -24,6 +24,12 @@ class SortieType extends AbstractType
             ->add('nbPlaces')
             ->add('duree')
             ->add('description')
+            ->add('villeOrganisatrice', EntityType::class, [
+                'class' => Ville::class,
+                'disabled' => true,
+                'choice_label' => 'nom',
+                'label'=>'Ville Organisatrice'
+            ])
             ->add('villeAccueil', EntityType::class, [
                 'class' => Ville::class,
                 'placeholder' => '-- selectionner une ville --',

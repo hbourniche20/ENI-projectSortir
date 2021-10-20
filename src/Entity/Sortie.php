@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -75,12 +76,13 @@ class Sortie
      */
     private $inscrits;
 
-    public function __construct(Ville $villeOrganisatrice)
+    public function __construct(User $user)
     {
         $this->inscrits = new ArrayCollection();
         $this->dateSortie = new \DateTime();
         $this->dateLimiteInscription = new \DateTime();
-        $this->villeOrganisatrice = $villeOrganisatrice;
+        $this->organisateur = $user;
+        $this->villeOrganisatrice = $user->getVille();
     }
 
     public function getId(): ?int
