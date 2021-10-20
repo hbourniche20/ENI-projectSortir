@@ -32,12 +32,15 @@
                 </div>
                 <div class="row">
                     <div class="col col-4"> Ville de rattachement :</div>
-                    <div class="col">Ville</div>
+                    <div class="col">{{ user.ville.nom }} ({{ user.ville.codePostal }})</div>
                 </div>
             </div>
         </div>
         <div class="row esup">
             <div class="text-center">
+                {% if user.email != 'email@inconnu.inc' %}
+                <a href="{{ path('profil_modif') }}" role="button" class="btn btn-danger">Modifier</a>
+                {% endif %}
                 <a href="{{ path('home_page') }}" role="button" class="btn btn-primary">Retour</a>
             </div>
         </div>

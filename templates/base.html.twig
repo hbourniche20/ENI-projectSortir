@@ -50,25 +50,19 @@
                     </li>
                 </ul>
                 {% if app.user %}
-                    <span class="white"> {{ app.user.pseudo }} &nbsp </span>
+                    <span style="color: white"> {{ app.user.pseudo }} &nbsp </span>
                 {% endif %}
-                <span class="white">Date du jour : {{ "now"|date("m/d/Y") }}</span> &nbsp
+                <span style="color: white">Date du jour : {{ "now"|date("m/d/Y") }}</span> &nbsp
                 {% if app.user %}
                     <a class="btn btn-danger" role="button" href="{{ path('app_logout') }}">Déconnexion</a><br>
                 {% else %}
                     <a class="btn btn-success" role="button" href="{{ path('app_login') }}">Se connecter</a>
                 {% endif %}
-
             </div>
         </div>
     </nav>
     <div>
-        {% block body %}
-
-
-
-
-        {% endblock %}
+        {% block body %}{% endblock %}
     </div>
 </body>
 </html>
