@@ -11,7 +11,14 @@
         </div>
         <div class="row justify-content-center esup">
             <div class="col-3">
-                La photo ici
+                {% if user.image is null %}
+                    <img class="img-thumbnail" src="{{ asset('/css/200x200.png') }}" alt="Photo">
+                {% else %}
+                    <a href="{{ asset('/uploads/' ~ user.image.name) }}">
+                        <img class="img-thumbnail" src="{{ asset('/uploads/' ~ user.image.name) }}" alt="Photo"
+                             width="200" height="200">
+                    </a>
+                {% endif %}
             </div>
             <div class="col-6">
                 <div class="row">
@@ -39,7 +46,7 @@
         <div class="row esup">
             <div class="text-center">
                 {% if user.email != 'email@inconnu.inc' %}
-                <a href="{{ path('profil_modif') }}" role="button" class="btn btn-danger">Modifier</a>
+                    <a href="{{ path('profil_modif') }}" role="button" class="btn btn-danger">Modifier</a>
                 {% endif %}
                 <a href="{{ path('home_page') }}" role="button" class="btn btn-primary">Retour</a>
             </div>
