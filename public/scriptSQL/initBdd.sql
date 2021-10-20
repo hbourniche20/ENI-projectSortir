@@ -1,10 +1,7 @@
--- auto-generated definition
--- No source text available
-
 -- Quelques données pour la db
 
 -- Init villes
-select * from ville;
+INSERT INTO ville(id, nom, code_postal) values(0, 'Inconnu', 0);
 insert into ville(nom, code_postal) values('Nantes', 44000);
 insert into ville(nom, code_postal) values('Rennes', 35000);
 insert into ville(nom, code_postal) values('Vitré', 35500);
@@ -13,7 +10,6 @@ insert into ville(nom, code_postal) values('Saint-Nazaire', 44600);
 insert into ville(nom, code_postal) values('Vitry-le-François', 51300);
 
 -- Init Sites
-select * from site;
 insert into site(ville_id, nom, rue) values(1, 'Café des plantes', '24 Bd Stalingrad');
 insert into site(ville_id, nom, rue) values(1, 'Crêperie du Vieux Quimper', '10 Rue de la Baclerie');
 insert into site(ville_id, nom, rue) values(1, 'FNAC', 'Pl. du Commerce');
@@ -27,21 +23,18 @@ insert into site(ville_id, nom, rue) values(4, 'Le Bretagne Restaurant LORIN', '
 insert into site(ville_id, nom, rue) values(6, 'Le Kiosque à Pizzas', '37 Fbg Léon Bourgeois');
 insert into site(ville_id, nom, rue) values(6, 'McDonalds', 'Rn Avenue Du Génral De Gaulle');
 
-
--- User
+-- Init User password pour tous les utilisateurs est "password"
 INSERT INTO user(id, ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (0, 0, 'email@inconnu.inc', 'Inconnu', 'Inconnu','Inconnu','0000000000','[]','');
-INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (1, 'pseu@gmail.com', 'Pseu', 'Valentin','Moi','0698653278','[]','password');
-INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (1, 'dop@gmail.com', 'Dop', 'Hugo','Toi','0678451298','[]','password');
-INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (2, 'ryu@free.fr', 'Ryu', 'Ryan','Lui','0696857432','[]','password');
-INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (2, 'mario@gmail.com', 'Mario', 'Antoine','Eux','0636251498','[]','password');
-INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (3, 'peach@gmail.com', 'Peach', 'Océane','Elle','0651545758','[]','password');
-INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (4, 'doomguy@gmx.fr', 'DoomGuy', 'Audrey','Autre','0653565952','[]','password');
-INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (5, 'rincevent@gmail.com', 'RinceVent', 'Aurore','Nom','0645953512','[]','password');
-INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (6, 'sonic@gmail.com', 'Sonic', 'Claire','Jesaispas','0687324516','[]','password');
-
+INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (1, 'pseu@gmail.com', 'Pseu', 'Valentin','Moi','0698653278','[]','$2y$13$fPxr.WdTTNoVzV9nIPlOquD/tXNcdbJsfVsgKIWYCKXjIkFR.6bm6');
+INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (1, 'dop@gmail.com', 'Dop', 'Hugo','Toi','0678451298','[]','$2y$13$fPxr.WdTTNoVzV9nIPlOquD/tXNcdbJsfVsgKIWYCKXjIkFR.6bm6');
+INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (2, 'ryu@free.fr', 'Ryu', 'Ryan','Lui','0696857432','[]','$2y$13$fPxr.WdTTNoVzV9nIPlOquD/tXNcdbJsfVsgKIWYCKXjIkFR.6bm6');
+INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (2, 'mario@gmail.com', 'Mario', 'Antoine','Eux','0636251498','[]','$2y$13$fPxr.WdTTNoVzV9nIPlOquD/tXNcdbJsfVsgKIWYCKXjIkFR.6bm6');
+INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (3, 'peach@gmail.com', 'Peach', 'Océane','Elle','0651545758','[]','$2y$13$fPxr.WdTTNoVzV9nIPlOquD/tXNcdbJsfVsgKIWYCKXjIkFR.6bm6');
+INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (4, 'doomguy@gmx.fr', 'DoomGuy', 'Audrey','Autre','0653565952','[]','$2y$13$fPxr.WdTTNoVzV9nIPlOquD/tXNcdbJsfVsgKIWYCKXjIkFR.6bm6');
+INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (5, 'rincevent@gmail.com', 'RinceVent', 'Aurore','Nom','0645953512','[]','$2y$13$fPxr.WdTTNoVzV9nIPlOquD/tXNcdbJsfVsgKIWYCKXjIkFR.6bm6');
+INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (6, 'sonic@gmail.com', 'Sonic', 'Claire','Jesaispas','0687324516','[]','$2y$13$fPxr.WdTTNoVzV9nIPlOquD/tXNcdbJsfVsgKIWYCKXjIkFR.6bm6');
 
 -- Init Sorties
-select * from sortie;
 insert into sortie(ville_organisatrice_id, ville_accueil_id, organisateur_id, site_id, nom, date_sortie, date_limite_inscription, nb_places, duree, description) values (1, 1, 1, 2, 'Dejeuner à la crêperie', current_timestamp, current_date, 6, 120, 'Déjeuné à la Crêperie du Vieux Qumpier. C''est Didier qui régale' );
 insert into sortie(ville_organisatrice_id, ville_accueil_id, organisateur_id, site_id, nom, date_sortie, date_limite_inscription, nb_places, duree, description) values (3, 1, 5, 1, 'Café du matin', current_timestamp, current_date, 12, 60, 'Café au parc, détente et baignade');
 insert into sortie(ville_organisatrice_id, ville_accueil_id, organisateur_id, site_id, nom, date_sortie, date_limite_inscription, nb_places, duree, description) values (2, 3, 4, 1, 'Détour par la Taverne', current_timestamp, current_date, 8, 80, 'Petite bière à la taverne de la gare');
