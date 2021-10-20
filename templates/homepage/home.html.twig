@@ -4,9 +4,33 @@
 
 {% block body %}
     {# Contenu de la page #}
+    <h3>Filtrer les sorties</h3>
+    <br>
     <div class="container">
-        <div class="row justify-content-center esup">
-            Plus qu'a remplir
-        </div>
+                <table class="table table-striped" style="padding-left: 5px;padding-right: 5px;">
+                    <tr>
+                        <th>Nom de la sortie</th>
+                        <th>Date de la sortie</th>
+                        <th>Clôture</th>
+                        <th>Inscrits/Places</th>
+                        <th>Etat</th>
+                        <th>Inscrit</th>
+                        <th>Organisateur</th>
+                        <th>Actions</th>
+                    </tr>
+                    {% for sortie in sorties %}
+                    <tr>
+                        <td>{{ sortie.getNom }}</td>
+                        <td>{{ sortie.getDateSortie|date("m/d/Y") }}</td>
+                        <td>{{ sortie.getDateLimiteInscription|date("m/d/Y") }}</td>
+                        <td style="text-align: center">{{ sortie.getNbPlaces }}</td>
+                        <td>{{ sortie.getNom }}</td>
+                        <td>{{ NULL }}</td>
+                        <td>{{ sortie.getVilleOrganisatrice.getNom }}</td>
+                        <td>{{ sortie.getDescription }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
     </div>
+
 {% endblock %}
