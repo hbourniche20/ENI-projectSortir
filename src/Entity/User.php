@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -16,7 +18,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValuesortie
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -62,6 +64,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\JoinColumn(nullable=false)
      */
     private $ville;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur", orphanRemoval=true)
+     */
+    private $sortiesOrga;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Sortie::class, mappedBy="inscrits")
+     */
+    private $sorties;
+
+    public function __construct()
+    {
+        $this->sortiesOrga = new ArrayCollection();
+        $this->sorties = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -208,6 +226,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVille(?Ville $ville): self
     {
         $this->ville = $ville;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getSortiesOrga(): Collection
+    {
+        return $this->sortiesOrga;
+    }
+
+    public function addSortiesOrga(Sortie $sortiesOrga): self
+    {
+        if (!$this->sortiesOrga->contains($sortiesOrga)) {
+            $this->sortiesOrga[] = $sortiesOrga;
+            $sortiesOrga->setOrganisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSortiesOrga(Sortie $sortiesOrga): self
+    {
+        if ($this->sortiesOrga->removeElement($sortiesOrga)) {
+            // set the owning side to null (unless already changed)
+            if ($sortiesOrga->getOrganisateur() === $this) {
+                $sortiesOrga->setOrganisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getSorties(): Collection
+    {
+        return $this->sorties;
+    }
+
+    public function addSorty(Sortie $sorty): self
+    {
+        if (!$this->sorties->contains($sorty)) {
+            $this->sorties[] = $sorty;
+            $sorty->addInscrit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSorty(Sortie $sorty): self
+    {
+        if ($this->sorties->removeElement($sorty)) {
+            $sorty->removeInscrit($this);
+        }
 
         return $this;
     }
