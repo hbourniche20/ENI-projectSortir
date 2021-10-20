@@ -46,7 +46,7 @@ class ProfilController extends AbstractController
             //vérifie les données
             // email
             if(!preg_match("/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/", $email)){
-                array_push($errors, 'L\'email doit correspondre au format \'example@email.com\'');
+                array_push($errors, 'L\'email doit correspondre au format \'example@email.com\'.');
             }
             // password == confirmation
             if($password !== $confirmation){
@@ -54,19 +54,18 @@ class ProfilController extends AbstractController
             }
             // password + de 6 caractere
             if(strlen($password) < 6){
-                array_push($errors, 'Le mot de passe doit faire plus de 6 caractères');
+                array_push($errors, 'Le mot de passe doit faire plus de 6 caractères.');
             }
 
             if(empty($errors)) {
-                dd($user);
+
                 // on hash et on upload
                 $user->setPassword(
                     $userPasswordHasherInterface->hashPassword(
                         $user,
-                        $form->get('plainPassword')->getData()
+                        $form->get('password')->getData()
                     )
                 );
-
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
                 $entityManager->flush();

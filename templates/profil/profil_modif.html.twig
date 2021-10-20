@@ -8,11 +8,17 @@
             <h1 class="text-center">Mon profil</h1>
         </div>
         <div class="row justify-content-center esup">
-            {% if userErrorsForm is not empty %}
-                {% for userError in userErrorsForm %}
-                    <p>{{ userError }}</p>
-                {% endfor %}
-            {% endif %}
+            <div class="col-3"></div>
+            <div class="col-6">
+                {% if userErrorsForm is not empty %}
+                    <h3 style="color: red;">Erreur(s) : </h3>
+                    <p style="color: red;">
+                    {% for userError in userErrorsForm %}
+                        {{ userError }} <br>
+                    {% endfor %}
+                    </p>
+                {% endif %}
+            </div>
         </div>
         <div class="row justify-content-center esup">
             <div class="col-3">
