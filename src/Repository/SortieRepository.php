@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,6 +20,9 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+    public function delete($id) {
+
+    }
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
     //  */
