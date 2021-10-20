@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#sortie_villeAccueil').change(function(e) {
+                var villeSelectionnee = e.currentTarget.value;
+                console.log(villeSelectionnee);
+                console.log(e);
+                // phpUrl= "{{path('select_ville', {id: 'repalceValueByVilleSelected' }) }}";
+                // console.log(phpUrl);
+                // phpUrl = phpUrl.replace('repalceValueByVilleSelected', villeSelectionnee);
+                // console.log(phpUrl);
+                // $('#sortie_site')
+                $.ajax({
+                    url: "{{ path('select_ville') }}",
+                    data: "&category=" + villeSelectionnee,
+                    type: "POST",
+                    success: function(catContent) {
+                        console.log(catContent);
+{#                        {% for contentCategory in catContent %}#}
+{#                        var nameContent =  "{{ contentCategory.name }}";#}
+{#                        console.log(nameContent);#}
+{#                        {% endfor %}#}
+
+                        // $("playlist_content_name").html(nameContent);
+                    },
+                    error: function(e){
+                        console.log(e.responseText);
+                    }
+                });
+            })
+        })
+    </script>
+{% endblock %}
+
+{% block title %}
+    {% if sortieId == -1 %}
+        Créer la sortie
+    {% else %}
+        Modifier la sortie
+    {% endif %}
+{% endblock %}
+{% block body %}
+
+    {% if sortieId == -1 %}
+    <h2>Créer une sortie</h2>
+    {% else %}
+    <h2>Modifier une sortie</h2>
+    {% endif %}
+
+    {{ form_start(sortieForm) }}
+
+    <div class="group">
+        <div class="group-item name">
+            {{ form_row(sortieForm.nom) }}
+        </div>
+        <div class="group-item date-sortie">
+            {{ form_row(sortieForm.dateSortie) }}
+        </div>
+        <div class="group-item date-inscription">
+            {{ form_row(sortieForm.dateLimiteInscription) }}
+        </div>
+        <div class="group-item nombre-places">
+            {{ form_row(sortieForm.nbPlaces) }}
+        </div>
+        <div class="group-item duree">
+            {{ form_row(sortieForm.duree) }}
+            <span>Minutes</span>
+        </div>
+        <div class="group-item description">
+            {{ form_row(sortieForm.description) }}
+        </div>
+    </div>
+    <div class="group">
+        <div class="group-item drop-down">
+            {{ form_row(sortieForm.villeOrganisatrice) }}
+        </div>
+        <div class="group-item drop-down">
+            {{ form_row(sortieForm.villeAccueil) }}
+        </div>
+        <div class="group-item drop-down">
+            {{ form_row(sortieForm.site) }}
+        </div>
+    </div>
+
+    {% if sortieId == -1 %}
+        <button class="btn btn-outline-success">Publier</button>
+        <a class="btn btn-outline-secondary" role="button" href="{{ path('home_page') }}">Annuler</a>
+    {% else %}
+        <button class="btn btn-outline-success">Enregistrer</button>
+        <a class="btn btn-outline-danger" role="button" href="{{ path('supprimer_sortie', {id: sortieId}) }}">Supprimer la sortie</a>
+        <a class="btn btn-outline-secondary" role="button" href="{{ path('home_page') }}">Annuler</a>
+    {% endif %}
+
+    {{ form_end(sortieForm) }}
+{% endblock %}

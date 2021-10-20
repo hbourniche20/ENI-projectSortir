@@ -23,14 +23,15 @@ class SortieController extends CustomAbstractController
             return $this->validateDataAndRedirect($sortie);
         }
 
-        return $this->render('sortie/create.html.twig', [
+        return $this->render('sortie/index.html.twig', [
             'controller_name' => 'SortieController',
-            'sortieForm' => $sortieForm->createView()
+            'sortieForm' => $sortieForm->createView(),
+            'sortieId' => -1
         ]);
     }
 
     #[Route('/sortie/{id}', name: 'modifier_sortie')]
-    public function afficher(Request $request, int $id): Response
+    public function edit(Request $request, int $id): Response
     {
         $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
         $sortie = $sortieRepo->find($id);
@@ -44,7 +45,7 @@ class SortieController extends CustomAbstractController
             return $this->validateDataAndRedirect($sortie);
         }
 
-        return $this->render('sortie/edit.html.twig', [
+        return $this->render('sortie/index.html.twig', [
             'controller_name' => 'SortieController',
             'sortieForm' => $sortieForm->createView(),
             'sortieId' => $id
@@ -59,6 +60,25 @@ class SortieController extends CustomAbstractController
         $entityManager->remove($sortie);
         $entityManager->flush();
         return $this->redirectToRoute('home_page');
+    }
+
+    #[Route('/ville/select', name: 'select_ville')]
+    public function selectVille(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        echo $request;
+        if($request->isXmlHttpRequest()) {
+            $id = null;
+            $id = $request->get('id');
+            if ($id != null) {
+                $ville = $em->getRepository(Ville::class)->find($id);
+                $response = new Response();
+                $data = json_encode($ville->getSites());
+                $response->headers->set('Content-Type', 'application/json');
+                $response->setContent($data);
+                return $response;
+            }
+        }
+        return new Response('Erreur');
     }
 
     private function validateDataAndRedirect(Sortie $sortie) {
