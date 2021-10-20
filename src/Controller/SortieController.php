@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SortieController extends CustomAbstractController
 {
-    #[Route('/create/sortie', name: 'creer_sortie')]
+    #[Route('/sortie/create', name: 'creer_sortie')]
     public function create(Request $request): Response
     {
         $sortie = new Sortie($this->getUserBySession());
@@ -20,20 +20,20 @@ class SortieController extends CustomAbstractController
         $sortieForm->handleRequest($request);
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
-            $this->validateDataAndRedirect($sortie);
+            return $this->validateDataAndRedirect($sortie);
         }
 
-            return $this->render('sortie/create.html.twig', [
+        return $this->render('sortie/create.html.twig', [
             'controller_name' => 'SortieController',
             'sortieForm' => $sortieForm->createView()
         ]);
     }
 
-    #[Route('/sortie/{sortieId}', name: 'sortie')]
-    public function afficher(Request $request, int $sortieId): Response
+    #[Route('/sortie/{id}', name: 'modifier_sortie')]
+    public function afficher(Request $request, int $id): Response
     {
         $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
-        $sortie = $sortieRepo->find($sortieId);
+        $sortie = $sortieRepo->find($id);
         if ($sortie == null) {
             return $this->redirectToRoute('home_page');
         }
@@ -41,13 +41,24 @@ class SortieController extends CustomAbstractController
         $sortieForm->handleRequest($request);
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
-            $this->validateDataAndRedirect($sortie);
+            return $this->validateDataAndRedirect($sortie);
         }
 
         return $this->render('sortie/edit.html.twig', [
             'controller_name' => 'SortieController',
-            'sortieForm' => $sortieForm->createView()
+            'sortieForm' => $sortieForm->createView(),
+            'sortieId' => $id
         ]);
+    }
+
+    #[Route('/sortie/remove/{id}', name: 'supprimer_sortie')]
+    public function supprimer(Request $request, int $id): Response {
+        $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
+        $sortie = $sortieRepo->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($sortie);
+        $entityManager->flush();
+        return $this->redirectToRoute('home_page');
     }
 
     private function validateDataAndRedirect(Sortie $sortie) {

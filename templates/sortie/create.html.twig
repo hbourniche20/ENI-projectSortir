@@ -39,7 +39,8 @@
             {{ form_row(sortieForm.site) }}
         </div>
     </div>
-        <button>Valider</button>
+    <button class="btn btn-outline-success">Publier</button>
+    <a class="btn btn-outline-secondary" role="button" href="{{ path('home_page') }}">Annuler</a>
 
     {{ form_end(sortieForm) }}
 {% endblock %}

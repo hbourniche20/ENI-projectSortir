@@ -43,18 +43,6 @@ class SortieType extends AbstractType
                 'choice_label' => 'nom',
                 'label'=>'Lieu'
             ]);
-
-
-        $builder->addEventListener(
-            FormEvents::POST_SET_DATA,
-            function (FormEvent $event) {
-                $form = $event->getForm()->get('villeAccueil');
-                echo 'event listener';
-                $data = $form->getData();
-                echo $data;
-//                var_dump($data);
-            }
-        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

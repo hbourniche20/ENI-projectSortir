@@ -37,7 +37,10 @@
         </div>
     </div>
 
-    <button>Valider</button>
+    <button class="btn btn-outline-success">Enregistrer</button>
+    <a class="btn btn-outline-danger" role="button" href="{{ path('supprimer_sortie', {id: sortieId }) }}">Supprimer la sortie</a>
+    <a class="btn btn-outline-secondary" role="button" href="{{ path('home_page') }}">Annuler</a>
+
 
     {{ form_end(sortieForm) }}
 {% endblock %}

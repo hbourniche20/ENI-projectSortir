@@ -16,6 +16,7 @@
                         <th>Etat</th>
                         <th>Inscrit</th>
                         <th>Organisateur</th>
+                        <th>Descriptions</th>
                         <th>Actions</th>
                     </tr>
                     {% for sortie in sorties %}
@@ -28,6 +29,13 @@
                         <td>{{ NULL }}</td>
                         <td>{{ sortie.getVilleOrganisatrice.getNom }}</td>
                         <td>{{ sortie.getDescription }}</td>
+                        <td>
+                            {% if sortie.organisateur == app.user %}
+                            <a class="btn btn-outline-primary" role="button" href="{{ path('modifier_sortie', {id: sortie.getId }) }}">Modifier</a>
+                            {% else %}
+                             <a class="btn btn-outline-success" role="button" href="{{ path('home_page') }}">S'inscrire</a>
+                            {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
                 </table>
