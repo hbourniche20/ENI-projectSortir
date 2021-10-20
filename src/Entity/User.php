@@ -57,6 +57,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $tel;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Ville::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $ville;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -190,6 +196,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTel(string $tel): self
     {
         $this->tel = $tel;
+
+        return $this;
+    }
+
+    public function getVille(): ?Ville
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?Ville $ville): self
+    {
+        $this->ville = $ville;
 
         return $this;
     }
