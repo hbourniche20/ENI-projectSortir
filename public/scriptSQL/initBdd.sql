@@ -1,7 +1,6 @@
 -- Quelques données pour la db
 
 -- Init villes
-INSERT INTO ville(id, nom, code_postal) values(0, 'Inconnu', 0);
 insert into ville(nom, code_postal) values('Nantes', 44000);
 insert into ville(nom, code_postal) values('Rennes', 35000);
 insert into ville(nom, code_postal) values('Vitré', 35500);
@@ -24,7 +23,7 @@ insert into site(ville_id, nom, rue) values(6, 'Le Kiosque à Pizzas', '37 Fbg L
 insert into site(ville_id, nom, rue) values(6, 'McDonalds', 'Rn Avenue Du Génral De Gaulle');
 
 -- Init User password pour tous les utilisateurs est "password"
-INSERT INTO user(id, ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (0, 0, 'email@inconnu.inc', 'Inconnu', 'Inconnu','Inconnu','0000000000','[]','');
+INSERT INTO user(id, ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (0, 1, 'email@inconnu.inc', 'Inconnu', 'Inconnu','Inconnu','0000000000','[]','');
 INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (1, 'pseu@gmail.com', 'Pseu', 'Valentin','Moi','0698653278','[]','$2y$13$fPxr.WdTTNoVzV9nIPlOquD/tXNcdbJsfVsgKIWYCKXjIkFR.6bm6');
 INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (1, 'dop@gmail.com', 'Dop', 'Hugo','Toi','0678451298','[]','$2y$13$fPxr.WdTTNoVzV9nIPlOquD/tXNcdbJsfVsgKIWYCKXjIkFR.6bm6');
 INSERT INTO user(ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (2, 'ryu@free.fr', 'Ryu', 'Ryan','Lui','0696857432','[]','$2y$13$fPxr.WdTTNoVzV9nIPlOquD/tXNcdbJsfVsgKIWYCKXjIkFR.6bm6');
