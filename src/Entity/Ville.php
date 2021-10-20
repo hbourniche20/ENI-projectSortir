@@ -51,6 +51,10 @@ class Ville
         $this->sortiesOrganisee = new ArrayCollection();
     }
 
+    public function __toString(): string {
+        return $this->getNom();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
