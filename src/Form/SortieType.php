@@ -19,8 +19,8 @@ class SortieType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('dateSortie', DateTimeType::class)
-            ->add('dateLimiteInscription', DateType::class)
+            ->add('dateSortie', DateTimeType::class, ['date_format' => 'dd MMMM yyyy'])
+            ->add('dateLimiteInscription', DateType::class, ['format' => 'dd MMMM yyyy'])
             ->add('nbPlaces')
             ->add('duree')
             ->add('description')

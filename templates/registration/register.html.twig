@@ -3,28 +3,86 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-    <h1>S'inscrire</h1>
-<div class="container">
-    <div class="col-2">
-        {{ form_start(userForm) }}
-        {{ form_row(userForm.email) }}
-        {{ form_row(userForm.plainPassword, {
-            label: 'Password'}) }}
-        {{ form_row(userForm.confirmation) }}
-        {{ form_row(userForm.pseudo) }}
-        {{ form_row(userForm.prenom) }}
-        {{ form_row(userForm.nom) }}
-        {{ form_row(userForm.tel) }}
+    <div class="container">
+        <div class="text-center">
+            <h1>S'inscrire</h1>
+        </div>
 
-
-        {{ form_row(userForm.ville) }}
+        <div class="row justify-content-center esup">
+            <div class="col-5">
+        {{ form_start(registerForm) }}
+                <div class="row esup">
+                    <div class="col">
+                        {{ form_label(registerForm.email) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(registerForm.email) }}
+                    </div>
+                </div>
+                <div class="row esup">
+                    <div class="col">
+                        {{ form_label(registerForm.plainPassword, 'Password' )}}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(registerForm.plainPassword) }}
+                    </div>
+                </div>
+                <div class="row esup">
+                    <div class="col">
+                        {{ form_label(registerForm.confirmation) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(registerForm.confirmation) }}
+                    </div>
+                </div>
+                <div class="row esup">
+                    <div class="col">
+                        {{ form_label(registerForm.pseudo) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(registerForm.pseudo) }}
+                    </div>
+                </div>
+                <div class="row esup">
+                    <div class="col">
+                        {{ form_label(registerForm.prenom) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(registerForm.prenom) }}
+                    </div>
+                </div>
+                <div class="row esup">
+                    <div class="col">
+                        {{ form_label(registerForm.nom) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(registerForm.nom) }}
+                    </div>
+                </div>
+                <div class="row esup">
+                    <div class="col">
+                        {{ form_label(registerForm.tel) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(registerForm.tel) }}
+                    </div>
+                </div>
+                <div class="row esup">
+                    <div class="col">
+                        {{ form_label(registerForm.ville) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(registerForm.ville) }}
+                    </div>
+                </div>
+            </div>
 
     </div>
-    <div class="col-4">
+    <div class="text-center"><br>
         <button type="submit" class="btn btn-outline-primary">S'inscrire</button>
 
     </div>
-    {{ form_end(userForm) }}
+    {{ form_end(registerForm) }}
 </div>
 
 {% endblock %}
