@@ -46,7 +46,7 @@
                                 <a class="btn btn-outline-primary" role="button" href="{{ path('modifier_sortie', {id: sortie.getId }) }}">Modifier</a>
 
                             {% else %}
-                                <a class="btn btn-outline-primary" role="button" >Afficher</a>
+                                <a class="btn btn-outline-primary" role="button" href="{{ path('show_sortie', {slug: sortie.getId }) }}">Afficher</a>
                                 {% if app.user in sortie.getInscrits %}
                                     {% if sortie.getDateSortie|date("d/m/Y h:i") >= "now"|date("d/m/Y h:i","Europe/Paris") %}
                                         <a class="btn btn-outline-danger" role="button" href="{{ path('desinscription', {id: sortie.getId }) }}">Se desister</a>
