@@ -48,14 +48,14 @@
             <caption>Liste des sorties</caption>
             <thead>
             <tr class="table-primary">
-                <th class="text-center">Nom de la sortie</th>
-                <th class="text-center">Date de la sortie</th>
-                <th class="text-center">Clôture</th>
-                <th class="text-center">Inscrits/Places</th>
-                <th class="text-center">Etat</th>
-                <th class="text-center">Inscrit</th>
-                <th class="text-center">Organisateur</th>
-                <th class="text-center">Actions</th>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Clôture</th>
+                <th>Inscrits/Places</th>
+                <th>Etat</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -64,7 +64,7 @@
                     <td>{{ sortie.getNom }}</td>
                     <td>{{ sortie.getDateSortie|date("d/m/Y H:i") }}</td>
                     <td>{{ sortie.getDateLimiteInscription|date("d/m/Y") }}</td>
-                    <td style="text-align: center">{{ sortie.getInscrits|length }}/{{ sortie.getNbPlaces }}</td>
+                    <td class="text-center">{{ sortie.getInscrits|length }}/{{ sortie.getNbPlaces }}</td>
                     <td>
                         {% if  sortie.getDateSortie|date_modify('+' ~sortie.getDuree  ~ 'min')|date("d/m/Y H:i") <= "now"|date("d/m/Y H:i","Europe/Paris") %}
                             <label>Terminé</label>

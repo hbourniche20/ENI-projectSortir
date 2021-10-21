@@ -3,14 +3,15 @@
 {% block javascripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-            if("{{ villeId }}"  != -1 ) {
+        $(document).ready(function () {
+            if ("{{ villeId }}" != -1) {
                 updateLieux({{ villeId }});
             }
             $('#sortie_villeAccueil').change((e) => {
                 updateLieux(e.currentTarget.value);
             });
         });
+
         function updateLieux(villeSelectionnee) {
             let url = "{{ path('select_ville', {id: 'remplacerVilleID'}) }}";
             url = url.replace('remplacerVilleID', villeSelectionnee);
@@ -41,13 +42,12 @@
     {% endif %}
 {% endblock %}
 {% block body %}
-
     <div class="container">
         <div class="row p-3">
             {% if sortieId == -1 %}
-            <h2 class="text-center">Créer une sortie</h2>
+                <h2 class="text-center">Créer une sortie</h2>
             {% else %}
-            <h2 class="text-center">Modifier une sortie</h2>
+                <h2 class="text-center">Modifier une sortie</h2>
             {% endif %}
         </div>
         <div class="row">
@@ -67,7 +67,7 @@
                             {{ form_label(sortieForm.dateSortie) }}
                         </div>
                         <div class="col">
-{#                            <input id="sortie_dateSortie_date" type="date">#}
+                            {# <input id="sortie_dateSortie_date" type="date"> #}
                             {{ form_widget(sortieForm.dateSortie) }}
                         </div>
                     </div>
@@ -75,16 +75,16 @@
                         <div class="col">
                             {{ form_label(sortieForm.dateLimiteInscription) }}
 
-{#                            <label for="{{ field_name(sortieForm.dateLimiteInscription) }}">#}
-{#                                {{ form_label(sortieForm.dateLimiteInscription)  }}#}
-{#                            </label>#}
+                            {# <label for="{{ field_name(sortieForm.dateLimiteInscription) }}"> #}
+                            {# {{ form_label(sortieForm.dateLimiteInscription)  }} #}
+                            {# </label> #}
                         </div>
                         <div class="col">
-{#                            <input#}
-{#                                    id="{{ field_name(sortieForm.dateLimiteInscription) }}"#}
-{#                                    value="{{ field_value(sortieForm.dateLimiteInscription)}}"#}
-{#                                    type="date"#}
-{#                            >#}
+                            {# <input #}
+                            {# id="{{ field_name(sortieForm.dateLimiteInscription) }}" #}
+                            {# value="{{ field_value(sortieForm.dateLimiteInscription)}}" #}
+                            {# type="date" #}
+                            {# > #}
                             {{ form_widget(sortieForm.dateLimiteInscription) }}
                         </div>
                     </div>
@@ -146,14 +146,15 @@
                 </div>
             </div>
             <div class="row-1 p-3" style="text-align: center">
-            {% if sortieId == -1 %}
-                <button class="btn btn-outline-success">Publier</button>
-                <a class="btn btn-outline-secondary" role="button" href="{{ path('home_page') }}">Annuler</a>
-            {% else %}
-                <button class="btn btn-outline-success">Enregistrer</button>
-                <a class="btn btn-outline-danger" role="button" href="{{ path('supprimer_sortie', {id: sortieId}) }}">Supprimer la sortie</a>
-                <a class="btn btn-outline-secondary" role="button" href="{{ path('home_page') }}">Annuler</a>
-            {% endif %}
+                {% if sortieId == -1 %}
+                    <button class="btn btn-outline-success">Publier</button>
+                    <a class="btn btn-outline-secondary" role="button" href="{{ path('home_page') }}">Annuler</a>
+                {% else %}
+                    <button class="btn btn-outline-success">Enregistrer</button>
+                    <a class="btn btn-outline-danger" role="button"
+                       href="{{ path('supprimer_sortie', {id: sortieId}) }}">Supprimer la sortie</a>
+                    <a class="btn btn-outline-secondary" role="button" href="{{ path('home_page') }}">Annuler</a>
+                {% endif %}
             </div>
             {{ form_end(sortieForm) }}
         </div>
