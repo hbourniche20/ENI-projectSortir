@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\SiteRepository;
 use App\Repository\SortieRepository;
-use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,9 +15,10 @@ class HomeController extends AbstractController
      * *@Route("", name="home_page")
      */
 
-    public function home(SortieRepository $sortieRepository) : response
+    public function home(SortieRepository $sortieRepository, SiteRepository $siteRepository) : response
     {
         $sorties = $sortieRepository->findAll();
+        $sites = $siteRepository->findAll();
         $sortiesNonArchive = array();
         $dateNow = date("Y-m-d H:i:s");
         foreach($sorties as $sortie){
@@ -27,7 +28,7 @@ class HomeController extends AbstractController
                 array_push($sortiesNonArchive, $sortie);
             }
         }
-        return $this->render('homepage/home.html.twig',["sorties" => $sortiesNonArchive]);
+        return $this->render('homepage/home.html.twig',["sorties" => $sortiesNonArchive,"sites"=>$sites]);
     }
 
 

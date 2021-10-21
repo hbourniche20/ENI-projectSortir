@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Site;
 use App\Entity\Ville;
+use App\Repository\VilleRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -34,9 +35,12 @@ class SortieType extends AbstractType
                 'class' => Ville::class,
                 'placeholder' => '-- selectionner une ville --',
                 'choice_label' => 'nom',
-                'label'=>'Destination'
+                'label'=>'Destination',
+                'query_builder' => function (VilleRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->orderBy('c.nom', 'ASC');
+                }
             ])
-            // TODO MAKE SITE TYPE DYNAMIC
             ->add('site', EntityType::class,[
                 'class' => Site::class,
                 'placeholder' => '-- selectionner un lieu --',
