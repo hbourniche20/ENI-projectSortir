@@ -75,6 +75,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $sorties;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Image::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $image;
+
     public function __construct()
     {
         $this->sortiesOrga = new ArrayCollection();
@@ -283,6 +288,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->sorties->removeElement($sorty)) {
             $sorty->removeInscrit($this);
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(Image $image): self
+    {
+        // set the owning side of the relation if necessary
+        if ($image->getUser() !== $this) {
+            $image->setUser($this);
+        }
+
+        $this->image = $image;
 
         return $this;
     }

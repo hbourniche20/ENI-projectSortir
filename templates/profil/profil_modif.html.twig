@@ -13,16 +13,23 @@
                 {% if userErrorsForm is not empty %}
                     <h3 style="color: red;">Erreur(s) : </h3>
                     <p style="color: red;">
-                    {% for userError in userErrorsForm %}
-                        {{ userError }} <br>
-                    {% endfor %}
+                        {% for userError in userErrorsForm %}
+                            {{ userError }} <br>
+                        {% endfor %}
                     </p>
                 {% endif %}
             </div>
         </div>
         <div class="row justify-content-center esup">
             <div class="col-3">
-                La photo ici
+                {% if user.image is null %}
+                    <img class="img-thumbnail" src="{{ asset('/css/200x200.png') }}" alt="Photo">
+                {% else %}
+                    <a href="{{ asset('/uploads/' ~ user.image.name) }}">
+                        <img class="img-thumbnail" src="{{ asset('/uploads/' ~ user.image.name) }}" alt="Photo"
+                             width="200" height="200">
+                    </a>
+                {% endif %}
             </div>
             <div class="col-6">
                 {{ form_start(userForm) }}
@@ -95,6 +102,15 @@
                     </div>
                     <div class="col">
                         {{ form_widget(userForm.ville) }}
+                    </div>
+                </div>
+
+                <div class="row esup">
+                    <div class="col">
+                        {{ form_label(userForm.photo) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(userForm.photo) }}
                     </div>
                 </div>
 
