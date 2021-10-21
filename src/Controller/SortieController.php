@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Sortie;
-use App\Entity\User;
-use App\Entity\Ville;
 use App\Form\SortieType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,10 +28,9 @@ class SortieController extends CustomAbstractController
     }
 
     #[Route('/sortie/{id}', name: 'modifier_sortie')]
-    public function afficher(Request $request, int $id): Response
+    public function modifier(Request $request, int $id): Response
     {
-        $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
-        $sortie = $sortieRepo->find($id);
+        $sortie = $this->getSortieById($id);
         if ($sortie == null) {
             return $this->redirectToRoute('home_page');
         }
@@ -53,15 +50,26 @@ class SortieController extends CustomAbstractController
 
     #[Route('/sortie/remove/{id}', name: 'supprimer_sortie')]
     public function supprimer(Request $request, int $id): Response {
-        $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
-        $sortie = $sortieRepo->find($id);
+        $sortie = $this->getSortieById($id);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($sortie);
         $entityManager->flush();
         return $this->redirectToRoute('home_page');
     }
 
-    private function validateDataAndRedirect(Sortie $sortie) {
+    #[Route(path: '/sortie/show/{slug}', name: 'show_sortie', requirements: ['slug' => '\d+'])]
+    public function afficher(Request $request, int $slug) : Response
+    {
+        $sortie = $this->getSortieById($slug);
+
+        return $this->render('sortie/show.html.twig', [
+            'sortie' => $sortie,
+            'inscrits' => $sortie->getInscrits()->getValues(),
+        ]);
+    }
+
+    private function validateDataAndRedirect(Sortie $sortie) : Response
+    {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($sortie);
         $entityManager->flush();
