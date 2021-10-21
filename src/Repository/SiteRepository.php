@@ -25,7 +25,7 @@ class SiteRepository extends ServiceEntityRepository
     public function findByVille($idVille)
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.ville_id = :id')
+            ->andWhere('s.ville = :id')
             ->setParameter('id', $idVille)
             ->orderBy('s.nom', 'ASC')
             ->getQuery()

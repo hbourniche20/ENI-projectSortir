@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Site;
 use App\Entity\Sortie;
 use App\Entity\User;
 use App\Entity\Ville;
@@ -23,14 +24,17 @@ class SortieController extends CustomAbstractController
             return $this->validateDataAndRedirect($sortie);
         }
 
-        return $this->render('sortie/create.html.twig', [
+        return $this->render('sortie/index.html.twig', [
             'controller_name' => 'SortieController',
-            'sortieForm' => $sortieForm->createView()
+            'sortieForm' => $sortieForm->createView(),
+            'sortieId' => -1,
+            'villeId' => -1,
+            'lieuId' => -1
         ]);
     }
 
     #[Route('/sortie/{id}', name: 'modifier_sortie')]
-    public function afficher(Request $request, int $id): Response
+    public function edit(Request $request, int $id): Response
     {
         $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
         $sortie = $sortieRepo->find($id);
@@ -44,17 +48,17 @@ class SortieController extends CustomAbstractController
             return $this->validateDataAndRedirect($sortie);
         }
 
-        return $this->render('sortie/edit.html.twig', [
+        return $this->render('sortie/index.html.twig', [
             'controller_name' => 'SortieController',
             'sortieForm' => $sortieForm->createView(),
-            'sortieId' => $id
+            'sortieId' => $id,
+            'villeId' => $sortie->getVilleAccueil()->getId(),
+            'lieuId' => $sortie->getSite()->getId()
         ]);
     }
 
     #[Route('/sortie/remove/{id}', name: 'supprimer_sortie')]
-    public function supprimer(Request $request, int $id): Response {
-        $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
-        $sortie = $sortieRepo->find($id);
+    public function supprimer(Request $request, Sortie $sortie): Response {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($sortie);
         $entityManager->flush();
@@ -83,6 +87,22 @@ class SortieController extends CustomAbstractController
         $entityManager->persist($sortieInscrits);
         $entityManager->flush();
         return $this->redirectToRoute('home_page');
+    }
+
+    #[Route('/ville/{id}', name: 'select_ville')]
+    public function selectVille(Request $request, int $id) {
+        if ($id != null) {
+            $sites = $this->getDoctrine()->getRepository(Site::class)->findByVille($id);
+            $array = [];
+            foreach($sites as $site) {
+                array_push($array, array($site->getId(), $site->getNom()));
+            }
+            $response = new Response();
+            $response->setContent(json_encode($array));
+            return $response;
+
+        }
+        return new Response('Erreur: impossible de récuperer les données');
     }
 
     private function validateDataAndRedirect(Sortie $sortie) {
