@@ -78,12 +78,12 @@
                             <label>Complet</label>
                         {% endif %}
                     </td>
-                    <td style="text-align: center">
+                    <td class="text-center">
                         {% if app.user in sortie.getInscrits %}
                             <label>X</label>
                         {% endif %}
                     </td>
-                    <td>{{ sortie.getVilleOrganisatrice.getNom }}</td>
+                    <td><a href="{{ path('profil_id', {slug: sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo}}</a></td>
                     <td>
                         <a class="btn btn-outline-primary" role="button"
                            href="{{ path('show_sortie', {slug: sortie.getId }) }}">Afficher</a>
