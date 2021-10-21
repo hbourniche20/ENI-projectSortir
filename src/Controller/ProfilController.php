@@ -12,10 +12,20 @@
     class ProfilController extends CustomAbstractController {
 
         #[Route('/profil', name: 'profil')]
-        public function index(): Response {
-            $user = $this->getUserBySession();
+        public function index() : Response {
+            return $this->profil($this->getUserBySession()->getId());
+        }
+
+        #[Route(path: '/profil/{slug}', name: 'profil_id', requirements: ['slug' => '\d+'])]
+        public function profil(int $slug) : Response {
+            $modifie = ($this->getUserBySession()->getId() == $slug);
+            $user = $this->getUserById($slug);
+            if(is_null($user)){
+                return $this->index();
+            }
             return $this->render('profil/index.html.twig', [
                 'user' => $user,
+                'modifie' => $modifie
             ]);
         }
 

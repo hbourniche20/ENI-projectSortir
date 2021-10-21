@@ -26,6 +26,11 @@
             return $user;
         }
 
+        protected function getUserById(int $id) : ?User {
+            $userManager = $this->getDoctrine()->getRepository(User::class);
+            return $userManager->find($id);
+        }
+
         protected function getSortieById(int $id): Sortie {
             $sortieManager = $this->getDoctrine()->getRepository(Sortie::class);
             return $sortieManager->find($id);
