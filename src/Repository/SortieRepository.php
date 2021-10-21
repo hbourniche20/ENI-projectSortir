@@ -23,6 +23,7 @@ class SortieRepository extends ServiceEntityRepository
     public function delete($id) {
 
     }
+
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
     //  */

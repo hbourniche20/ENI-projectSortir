@@ -57,6 +57,30 @@ class SortieController extends CustomAbstractController
         return $this->redirectToRoute('home_page');
     }
 
+    #[Route('/sortie/inscrire/{id}', name: 'inscription')]
+    public function inscrire(Request $request, int $id): Response {
+        $user = $this->getUserBySession();
+        $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
+        $sortieInscrit = $sortieRepo->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $sortieInscrit ->addInscrit($user);
+        $entityManager->persist($sortieInscrit);
+        $entityManager->flush();
+        return $this->redirectToRoute('home_page');
+    }
+
+    #[Route('/sortie/desister/{id}', name: 'desinscription')]
+    public function desister(Request $request, int $id): Response {
+        $user = $this->getUserBySession();
+        $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
+        $sortieInscrits = $sortieRepo->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $sortieInscrits ->removeInscrit($user);
+        $entityManager->persist($sortieInscrits);
+        $entityManager->flush();
+        return $this->redirectToRoute('home_page');
+    }
+
     #[Route(path: '/sortie/show/{slug}', name: 'show_sortie', requirements: ['slug' => '\d+'])]
     public function afficher(Request $request, int $slug) : Response
     {

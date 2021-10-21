@@ -35,6 +35,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('confirmation', PasswordType::class, ['mapped' => false])
             ->add('pseudo')
             ->add('prenom')
             ->add('nom')
