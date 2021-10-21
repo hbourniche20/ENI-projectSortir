@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -24,6 +25,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
+     * @Assert\Email(
+     *     message = "Ce mail n'est pas valide."
+     * )
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
@@ -55,6 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $nom;
 
     /**
+     * @Assert\Length("10")
      * @ORM\Column(type="string", length=255)
      */
     private $tel;
