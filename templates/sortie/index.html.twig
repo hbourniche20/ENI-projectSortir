@@ -42,55 +42,120 @@
 {% endblock %}
 {% block body %}
 
-    {% if sortieId == -1 %}
-    <h2>Créer une sortie</h2>
-    {% else %}
-    <h2>Modifier une sortie</h2>
-    {% endif %}
+    <div class="container">
+        <div class="row p-3">
+            {% if sortieId == -1 %}
+            <h2 class="text-center">Créer une sortie</h2>
+            {% else %}
+            <h2 class="text-center">Modifier une sortie</h2>
+            {% endif %}
+        </div>
+        <div class="row">
+            {{ form_start(sortieForm) }}
+            <div class="row justify-content-center">
+                <div class="col col-4">
+                    <div class="row form-group esup">
+                        <div class="col">
+                            {{ form_label(sortieForm.nom) }}
+                        </div>
+                        <div class="col">
+                            {{ form_widget(sortieForm.nom) }}
+                        </div>
+                    </div>
+                    <div class="row form-group esup">
+                        <div class="col">
+                            {{ form_label(sortieForm.dateSortie) }}
+                        </div>
+                        <div class="col">
+{#                            <input id="sortie_dateSortie_date" type="date">#}
+                            {{ form_widget(sortieForm.dateSortie) }}
+                        </div>
+                    </div>
+                    <div class="row form-group esup">
+                        <div class="col">
+                            {{ form_label(sortieForm.dateLimiteInscription) }}
 
-    {{ form_start(sortieForm) }}
-
-    <div class="group">
-        <div class="group-item name">
-            {{ form_row(sortieForm.nom) }}
-        </div>
-        <div class="group-item date-sortie">
-            {{ form_row(sortieForm.dateSortie) }}
-        </div>
-        <div class="group-item date-inscription">
-            {{ form_row(sortieForm.dateLimiteInscription) }}
-        </div>
-        <div class="group-item nombre-places">
-            {{ form_row(sortieForm.nbPlaces) }}
-        </div>
-        <div class="group-item duree">
-            {{ form_row(sortieForm.duree) }}
-            <span>Minutes</span>
-        </div>
-        <div class="group-item description">
-            {{ form_row(sortieForm.description) }}
+{#                            <label for="{{ field_name(sortieForm.dateLimiteInscription) }}">#}
+{#                                {{ form_label(sortieForm.dateLimiteInscription)  }}#}
+{#                            </label>#}
+                        </div>
+                        <div class="col">
+{#                            <input#}
+{#                                    id="{{ field_name(sortieForm.dateLimiteInscription) }}"#}
+{#                                    value="{{ field_value(sortieForm.dateLimiteInscription)}}"#}
+{#                                    type="date"#}
+{#                            >#}
+                            {{ form_widget(sortieForm.dateLimiteInscription) }}
+                        </div>
+                    </div>
+                    <div class="row form-group esup">
+                        <div class="col">
+                            {{ form_label(sortieForm.nbPlaces) }}
+                        </div>
+                        <div class="col">
+                            {{ form_widget(sortieForm.nbPlaces) }}
+                        </div>
+                    </div>
+                    <div class="row form-group esup">
+                        <div class="col">
+                            {{ form_label(sortieForm.duree) }}
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col col-3">
+                                    {{ form_widget(sortieForm.duree) }}
+                                </div>
+                                <div class="col col-3" style="pointer-events: none;">Minutes</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group esup">
+                        <div class="col">
+                            {{ form_label(sortieForm.description) }}
+                        </div>
+                        <div class="col">
+                            {{ form_widget(sortieForm.description) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-4">
+                    <div class="row form-group esup">
+                        <div class="col">
+                            {{ form_label(sortieForm.villeOrganisatrice) }}
+                        </div>
+                        <div class="col">
+                            {{ form_widget(sortieForm.villeOrganisatrice) }}
+                        </div>
+                    </div>
+                    <div class="row form-group esup">
+                        <div class="col">
+                            {{ form_label(sortieForm.villeAccueil) }}
+                        </div>
+                        <div class="col">
+                            {{ form_widget(sortieForm.villeAccueil) }}
+                        </div>
+                    </div>
+                    <div class="row form-group p-3 drop-down">
+                        <div class="col">
+                            {{ form_label(sortieForm.site) }}
+                        </div>
+                        <div class="col">
+                            {{ form_widget(sortieForm.site) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-1 p-3" style="text-align: center">
+            {% if sortieId == -1 %}
+                <button class="btn btn-outline-success">Publier</button>
+                <a class="btn btn-outline-secondary" role="button" href="{{ path('home_page') }}">Annuler</a>
+            {% else %}
+                <button class="btn btn-outline-success">Enregistrer</button>
+                <a class="btn btn-outline-danger" role="button" href="{{ path('supprimer_sortie', {id: sortieId}) }}">Supprimer la sortie</a>
+                <a class="btn btn-outline-secondary" role="button" href="{{ path('home_page') }}">Annuler</a>
+            {% endif %}
+            </div>
+            {{ form_end(sortieForm) }}
         </div>
     </div>
-    <div class="group">
-        <div class="group-item drop-down">
-            {{ form_row(sortieForm.villeOrganisatrice) }}
-        </div>
-        <div class="group-item drop-down">
-            {{ form_row(sortieForm.villeAccueil) }}
-        </div>
-        <div class="group-item drop-down">
-            {{ form_row(sortieForm.site) }}
-        </div>
-    </div>
-
-    {% if sortieId == -1 %}
-        <button class="btn btn-outline-success">Publier</button>
-        <a class="btn btn-outline-secondary" role="button" href="{{ path('home_page') }}">Annuler</a>
-    {% else %}
-        <button class="btn btn-outline-success">Enregistrer</button>
-        <a class="btn btn-outline-danger" role="button" href="{{ path('supprimer_sortie', {id: sortieId}) }}">Supprimer la sortie</a>
-        <a class="btn btn-outline-secondary" role="button" href="{{ path('home_page') }}">Annuler</a>
-    {% endif %}
-
-    {{ form_end(sortieForm) }}
 {% endblock %}
