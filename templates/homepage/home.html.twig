@@ -4,8 +4,49 @@
 
 {% block body %}
     {# Contenu de la page #}
-    <h3>Filtrer les sorties</h3>
+    {# Formulaire de recherche sorties #}
+    <div class="container">
+        <h3>Filtrer les sorties</h3>
+        <table>
+        <tr>
+            <td>
+                <label for ="site_liste">Site :</label>
+            </td>
+            <td>
+                <select id="site_liste" name="site_liste">
+                    <option value="">Veuillez choisir un site</option>
+                    {% for site in sites %}
+                        <option value="{{ site.getId }}">{{ site.getNom}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for ="sortie_name_search">Le nom de la sortie contient :</label>
+            </td>
+            <td>
+                <input type="text" id="sortie_name_search" name="sortie_name_search">
+            </td>
+        </tr>
+            <tr>
+                <td>
+                    <label for="date_debut_search">Entre :</label>
+                </td>
+                <td>
+                    <input type="date" id="sortie_name_search" name="sortie_name_search">
+                </td>
+                <td>
+                    <label for="date_fin_search"> Et :</label>
+                </td>
+                <td>
+                    <input type ="date" id="date_fin_search" name="date_fin_search">
+                </td>
+            </tr>
+         </table>
+    </div>
     <br>
+    {# Tableaux des sorties #}
     <div class="container">
                 <table class="table table-striped" style="padding-left: 5px;padding-right: 5px;">
                     <tr>
@@ -23,10 +64,14 @@
                         <td>{{ sortie.getNom }}</td>
                         <td>{{ sortie.getDateSortie|date("m/d/Y") }}</td>
                         <td>{{ sortie.getDateLimiteInscription|date("m/d/Y") }}</td>
-                        <td style="text-align: center">{{ sortie.getNbPlaces }}</td>
+                        <td style="text-align: center">{{ sortie.getNbInscrits }}/{{ sortie.getNbPlaces }}</td>
                         <td>{{ sortie.getNom }}</td>
-                        <td>{{ NULL }}</td>
-                        <td>{{ sortie.getVilleOrganisatrice.getNom }}</td>
+                        {% if app.user in sortie.getInscrits %}
+                            <td>X</td>
+                            {% else %}
+                                <td>{{ NULL }}</td>
+                        {% endif %}
+                        <td>{{ sortie.getOrganisateur.getNom }} {{ sortie.getOrganisateur.getPrenom}}</td>
                         <td>{{ sortie.getDescription }}</td>
                     </tr>
                     {% endfor %}

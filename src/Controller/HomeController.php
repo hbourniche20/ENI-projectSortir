@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\SiteRepository;
 use App\Repository\SortieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,14 +15,13 @@ class HomeController extends AbstractController
      * *@Route("/home", name="home_page")
      */
 
-    public function home(SortieRepository $sortieRepository) : response
+    public function home(SortieRepository $sortieRepository, SiteRepository $siteRepository) : response
     {
         $sorties = $sortieRepository->findAll();
-
-        return $this->render('homepage/home.html.twig',["sorties" => $sorties]);
+        $sites = $siteRepository->findAll();
+        return $this->render('homepage/home.html.twig',["sorties" => $sorties,"sites"=>$sites]);
 
     }
-
 
 
 
