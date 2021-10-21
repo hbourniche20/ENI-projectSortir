@@ -59,13 +59,15 @@
             {% for sortie in sorties %}
                 <tr>
                     <td>{{ sortie.getNom }}</td>
-                    <td>{{ sortie.getDateSortie|date("d/m/Y h:i") }}</td>
+                    <td>{{ sortie.getDateSortie|date("d/m/Y H:i") }}</td>
                     <td>{{ sortie.getDateLimiteInscription|date("d/m/Y") }}</td>
                     <td style="text-align: center">{{ sortie.getInscrits|length }}/{{ sortie.getNbPlaces }}</td>
                     <td>
-                        {% if  sortie.getDateSortie|date("d/m/Y h:i") <= "now"|date("d/m/Y h:i","Europe/Paris") and sortie.getDateSortie|date_modify('+' ~sortie.getDuree  ~ 'min')|date("d/m/Y h:i") >= "now"|date("d/m/Y h:i") %}
+                        {% if  sortie.getDateSortie|date_modify('+' ~sortie.getDuree  ~ 'min')|date("d/m/Y H:i") <= "now"|date("d/m/Y H:i","Europe/Paris") %}
+                            <label>Terminé</label>
+                        {% elseif  sortie.getDateSortie|date("d/m/Y H:i") <= "now"|date("d/m/Y H:i","Europe/Paris") %}
                             <label>En cours</label>
-                        {% elseif  sortie.getDateLimiteInscription|date("d/m/Y")  <= "now"|date("d/m/Y") and  sortie.getDateSortie|date("d/m/Y h:i") <= "now"|date("d/m/Y h:i","Europe/Paris") %}
+                        {% elseif sortie.getDateLimiteInscription|date("d/m/Y") < "now"|date("d/m/Y") %}
                             <label>Fermé</label>
                         {% elseif sortie.getInscrits|length < sortie.getNbPlaces %}
                             <label>Ouvert</label>
@@ -81,20 +83,17 @@
                     <td>{{ sortie.getVilleOrganisatrice.getNom }}</td>
                     <td>
                         {% if sortie.organisateur == app.user %}
-                            <a class="btn btn-outline-primary" role="button"
-                               href="{{ path('modifier_sortie', {id: sortie.getId }) }}">Modifier</a>
+                            <a class="btn btn-outline-primary" role="button" href="{{ path('modifier_sortie', {id: sortie.getId }) }}">Modifier</a>
 
                         {% else %}
-                            <a class="btn btn-outline-primary" role="button">Afficher</a>
+                            <a class="btn btn-outline-primary" role="button" >Afficher</a>
                             {% if app.user in sortie.getInscrits %}
-                                {% if sortie.getDateSortie|date("d/m/Y h:i") >= "now"|date("d/m/Y h:i","Europe/Paris") %}
-                                    <a class="btn btn-outline-danger" role="button"
-                                       href="{{ path('desinscription', {id: sortie.getId }) }}">Se desister</a>
+                                {% if sortie.getDateSortie|date("d/m/Y H:i") >= "now"|date("d/m/Y H:i","Europe/Paris") %}
+                                    <a class="btn btn-outline-danger" role="button" href="{{ path('desinscription', {id: sortie.getId }) }}">Se desister</a>
                                 {% endif %}
                             {% else %}
-                                {% if sortie.getDateLimiteInscription|date("d/m/Y")  >= "now"|date("d/m/Y") and sortie.getDateSortie|date("d/m/Y h:i") >= "now"|date("d/m/Y h:i","Europe/Paris") %}
-                                    <a class="btn btn-outline-success" role="button"
-                                       href="{{ path('inscription', {id: sortie.getId }) }}">S'inscrire</a>
+                                {% if sortie.getDateLimiteInscription|date("d/m/Y")  >= "now"|date("d/m/Y") and sortie.getDateSortie|date("d/m/Y H:i") > "now"|date("d/m/Y H:i","Europe/Paris")  and sortie.getInscrits|length < sortie.getNbPlaces %}
+                                    <a class="btn btn-outline-success" role="button" href="{{ path('inscription', {id: sortie.getId }) }}">S'inscrire</a>
                                 {% endif %}
                             {% endif %}
                         {% endif %}
