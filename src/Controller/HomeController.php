@@ -12,7 +12,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class HomeController extends AbstractController
 {
     /**
-     * *@Route("/home", name="home_page")
+     * *@Route("", name="home_page")
      */
 
     public function home(SortieRepository $sortieRepository) : response
