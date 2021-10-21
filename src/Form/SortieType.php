@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -21,10 +22,14 @@ class SortieType extends AbstractType
         $builder
             ->add('nom')
             ->add('dateSortie', DateTimeType::class, ['date_format' => 'dd MMMM yyyy'])
-            ->add('dateLimiteInscription', DateType::class, ['format' => 'dd MMMM yyyy'])
+            ->add('dateLimiteInscription', DateType::class, [
+                'format' => 'dd MMMM yyyy',
+//                'widget' => 'single_text',
+//                'html5' => false
+            ])
             ->add('nbPlaces')
             ->add('duree')
-            ->add('description')
+            ->add('description', TextareaType::class)
             ->add('villeOrganisatrice', EntityType::class, [
                 'class' => Ville::class,
                 'disabled' => true,
