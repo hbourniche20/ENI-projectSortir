@@ -19,9 +19,18 @@ class HomeController extends AbstractController
     {
         $sorties = $sortieRepository->findAll();
         $sites = $siteRepository->findAll();
-        return $this->render('homepage/home.html.twig',["sorties" => $sorties,"sites"=>$sites]);
-
+        $sortiesNonArchive = array();
+        $dateNow = date("Y-m-d H:i:s");
+        foreach($sorties as $sortie){
+            $date = new \DateTime($sortie->getDateSortie()->format('Y-m-d H:i:s'));
+            $date->add(new \DateInterval('P1M'));
+            if($date > $dateNow){
+                array_push($sortiesNonArchive, $sortie);
+            }
+        }
+        return $this->render('homepage/home.html.twig',["sorties" => $sortiesNonArchive,"sites"=>$sites]);
     }
+
 
 
 

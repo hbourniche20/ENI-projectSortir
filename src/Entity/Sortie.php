@@ -77,9 +77,13 @@ class Sortie
      */
     private $inscrits;
 
-    public function __construct()
+    public function __construct(User $user)
     {
         $this->inscrits = new ArrayCollection();
+        $this->dateSortie = new \DateTime();
+        $this->dateLimiteInscription = new \DateTime();
+        $this->organisateur = $user;
+        $this->villeOrganisatrice = $user->getVille();
     }
 
     public function getId(): ?int
@@ -171,14 +175,14 @@ class Sortie
         return $this;
     }
 
-    public function getVilleAcceuil(): ?Ville
+    public function getVilleAccueil(): ?Ville
     {
-        return $this->ville;
+        return $this->villeAccueil;
     }
 
-    public function setVilleAcceuil(?Ville $ville): self
+    public function setVilleAccueil(?Ville $ville): self
     {
-        $this->ville = $ville;
+        $this->villeAccueil = $ville;
 
         return $this;
     }
