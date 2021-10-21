@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Site;
 use App\Entity\Sortie;
 use App\Entity\User;
 use App\Entity\Ville;
@@ -26,7 +27,9 @@ class SortieController extends CustomAbstractController
         return $this->render('sortie/index.html.twig', [
             'controller_name' => 'SortieController',
             'sortieForm' => $sortieForm->createView(),
-            'sortieId' => -1
+            'sortieId' => -1,
+            'villeId' => -1,
+            'lieuId' => -1
         ]);
     }
 
@@ -48,37 +51,34 @@ class SortieController extends CustomAbstractController
         return $this->render('sortie/index.html.twig', [
             'controller_name' => 'SortieController',
             'sortieForm' => $sortieForm->createView(),
-            'sortieId' => $id
+            'sortieId' => $id,
+            'villeId' => $sortie->getVilleAccueil()->getId(),
+            'lieuId' => $sortie->getSite()->getId()
         ]);
     }
 
     #[Route('/sortie/remove/{id}', name: 'supprimer_sortie')]
-    public function supprimer(Request $request, int $id): Response {
-        $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
-        $sortie = $sortieRepo->find($id);
+    public function supprimer(Request $request, Sortie $sortie): Response {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($sortie);
         $entityManager->flush();
         return $this->redirectToRoute('home_page');
     }
 
-    #[Route('/ville/select', name: 'select_ville')]
-    public function selectVille(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        echo $request;
-        if($request->isXmlHttpRequest()) {
-            $id = null;
-            $id = $request->get('id');
-            if ($id != null) {
-                $ville = $em->getRepository(Ville::class)->find($id);
-                $response = new Response();
-                $data = json_encode($ville->getSites());
-                $response->headers->set('Content-Type', 'application/json');
-                $response->setContent($data);
-                return $response;
+    #[Route('/ville/{id}', name: 'select_ville')]
+    public function selectVille(Request $request, int $id) {
+        if ($id != null) {
+            $sites = $this->getDoctrine()->getRepository(Site::class)->findByVille($id);
+            $array = [];
+            foreach($sites as $site) {
+                array_push($array, array($site->getId(), $site->getNom()));
             }
+            $response = new Response();
+            $response->setContent(json_encode($array));
+            return $response;
+
         }
-        return new Response('Erreur');
+        return new Response('Erreur: impossible de récuperer les données');
     }
 
     private function validateDataAndRedirect(Sortie $sortie) {

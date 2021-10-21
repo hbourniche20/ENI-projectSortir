@@ -4,34 +4,32 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#sortie_villeAccueil').change(function(e) {
-                var villeSelectionnee = e.currentTarget.value;
-                console.log(villeSelectionnee);
-                console.log(e);
-                // phpUrl= "{{path('select_ville', {id: 'repalceValueByVilleSelected' }) }}";
-                // console.log(phpUrl);
-                // phpUrl = phpUrl.replace('repalceValueByVilleSelected', villeSelectionnee);
-                // console.log(phpUrl);
-                // $('#sortie_site')
-                $.ajax({
-                    url: "{{ path('select_ville') }}",
-                    data: "&category=" + villeSelectionnee,
-                    type: "POST",
-                    success: function(catContent) {
-                        console.log(catContent);
-{#                        {% for contentCategory in catContent %}#}
-{#                        var nameContent =  "{{ contentCategory.name }}";#}
-{#                        console.log(nameContent);#}
-{#                        {% endfor %}#}
-
-                        // $("playlist_content_name").html(nameContent);
-                    },
-                    error: function(e){
-                        console.log(e.responseText);
-                    }
+            if("{{ villeId }}"  != -1 ) {
+                updateLieux({{ villeId }});
+            }
+            $('#sortie_villeAccueil').change((e) => {
+                updateLieux(e.currentTarget.value);
+            });
+        });
+        function updateLieux(villeSelectionnee) {
+            let url = "{{ path('select_ville', {id: 'remplacerVilleID'}) }}";
+            url = url.replace('remplacerVilleID', villeSelectionnee);
+            fetch(url)
+                .then(response => response.json())
+                .then((sites) => {
+                    console.log(sites);
+                    $('#sortie_site').empty();
+                    sites.forEach((element) => {
+                        let site = document.createElement("option");
+                        site.value = element[0];
+                        site.innerText = element[1];
+                        $('#sortie_site').append(site);
+                        if ("{{ lieuId }}" != -1 && "{{ lieuId }}" == element[0]) {
+                            site.setAttribute('selected', 'true');
+                        }
+                    });
                 });
-            })
-        })
+        }
     </script>
 {% endblock %}
 

@@ -41,7 +41,6 @@ class SortieType extends AbstractType
                         ->orderBy('c.nom', 'ASC');
                 }
             ])
-            // TODO MAKE SITE TYPE DYNAMIC
             ->add('site', EntityType::class,[
                 'class' => Site::class,
                 'placeholder' => '-- selectionner un lieu --',
