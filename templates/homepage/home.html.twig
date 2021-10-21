@@ -44,17 +44,21 @@
         </table>
     </div>
     <div class="container esup">
-        <table class="table table-striped" style="padding-left: 5px;padding-right: 5px;">
-            <tr>
-                <th>Nom de la sortie</th>
-                <th>Date de la sortie</th>
-                <th>Clôture</th>
-                <th>Inscrits/Places</th>
-                <th>Etat</th>
-                <th>Inscrit</th>
-                <th>Organisateur</th>
-                <th>Actions</th>
+        <table class="table table-striped caption-top">
+            <caption>Liste des sorties</caption>
+            <thead>
+            <tr class="table-primary">
+                <th class="text-center">Nom de la sortie</th>
+                <th class="text-center">Date de la sortie</th>
+                <th class="text-center">Clôture</th>
+                <th class="text-center">Inscrits/Places</th>
+                <th class="text-center">Etat</th>
+                <th class="text-center">Inscrit</th>
+                <th class="text-center">Organisateur</th>
+                <th class="text-center">Actions</th>
             </tr>
+            </thead>
+            <tbody>
             {% for sortie in sorties %}
                 <tr>
                     <td>{{ sortie.getNom }}</td>
@@ -81,23 +85,29 @@
                     </td>
                     <td>{{ sortie.getVilleOrganisatrice.getNom }}</td>
                     <td>
+                        <a class="btn btn-outline-primary" role="button"
+                           href="{{ path('show_sortie', {slug: sortie.getId }) }}">Afficher</a>
                         {% if sortie.organisateur == app.user %}
-                            <a class="btn btn-outline-primary" role="button" href="{{ path('modifier_sortie', {id: sortie.getId }) }}">Modifier</a>
+                            <a class="btn btn-outline-primary" role="button"
+                               href="{{ path('modifier_sortie', {id: sortie.getId }) }}">Modifier</a>
+                        {% endif %}
+
+                        {% if app.user in sortie.getInscrits %}
+                            {% if sortie.getDateSortie|date("d/m/Y H:i") >= "now"|date("d/m/Y H:i","Europe/Paris") %}
+                                <a class="btn btn-outline-danger" role="button"
+                                   href="{{ path('desinscription', {id: sortie.getId }) }}">Se desister</a>
+                            {% endif %}
                         {% else %}
-                            <a class="btn btn-outline-primary" role="button" >Afficher</a>
-                            {% if app.user in sortie.getInscrits %}
-                                {% if sortie.getDateSortie|date("d/m/Y H:i") >= "now"|date("d/m/Y H:i","Europe/Paris") %}
-                                    <a class="btn btn-outline-danger" role="button" href="{{ path('desinscription', {id: sortie.getId }) }}">Se desister</a>
-                                {% endif %}
-                            {% else %}
-                                {% if sortie.getDateLimiteInscription|date("d/m/Y")  >= "now"|date("d/m/Y") and sortie.getDateSortie|date("d/m/Y H:i") > "now"|date("d/m/Y H:i","Europe/Paris")  and sortie.getInscrits|length < sortie.getNbPlaces %}
-                                    <a class="btn btn-outline-success" role="button" href="{{ path('inscription', {id: sortie.getId }) }}">S'inscrire</a>
-                                {% endif %}
+                            {% if sortie.getDateLimiteInscription|date("d/m/Y")  >= "now"|date("d/m/Y") and sortie.getDateSortie|date("d/m/Y H:i") > "now"|date("d/m/Y H:i","Europe/Paris")  and sortie.getInscrits|length < sortie.getNbPlaces %}
+                                <a class="btn btn-outline-success" role="button"
+                                   href="{{ path('inscription', {id: sortie.getId }) }}">S'inscrire</a>
                             {% endif %}
                         {% endif %}
+
                     </td>
                 </tr>
             {% endfor %}
+            </tbody>
         </table>
     </div>
 
