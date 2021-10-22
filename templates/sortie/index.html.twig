@@ -66,33 +66,26 @@
                         {{ form_label(sortieForm.dateSortie) }}
                     </div>
                     <div class="col-7">
-                        {# <input id="sortie_dateSortie_date" type="date"> #}
                         {{ form_widget(sortieForm.dateSortie) }}
                     </div>
                 </div>
                 <div class="row form-group esup">
                     <div class="col-5">
                         {{ form_label(sortieForm.dateLimiteInscription) }}
-
-                        {# <label for="{{ field_name(sortieForm.dateLimiteInscription) }}"> #}
-                        {# {{ form_label(sortieForm.dateLimiteInscription)  }} #}
-                        {# </label> #}
                     </div>
                     <div class="col-7">
-                        {# <input #}
-                        {# id="{{ field_name(sortieForm.dateLimiteInscription) }}" #}
-                        {# value="{{ field_value(sortieForm.dateLimiteInscription)}}" #}
-                        {# type="date" #}
-                        {# > #}
                         {{ form_widget(sortieForm.dateLimiteInscription) }}
                     </div>
                 </div>
                 <div class="row form-group esup">
-                    <div class="col-5">
+                    <div class="col col-5">
                         {{ form_label(sortieForm.nbPlaces) }}
                     </div>
-                    <div class="col-7">
+                    <div class="col col-7">
                         {{ form_widget(sortieForm.nbPlaces) }}
+                    </div>
+                    <div class="col error">
+                        {{ form_errors(sortieForm.nbPlaces) }}
                     </div>
                 </div>
                 <div class="row form-group esup">
@@ -104,8 +97,11 @@
                             <div class="col col-3">
                                 {{ form_widget(sortieForm.duree) }}
                             </div>
-                            <div class="col col-3" style="pointer-events: none;">Minutes</div>
+{#                            <div class="col col-3" style="pointer-events: none;">Minutes</div>#}
                         </div>
+                    </div>
+                    <div class="col error">
+                        {{ form_errors(sortieForm.duree) }}
                     </div>
                 </div>
                 <div class="row form-group esup">
