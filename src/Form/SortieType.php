@@ -25,6 +25,7 @@ class SortieType extends AbstractType
             ->add('nom')
             ->add('dateSortie', DateTimeType::class, [
                 'widget' => 'single_text',
+                'with_seconds' => false
             ])
             ->add('dateLimiteInscription', DateType::class, [
                 'widget' => 'single_text',

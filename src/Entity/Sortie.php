@@ -79,9 +79,10 @@ class Sortie
 
     public function __construct(User $user)
     {
+        date_default_timezone_set('Europe/Paris');
         $this->inscrits = new ArrayCollection();
-        $this->dateSortie = new \DateTime();
-        $this->dateLimiteInscription = new \DateTime();
+        $this->dateSortie = new \DateTime(date('Y/m/d H:i'));
+        $this->dateLimiteInscription = new \DateTime(date('Y/m/d'));
         $this->organisateur = $user;
         $this->villeOrganisatrice = $user->getVille();
     }
