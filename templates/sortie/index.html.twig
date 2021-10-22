@@ -4,8 +4,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            if ("{{ villeId }}" != -1) {
-                updateLieux({{ villeId }});
+            if ("{{ sortie.villeAccueil.id }}" != -1) {
+                updateLieux({{ sortie.villeAccueil.id }});
             }
             $('#sortie_villeAccueil').change((e) => {
                 updateLieux(e.currentTarget.value);
@@ -25,7 +25,7 @@
                         site.value = element[0];
                         site.innerText = element[1];
                         $('#sortie_site').append(site);
-                        if ("{{ lieuId }}" != -1 && "{{ lieuId }}" == element[0]) {
+                        if ("{{ sortie.site.id }}" != -1 && "{{ sortie.site.id }}" == element[0]) {
                             site.setAttribute('selected', 'true');
                         }
                     });
@@ -35,7 +35,7 @@
 {% endblock %}
 
 {% block title %}
-    {% if sortieId == -1 %}
+    {% if sortie.id == -1 %}
         Créer la sortie
     {% else %}
         Modifier la sortie
@@ -44,7 +44,7 @@
 {% block body %}
     <div class="container">
         <div class="row esup">
-            {% if sortieId == -1 %}
+            {% if sortie.id == -1 %}
                 <h2 class="text-center">Créer une sortie</h2>
             {% else %}
                 <h2 class="text-center">Modifier une sortie</h2>
@@ -142,14 +142,18 @@
         </div>
         <div class="row-1 p-3 text-center">
             <button class="btn btn-outline-primary">Enregistrer</button>
-            {% if true %}
-                <button class="btn btn-outline-success">Publier la sortie</button>
+            {% if sortie.publiee == false %}
+                <a class="btn btn-outline-success" role="button" href="{{ path('publiee_sortie', {slug: sortie.id}) }}">Publier
+                    la sortie</a>
+                {% if sortie.id != -1 %}
+                    <a class="btn btn-outline-danger" role="button"
+                       href="{{ path('supprimer_sortie', {slug: sortie.id}) }}">Supprimer la sortie</a>
+                {% endif %}
+            {% else %}
+                <a class="btn btn-outline-danger" role="button" href="{{ path('annuler_sortie', {slug: sortie.id}) }}">Annuler la sortie</a>
             {% endif %}
-            {% if sortieId != -1 %}
-                <a class="btn btn-outline-danger" role="button"
-                   href="{{ path('supprimer_sortie', {id: sortieId}) }}">Supprimer la sortie</a>
-            {% endif %}
-            <a class="btn btn-outline-secondary" role="button" href="{{ path('home_page') }}">Annuler</a>
+
+            <a class="btn btn-outline-secondary" role="button" href="{{ path('home_page') }}">Retour</a>
         </div>
         {{ form_end(sortieForm) }}
     </div>
