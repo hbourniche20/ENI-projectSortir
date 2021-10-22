@@ -17,14 +17,18 @@ class SortieController extends CustomAbstractController
         $sortie = new Sortie($this->getUserBySession());
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
-
-        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
-            return $this->validateDataAndRedirect($sortie);
+        $errors = [];
+        if ($sortieForm->isSubmitted()) {
+            if($sortieForm->isValid()) {
+                return $this->validateDataAndRedirect($sortie);
+            }
+            $errors = $sortieForm->getErrors(true);
         }
 
         return $this->render('sortie/index.html.twig', [
             'controller_name' => 'SortieController',
             'sortieForm' => $sortieForm->createView(),
+            'errors' => $errors,
             'sortieId' => -1,
             'villeId' => -1,
             'lieuId' => -1
@@ -40,14 +44,18 @@ class SortieController extends CustomAbstractController
         }
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
-
-        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
-            return $this->validateDataAndRedirect($sortie);
+        $errors = [];
+        if ($sortieForm->isSubmitted()) {
+            if ($sortieForm->isValid()) {
+                return $this->validateDataAndRedirect($sortie);
+            }
+            $errors = $sortieForm->getErrors(true);
         }
 
         return $this->render('sortie/index.html.twig', [
             'controller_name' => 'SortieController',
             'sortieForm' => $sortieForm->createView(),
+            'errors' => $errors,
             'sortieId' => $id,
             'villeId' => $sortie->getVilleAccueil()->getId(),
             'lieuId' => $sortie->getSite()->getId()

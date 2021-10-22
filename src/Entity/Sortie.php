@@ -6,6 +6,7 @@ use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -20,26 +21,46 @@ class Sortie
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Veuillez donner un nom")
+     * @Assert\Length(min="3", max="50",
+     *     minMessage="Il vous faut au moins 3 caractères pour le nom de la sortie",
+     *     maxMessage="Il vous faut maximum 50 caractères pour le nom de la sortie"
+     * )
      * @ORM\Column(type="string", length=255)
      */
     private $nom;
 
     /**
+     * @Assert\Date()
+     * @Assert\GreaterThan("today")
      * @ORM\Column(type="datetime")
      */
     private $dateSortie;
 
     /**
+     * @Assert\Date()
+     * @Assert\Expression(
+     *     "this.getDateLimiteInscription() < this.getDateSortie()",
+     *     message="La date fin d'inscriptions ne doit pas être supérieur à la date de début de la sortie"
+     * )
      * @ORM\Column(type="date")
      */
     private $dateLimiteInscription;
 
     /**
+     * @Assert\Type(type="integer", message="Veuillez entrer un nombre entier pour les places disponibles")
+     * @Assert\NotBlank(message="Veuillez renseigner le nombre de places disponibles")
+     * @Assert\Range(min="1",
+     *          minMessage="Veuillez mettre au moins une place à votre sortie")
      * @ORM\Column(type="integer")
      */
     private $nbPlaces;
 
     /**
+     * @Assert\Type(type="integer", message="Veuillez entrer un nombre entier")
+     * @Assert\NotBlank(message="Veuillez renseigner la duree de la sortie")
+     * @Assert\Range(min="0",
+     *    minMessage="La durée doit être un nombre positif")
      * @ORM\Column(type="integer")
      */
     private $duree;

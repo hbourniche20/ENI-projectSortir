@@ -107,8 +107,7 @@
             return $this->render('profil/profil_modif.html.twig', [
                 'user' => $user,
                 'userForm' => $form->createView(),
-                'userErrorsForm' => $errors,
-
+                'errors' => $errors // TODO Make $errors array<FormError>()
             ]);
         }
 
