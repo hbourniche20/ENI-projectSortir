@@ -86,7 +86,7 @@ class SortieController extends CustomAbstractController
         return $this->redirectToRoute('home_page');
     }
 
-    #[Route('/ville/{id}', name: 'select_ville')]
+    #[Route('/getSites/{id}', name: 'select_ville')]
     public function selectVille(Request $request, int $id) {
         if ($id != null) {
             $sites = $this->getDoctrine()->getRepository(Site::class)->findByVille($id);

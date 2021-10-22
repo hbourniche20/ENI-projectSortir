@@ -82,7 +82,7 @@ class Site
         return $this->sorties;
     }
 
-    public function addSorty(Sortie $sorty): self
+    public function addSortie(Sortie $sorty): self
     {
         if (!$this->sorties->contains($sorty)) {
             $this->sorties[] = $sorty;
@@ -92,7 +92,7 @@ class Site
         return $this;
     }
 
-    public function removeSorty(Sortie $sorty): self
+    public function removeSortie(Sortie $sorty): self
     {
         if ($this->sorties->removeElement($sorty)) {
             // set the owning side to null (unless already changed)

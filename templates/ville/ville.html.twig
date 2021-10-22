@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Villes{% endblock %}
+
+
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center esup">
+            <h1 class="text-center">Gerer les villes</h1>
+        </div>
+
+
+            <form action="{{ path('search_ville') }}" >
+            <h3>Filtrer les villes</h3>
+            <tr>
+                <td>
+                    <label for="ville_name_search">Le nom de la ville contient :</label>
+                </td>
+                <td>
+                    <input type="text" name="ville_name_search" value="{{ app.request.get('ville_name_search') }}">
+                </td>
+
+                <td>
+                    <input type="submit" class="btn btn-outline-primary"  role="button" value="Rechercher">
+                </td>
+
+            </tr>
+            </form>
+
+    </div>
+    <div class="container esup">
+        <table class="table table-striped caption-top">
+            <thead>
+            <tr class="table-primary">
+                <th>Ville</th>
+                <th>Code postal</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ville in villes %}
+
+                    <form action="{{ path('modifier_ville', {id: ville.id}) }}" >
+                        <tr>
+                        <td><input type="text" name="nomVille" value={{ ville.nom }} ></td>
+                        <td><input type="text" name="cpVille" value={{ ville.codePostal }} ></td>
+
+                        <td>
+                            <input type="submit" class="btn btn-outline-primary" role="button" value="Modifier">
+                            <a class="btn btn-outline-primary" role="button"
+                                href="{{ path('supprimer_ville', {id: ville.id}) }}">Supprimer</a>
+                        </td>
+                </tr>
+                    </form>
+
+            {% endfor %}
+            <form action="{{ path('ajouter_ville') }}" >
+                <td><input type="text" name="newNomVille"></td>
+                <td><input type="text" name="newCpVille"></td>
+                <td>
+                    <input type="submit" class="btn btn-outline-primary" role="button" value="Ajouter">
+                </td>
+            </form>
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
