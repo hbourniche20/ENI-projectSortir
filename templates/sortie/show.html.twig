@@ -5,7 +5,7 @@
 {% block body %}
     <div class="container">
         <div class="row justify-content-center esup">
-            <h1 class="text-center">Afficher une sortie</h1>
+            <h1 class="text-center">{{ sortie.nom }}</h1>
         </div>
         <div class="row justify-content-center esup">
             <div class="col">
@@ -69,10 +69,10 @@
                 </div>
                 <div class="row esup">
                     <div class="col-4">
-                        Lieu :
+                        Lieu (code postal):
                     </div>
                     <div class="col-8">
-                        {{ sortie.villeAccueil.nom }}
+                        {{ sortie.villeAccueil.nom }} ({{ sortie.villeAccueil.codePostal }})
                     </div>
                 </div>
                 <div class="row esup">
@@ -80,12 +80,6 @@
                         Rue :
                     </div>
                     <div class="col-8">{{ sortie.site.rue }}</div>
-                </div>
-                <div class="row esup">
-                    <div class="col-4">
-                        Code postal :
-                    </div>
-                    <div class="col-8">{{ sortie.villeAccueil.codePostal }}</div>
                 </div>
                 <div class="row esup">
                     <div class="col-4">
@@ -98,6 +92,11 @@
                         Longitude :
                     </div>
                     <div class="col-8">A FAIRE !!!</div>
+                </div>
+                <div class="row justify-content-center esup">
+                    <div class="text-center">
+                    <a class="btn btn-info" role="button" href="">S'inscrire</a>
+                    </div>
                 </div>
             </div>
         </div>
