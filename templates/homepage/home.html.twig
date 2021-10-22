@@ -90,20 +90,20 @@
                         {% if sortie.organisateur == app.user %}
                             <a class="btn btn-outline-primary" role="button"
                                href="{{ path('modifier_sortie', {id: sortie.getId }) }}">Modifier</a>
-                        {% endif %}
-
-                        {% if app.user in sortie.getInscrits %}
-                            {% if sortie.getDateSortie|date("d/m/Y H:i") >= "now"|date("d/m/Y H:i","Europe/Paris") %}
-                                <a class="btn btn-outline-danger" role="button"
-                                   href="{{ path('desinscription', {id: sortie.getId }) }}">Se desister</a>
-                            {% endif %}
                         {% else %}
-                            {% if sortie.getDateLimiteInscription|date("d/m/Y")  >= "now"|date("d/m/Y") and sortie.getDateSortie|date("d/m/Y H:i") > "now"|date("d/m/Y H:i","Europe/Paris")  and sortie.getInscrits|length < sortie.getNbPlaces %}
-                                <a class="btn btn-outline-success" role="button"
-                                   href="{{ path('inscription', {id: sortie.getId }) }}">S'inscrire</a>
+
+                            {% if app.user in sortie.getInscrits %}
+                                {% if sortie.getDateSortie|date("d/m/Y H:i") >= "now"|date("d/m/Y H:i","Europe/Paris") %}
+                                    <a class="btn btn-outline-danger" role="button"
+                                        href="{{ path('desinscription', {id: sortie.getId }) }}">Se desister</a>
+                                {% endif %}
+                            {% else %}
+                                {% if sortie.getDateLimiteInscription|date("d/m/Y")  >= "now"|date("d/m/Y") and sortie.getDateSortie|date("d/m/Y H:i") > "now"|date("d/m/Y H:i","Europe/Paris")  and sortie.getInscrits|length < sortie.getNbPlaces %}
+                                    <a class="btn btn-outline-success" role="button"
+                                        href="{{ path('inscription', {id: sortie.getId }) }}">S'inscrire</a>
+                                {% endif %}
                             {% endif %}
                         {% endif %}
-
                     </td>
                 </tr>
             {% endfor %}
