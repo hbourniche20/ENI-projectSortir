@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends CustomAbstractController
 {
-    #[Route(path: '/home', name: 'home_page')]
+    #[Route(path: '', name: 'home_page')]
     public function home(SortieRepository $sortieRepository, VilleRepository $villeRepository, Request $request): response
     {
 
