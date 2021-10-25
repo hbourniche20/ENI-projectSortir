@@ -31,21 +31,21 @@ class Sortie
     private $nom;
 
     /**
-     * @Assert\Date()
+     * @Assert\Type(type="datetime", message="Veuillez entrer une date de sortie valide")
      * @Assert\GreaterThan("today")
      * @ORM\Column(type="datetime")
      */
-    private $dateSortie;
+    private \DateTime $dateSortie;
 
     /**
-     * @Assert\Date()
+     * @Assert\Type(type="datetime", message="Veuillez entrer une date limite d'inscription valide")
      * @Assert\Expression(
      *     "this.getDateLimiteInscription() < this.getDateSortie()",
      *     message="La date fin d'inscriptions ne doit pas être supérieur à la date de début de la sortie"
      * )
      * @ORM\Column(type="date")
      */
-    private $dateLimiteInscription;
+    private \DateTime $dateLimiteInscription;
 
     /**
      * @Assert\Type(type="integer", message="Veuillez entrer un nombre entier pour les places disponibles")
@@ -130,7 +130,7 @@ class Sortie
         return $this->dateSortie;
     }
 
-    public function setDateSortie(\DateTimeInterface $dateSortie): self
+    public function setDateSortie(\DateTime $dateSortie): self
     {
         $this->dateSortie = $dateSortie;
 
@@ -142,7 +142,7 @@ class Sortie
         return $this->dateLimiteInscription;
     }
 
-    public function setDateLimiteInscription(\DateTimeInterface $dateLimiteInscription): self
+    public function setDateLimiteInscription(\DateTime $dateLimiteInscription): self
     {
         $this->dateLimiteInscription = $dateLimiteInscription;
 
