@@ -21,7 +21,6 @@ class HomeController extends CustomAbstractController
     #[Route(path: '', name: 'home_page')]
     public function home(SortieRepository $sortieRepository, VilleRepository $villeRepository, Request $request): response
     {
-
         $sorties = $sortieRepository->findAll();
         $villes = $villeRepository->findAll();
         $sortiesNonArchive = array();
