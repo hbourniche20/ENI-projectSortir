@@ -64,27 +64,27 @@
             {% for sortie in sorties %}
                 {% if sortie.publiee or sortie.organisateur == app.user and sortie.publiee == false %}
                     <tr>
-                        <td>{{ sortie.getNom }}</td>
-                        <td>{{ sortie.getDateSortie|date("d/m/Y H:i") }}</td>
-                        <td>{{ sortie.getDateLimiteInscription|date("d/m/Y") }}</td>
-                        <td class="text-center">{{ sortie.getInscrits|length }}/{{ sortie.getNbPlaces }}</td>
+                        <td>{{ sortie.nom }}</td>
+                        <td>{{ sortie.dateSortie|date("d/m/Y H:i") }}</td>
+                        <td>{{ sortie.dateLimiteInscription|date("d/m/Y") }}</td>
+                        <td class="text-center">{{ sortie.inscrits|length }}/{{ sortie.nbPlaces }}</td>
                         <td>
                             {% if sortie.motifAnnulation is not null %}
                                 <label>Annulé</label>
-                            {% elseif  sortie.getDateSortie|date_modify('+' ~sortie.getDuree  ~ 'min')|date("Y/m/d H:i","Europe/Paris") <= "now"|date("Y/m/d H:i","Europe/Paris") %}
+                            {% elseif  sortie.dateSortie|date_modify('+' ~sortie.duree  ~ 'min')|date("Y/m/d H:i","Europe/Paris") <= "now"|date("Y/m/d H:i","Europe/Paris") %}
                                 <label>Terminé</label>
-                            {% elseif  sortie.getDateSortie|date("Y/m/d H:i","Europe/Paris") <= "now"|date("Y/m/d H:i","Europe/Paris") %}
+                            {% elseif  sortie.dateSortie|date("Y/m/d H:i","Europe/Paris") <= "now"|date("Y/m/d H:i","Europe/Paris") %}
                                 <label>En cours</label>
-                            {% elseif sortie.getDateLimiteInscription|date("Y/m/d","Europe/Paris") < "now"|date("Y/m/d","Europe/Paris") %}
+                            {% elseif sortie.dateLimiteInscription|date("Y/m/d","Europe/Paris") < "now"|date("Y/m/d","Europe/Paris") %}
                                 <label>Fermé</label>
-                            {% elseif sortie.getInscrits|length < sortie.getNbPlaces %}
+                            {% elseif sortie.inscrits|length < sortie.nbPlaces %}
                                 <label>Ouvert</label>
                             {% else %}
                                 <label>Complet</label>
                             {% endif %}
                         </td>
                         <td class="text-center">
-                            {% if app.user in sortie.getInscrits %}
+                            {% if app.user in sortie.inscrits %}
                                 <label>X</label>
                             {% endif %}
                         </td>
@@ -94,28 +94,28 @@
                         <td>
                             {% if sortie.publiee %}
                                 <a class="btn btn-outline-primary" role="button"
-                                   href="{{ path('show_sortie', {slug: sortie.getId }) }}">Afficher</a>
+                                   href="{{ path('show_sortie', {slug: sortie.id }) }}">Afficher</a>
                             {% else %}
                                 <a class="btn btn-outline-success" role="button"
-                                   href="{{ path('publiee_sortie', {slug: sortie.getId }) }}">Publier</a>
+                                   href="{{ path('publiee_sortie', {slug: sortie.id }) }}">Publier</a>
                             {% endif %}
                             {% if sortie.organisateur == app.user %}
                                 {% if sortie.motifAnnulation is empty %}
                                     <a class="btn btn-outline-primary" role="button"
-                                       href="{{ path('modifier_sortie', {id: sortie.getId }) }}">Modifier</a>
+                                       href="{{ path('modifier_sortie', {id: sortie.id }) }}">Modifier</a>
                                     <a class="btn btn-outline-danger" role="button"
                                        href="{{ path('annuler_sortie', {slug: sortie.id }) }}">Annuler</a>
                                 {% endif %}
                             {% else %}
-                                {% if app.user in sortie.getInscrits %}
-                                    {% if sortie.getDateSortie >= "now"|date("Y/m/d H:i","Europe/Paris") %}
+                                {% if app.user in sortie.inscrits %}
+                                    {% if sortie.dateSortie >= "now"|date("Y/m/d H:i","Europe/Paris") %}
                                         <a class="btn btn-outline-danger" role="button"
-                                           href="{{ path('desinscription', {id: sortie.getId }) }}">Se desister</a>
+                                           href="{{ path('desinscription', {id: sortie.id }) }}">Se desister</a>
                                     {% endif %}
                                 {% else %}
-                                    {% if sortie.getDateLimiteInscription  >= "now"|date("Y/m/d","Europe/Paris") and sortie.getDateSortie > "now"|date("Y/m/d H:i","Europe/Paris")  and sortie.getInscrits|length < sortie.getNbPlaces %}
+                                    {% if sortie.dateLimiteInscription  >= "now"|date("Y/m/d","Europe/Paris") and sortie.dateSortie > "now"|date("Y/m/d H:i","Europe/Paris")  and sortie.inscrits|length < sortie.nbPlaces %}
                                         <a class="btn btn-outline-success" role="button"
-                                           href="{{ path('inscription', {id: sortie.getId }) }}">S'inscrire</a>
+                                           href="{{ path('inscription', {id: sortie.id }) }}">S'inscrire</a>
                                     {% endif %}
                                 {% endif %}
                             {% endif %}

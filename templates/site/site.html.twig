@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sites{% endblock %}
+
+
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center esup">
+            <h1 class="text-center">Gerer les sites</h1>
+        </div>
+
+
+        <form action="{{ path('search_site') }}" >
+            <h3>Filtrer les sites</h3>
+            <tr>
+                <td>
+                    <label for="site_name_search">Le nom du site contient :</label>
+                </td>
+                <td>
+                    <input type="text" name="site_name_search" value="{{ app.request.get('site_name_search') }}">
+                </td>
+
+                <td>
+                    <input type="submit" class="btn btn-outline-primary"  role="button" value="Rechercher">
+                </td>
+
+            </tr>
+        </form>
+
+    </div>
+    <div class="container esup">
+        <table class="table table-striped caption-top">
+            <thead>
+            <tr class="table-primary">
+                <th>Ville</th>
+                <th>Site</th>
+                <th>Rue</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for site in sites %}
+
+                <form action="{{ path('modifier_site', {id: site.id}) }}" >
+                    <tr>
+                        <td>
+                            <select name="ville" id="ville-select">
+                            {% for ville in villes %}
+                                <option value="{{ ville.id }}" {% if ville.id ==site.ville.id %} selected {% endif %}>{{ ville.nom }}</option>
+                            {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" name="nomSite" value= "{{ site.nom }}">
+                        </td>
+                        <td>
+                            <input type="text" name="rueSite" value="{{ site.rue }}" >
+                        </td>
+
+                        <td>
+                            <input type="submit" class="btn btn-outline-primary" role="button" value="Modifier">
+                            <a class="btn btn-outline-primary" role="button"
+                               href="{{ path('supprimer_site', {id: site.id}) }}">Supprimer</a>
+                        </td>
+                    </tr>
+                </form>
+
+            {% endfor %}
+            <form action="{{ path('ajouter_site') }}" >
+                <td>
+                    <select name="ville1" id="ville-select">
+                        <option value="" >--Choisir une ville--</option>
+                        {% for ville in villes %}
+                            <option value="{{ ville.id }}" >{{ ville.nom }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td><input type="text" name="newNomSite"></td>
+                <td><input type="text" name="newRueSite"></td>
+                <td>
+                    <input type="submit" class="btn btn-outline-primary" role="button" value="Ajouter">
+                </td>
+            </form>
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

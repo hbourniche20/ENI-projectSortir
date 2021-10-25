@@ -22,19 +22,19 @@ class VilleRepository extends ServiceEntityRepository
     // /**
     //  * @return Ville[] Returns an array of Ville objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findLikeName($value)
     {
         return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('v.nom LIKE :val')
+            ->setParameter('val', '%'.$value.'%')
             ->orderBy('v.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /**
     * @return Ville Returns an Ville object
@@ -45,6 +45,6 @@ class VilleRepository extends ServiceEntityRepository
             ->andWhere('v.nom = :val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
 }
