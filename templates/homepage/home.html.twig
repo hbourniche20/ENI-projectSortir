@@ -4,45 +4,47 @@
 
 {% block body %}
     {# Contenu de la page #}
-    <div class="container">
+
+    {# Formulaire de recherche #}
+    <div class="container esup">
         <h3>Filtrer les sorties</h3>
-        <table>
-            <tr>
-                <td>
-                    <label for="site_liste">Site :</label>
-                </td>
-                <td>
-                    <select id="site_liste" name="site_liste">
-                        <option value="">Veuillez choisir un site</option>
-                        {% for site in sites %}
-                            <option value="{{ site.getId }}">{{ site.getNom }}</option>
-                        {% endfor %}</select>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="sortie_name_search">Le nom de la sortie contient :</label>
-                </td>
-                <td>
-                    <input type="text" id="sortie_name_search" name="sortie_name_search">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="date_debut_search">Entre :</label>
-                </td>
-                <td>
-                    <input type="date" id="sortie_name_search" name="sortie_name_search">
-                </td>
-                <td>
-                    <label for="date_fin_search"> Et :</label>
-                </td>
-                <td>
-                    <input type="date" id="date_fin_search" name="date_fin_search">
-                </td>
-            </tr>
-        </table>
+        {{ form_start(searchForm) }}
+            <table>
+                <tr>
+                    <td>{{ form_label(searchForm.villeId) }}</td>
+                    <td>{{ form_widget(searchForm.villeId) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(searchForm.nameSortie) }}</td>
+                    <td>{{ form_widget(searchForm.nameSortie) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(searchForm.dateDebut) }}</td>
+                    <td>{{ form_widget(searchForm.dateDebut) }}</td>
+                    <td>{{ form_label(searchForm.dateFin) }}</td>
+                    <td>{{ form_widget(searchForm.dateFin) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(searchForm.sortieOrganisateur) }}</td>
+                    <td>{{ form_widget(searchForm.sortieOrganisateur) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(searchForm.sortieInscrit) }}</td>
+                    <td>{{ form_widget(searchForm.sortieInscrit) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(searchForm.sortieNonInscrit) }}</td>
+                    <td>{{ form_widget(searchForm.sortieNonInscrit) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(searchForm.sortiePassees) }}</td>
+                    <td>{{ form_widget(searchForm.sortiePassees) }}</td>
+                </tr>
+            </table>
+        <button class="btn btn-primary" >Rechercher</button>
+        {{ form_end(searchForm) }}
     </div>
+    {# Liste des sorties #}
     <div class="container esup">
         <table class="table table-striped caption-top">
             <caption>Liste des sorties</caption>
