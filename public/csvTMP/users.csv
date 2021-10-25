@@ -1,3 +1,3 @@
-pseudo,email,password,prenom,nom,tel,roles,villeid
-test1,test1@t.fr,pass1,test1,t1,0000000000,["ROLE_USER"],1
-test2,test2@t.fr,pass2,test2,t2,0000000000,["ROLE_ADMIN"],2
+email,pseudo,password,prenom,nom,tel,roles,villeid
+pika@t.fr,Pika,password,pikachu,pokemon,0654585978,["ROLE_GESTION""ROLE_USER"],2
+math@t.fr,Math,password,mathÃ©matique,GÃ©nÃ©ral,0314159265,["ROLE_ADMIN"],3

@@ -30,7 +30,7 @@
                     <td>Ryan</td>
                     <td>Istrateur</td>
                     <td>0696857432</td>
-                    <td>["ROLE_ADMIN"]</td>
+                    <td>["ROLE_ADMIN""ROLE_USER"]</td>
                     <td>1</td>
                 </tr>
                 <tr>
@@ -65,24 +65,29 @@
             </div>
             <div class="col-7">
                 <div class="row justify-content-center">
-                    {% if sucess %}
-                        <h4 style="color: green" class="text-center">Succès du chargement des données :</h4>
-                    {% elseif errors %}
-                        <h4 style="color: red" class="text-center">Erreur(s) lors du chargement des données :</h4>
-                    {% endif %}
+                    <h4 class="text-center">Resultat du chargement des données :</h4>
                 </div>
-                <div class="row-1">
-                    <ul>
-                        {% if sucess %}
-                            {% for win in sucess %}
-                                <li style="color: green">{{ win }}</li>
-                            {% endfor %}
-                        {% elseif errors %}
-                            {% for error in errors %}
-                                <li style="color: red">{{ error }}</li>
-                            {% endfor %}
-                        {% endif %}
-                    </ul>
+                <div class="row">
+                    {% if sucess %}
+                        <div class="col">
+                            <h5 style="color: green">Succès :</h5>
+                            <ul>
+                                {% for win in sucess %}
+                                    <li style="color: green">{{ win }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    {% if errors %}
+                        <div class="col">
+                            <h5 style="color: red">Erreur(s) :</h5>
+                            <ul>
+                                {% for error in errors %}
+                                    <li style="color: red">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
