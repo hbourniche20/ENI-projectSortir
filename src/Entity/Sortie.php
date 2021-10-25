@@ -77,11 +77,22 @@ class Sortie
      */
     private $inscrits;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $publiee;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $motifAnnulation;
+
     public function __construct(User $user)
     {
+        date_default_timezone_set('Europe/Paris');
         $this->inscrits = new ArrayCollection();
-        $this->dateSortie = new \DateTime();
-        $this->dateLimiteInscription = new \DateTime();
+        $this->dateSortie = new \DateTime(date('Y/m/d H:i'));
+        $this->dateLimiteInscription = new \DateTime(date('Y/m/d'));
         $this->organisateur = $user;
         $this->villeOrganisatrice = $user->getVille();
     }
@@ -238,5 +249,29 @@ class Sortie
     public function getNbInscrits(): ?int
     {
      return $this->getInscrits()->count();
+    }
+
+    public function getPubliee(): ?bool
+    {
+        return $this->publiee;
+    }
+
+    public function setPubliee(bool $publiee): self
+    {
+        $this->publiee = $publiee;
+
+        return $this;
+    }
+
+    public function getMotifAnnulation(): ?string
+    {
+        return $this->motifAnnulation;
+    }
+
+    public function setMotifAnnulation(?string $motifAnnulation): self
+    {
+        $this->motifAnnulation = $motifAnnulation;
+
+        return $this;
     }
 }

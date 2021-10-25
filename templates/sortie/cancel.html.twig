@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sortie{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {{ form_start(annuleForm) }}
+        <div class="row justify-content-center esup">
+            <h1 class="text-center">Annulation : "{{ sortie.nom }}"</h1>
+        </div>
+        <div class="row justify-content-center esup" style="color: red">
+            {{ error }}
+        </div>
+        <div class="row justify-content-center esup">
+            <div class="col-2">
+                <div class="row esup">
+                    Nom de la sortie :
+                </div>
+                <div class="row esup">
+                    Date de la sortie :
+                </div>
+                <div class="row esup">
+                    Ville organisatrice :
+                </div>
+                <div class="row esup">
+                    Lieu (code postal) :
+                </div>
+                <div class="row esup">
+                    Motif :
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row esup">
+                    {{ sortie.nom }}
+                </div>
+                <div class="row esup">
+                    {{ sortie.dateSortie|date("d/m/Y", "Europe/Paris") }}
+                </div>
+                <div class="row esup">
+                    {{ sortie.villeOrganisatrice }}
+                </div>
+                <div class="row esup">
+                    {{ sortie.site.rue }} {{ sortie.villeAccueil.codePostal }} {{ sortie.villeAccueil.nom }}
+                </div>
+                <div class="row esup">
+                    {{ form_widget(annuleForm.motif) }}
+                </div>
+            </div>
+        </div>
+        <div class="row-1 text-center esup">
+            <button class="btn btn-outline-primary">Enregistrer</button>
+            <a class="btn btn-outline-primary" role="button"
+               href="{{ path('home_page') }}">Annuler</a>
+        </div>
+        {{ form_end(annuleForm) }}
+    </div>
+{% endblock %}

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Site;
 use App\Entity\Sortie;
 use App\Form\SortieType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,6 +20,8 @@ class SortieController extends CustomAbstractController
         $sortieForm->handleRequest($request);
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+            $sortie->setPubliee(false);
+            $sortie->setMotifAnnulation(null);
             return $this->validateDataAndRedirect($sortie);
         }
 
@@ -48,14 +51,45 @@ class SortieController extends CustomAbstractController
         return $this->render('sortie/index.html.twig', [
             'controller_name' => 'SortieController',
             'sortieForm' => $sortieForm->createView(),
-            'sortieId' => $id,
+            'sortie' => $sortie,
             'villeId' => $sortie->getVilleAccueil()->getId(),
             'lieuId' => $sortie->getSite()->getId()
         ]);
     }
 
-    #[Route('/sortie/remove/{id}', name: 'supprimer_sortie')]
-    public function supprimer(Sortie $sortie): Response {
+    #[Route(path: '/sortie/publiee/{slug}', name: 'publiee_sortie', requirements: ['slug' => '\d+'])]
+    public function publiee(int $slug) : Response{
+        $sortie = $this->getSortieById($slug);
+        $sortie->setPubliee(true);
+        return $this->persistAndRedirect($sortie, 'home_page', null);
+    }
+
+    #[Route(path: '/sortie/annuler/{slug}', name: 'annuler_sortie', requirements: ['slug' => '\d+'])]
+    public function anuller(Request $request, int $slug) : Response{
+        $sortie = $this->getSortieById($slug);
+        $error = '';
+        $form = $this->createFormBuilder()
+            ->add('motif', TextareaType::class, ['label' => 'Motif :'])
+            ->getForm();
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $motif = trim(strip_tags($form->get('motif')->getData()));
+            if(strlen($motif) > 0){
+                $sortie->setMotifAnnulation($motif);
+                return $this->persistAndRedirect($sortie, 'home_page', null);
+            }
+            $error = 'Le motif de l\'annulation ne doit pas être vide';
+        }
+        return $this->render('sortie/cancel.html.twig', [
+            'sortie' => $sortie,
+            'annuleForm' => $form->createView(),
+            'error' => $error,
+        ]);
+    }
+
+    #[Route('/sortie/remove/{slug}', name: 'supprimer_sortie')]
+    public function supprimer(int $slug): Response {
+        $sortie = $this->getSortieById($slug);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($sortie);
         $entityManager->flush();
@@ -65,8 +99,7 @@ class SortieController extends CustomAbstractController
     #[Route('/sortie/inscrire/{id}', name: 'inscription')]
     public function inscrire(Request $request, int $id): Response {
         $user = $this->getUserBySession();
-        $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
-        $sortieInscrit = $sortieRepo->find($id);
+        $sortieInscrit = $this->getSortieById($id);
         $entityManager = $this->getDoctrine()->getManager();
         $sortieInscrit ->addInscrit($user);
         $entityManager->persist($sortieInscrit);
@@ -77,8 +110,7 @@ class SortieController extends CustomAbstractController
     #[Route('/sortie/desister/{id}', name: 'desinscription')]
     public function desister(Request $request, int $id): Response {
         $user = $this->getUserBySession();
-        $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
-        $sortieInscrits = $sortieRepo->find($id);
+        $sortieInscrits = $this->getSortieById($id);
         $entityManager = $this->getDoctrine()->getManager();
         $sortieInscrits ->removeInscrit($user);
         $entityManager->persist($sortieInscrits);
@@ -107,9 +139,24 @@ class SortieController extends CustomAbstractController
     {
         $sortie = $this->getSortieById($slug);
 
+        $idUserQuiCreeLaSortie = $sortie->getOrganisateur()->getId();
+        $idUserConnecte = $this->getUserBySession()->getId();
+        $inscritALaSortie = false;
+
+        foreach($sortie->getInscrits()->getValues() as $inscrit){
+            dump($inscrit->getId());
+            dump($idUserConnecte === $idUserQuiCreeLaSortie);
+            if($inscrit->getId() === $idUserConnecte){
+                $inscritALaSortie = true;
+                break;
+            }
+        }
+
         return $this->render('sortie/show.html.twig', [
             'sortie' => $sortie,
             'inscrits' => $sortie->getInscrits()->getValues(),
+            'inscritALaSortie' => $inscritALaSortie,
+            'idUserConnecte' => $idUserConnecte,
         ]);
     }
 
@@ -121,4 +168,13 @@ class SortieController extends CustomAbstractController
         return $this->redirectToRoute('home_page');
     }
 
+    private function persistAndRedirect(Sortie $sortie, $route, ?array $parametre) : Response {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+        if(!empty($parametre)){
+            return $this->redirectToRoute($route, $parametre);
+        }
+        return $this->redirectToRoute($route);
+    }
 }
