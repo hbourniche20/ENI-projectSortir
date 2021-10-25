@@ -4,45 +4,47 @@
 
 {% block body %}
     {# Contenu de la page #}
+
+    {# Formulaire de recherche #}
     <div class="container">
         <h3>Filtrer les sorties</h3>
-        <table>
-            <tr>
-                <td>
-                    <label for="site_liste">Site :</label>
-                </td>
-                <td>
-                    <select id="site_liste" name="site_liste">
-                        <option value="">Veuillez choisir un site</option>
-                        {% for site in sites %}
-                            <option value="{{ site.getId }}">{{ site.getNom }}</option>
-                        {% endfor %}</select>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="sortie_name_search">Le nom de la sortie contient :</label>
-                </td>
-                <td>
-                    <input type="text" id="sortie_name_search" name="sortie_name_search">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="date_debut_search">Entre :</label>
-                </td>
-                <td>
-                    <input type="date" id="sortie_name_search" name="sortie_name_search">
-                </td>
-                <td>
-                    <label for="date_fin_search"> Et :</label>
-                </td>
-                <td>
-                    <input type="date" id="date_fin_search" name="date_fin_search">
-                </td>
-            </tr>
-        </table>
+        {{ form_start(searchForm) }}
+            <table>
+                <tr>
+                    <td>{{ form_label(searchForm.villeId) }}</td>
+                    <td>{{ form_widget(searchForm.villeId) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(searchForm.nameSortie) }}</td>
+                    <td>{{ form_widget(searchForm.nameSortie) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(searchForm.dateDebut) }}</td>
+                    <td>{{ form_widget(searchForm.dateDebut) }}</td>
+                    <td>{{ form_label(searchForm.dateFin) }}</td>
+                    <td>{{ form_widget(searchForm.dateFin) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(searchForm.sortieOrganisateur) }}</td>
+                    <td>{{ form_widget(searchForm.sortieOrganisateur) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(searchForm.sortieInscrit) }}</td>
+                    <td>{{ form_widget(searchForm.sortieInscrit) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(searchForm.sortieNonInscrit) }}</td>
+                    <td>{{ form_widget(searchForm.sortieNonInscrit) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(searchForm.sortiePassees) }}</td>
+                    <td>{{ form_widget(searchForm.sortiePassees) }}</td>
+                </tr>
+            </table>
+        <button class="btn btn-primary" >Rechercher</button>
+        {{ form_end(searchForm) }}
     </div>
+    {# Liste des sorties #}
     <div class="container esup">
         <table class="table table-striped caption-top">
             <caption>Liste des sorties</caption>
@@ -60,55 +62,68 @@
             </thead>
             <tbody>
             {% for sortie in sorties %}
-                <tr>
-                    <td>{{ sortie.getNom }}</td>
-                    <td>{{ sortie.getDateSortie|date("d/m/Y H:i") }}</td>
-                    <td>{{ sortie.getDateLimiteInscription|date("d/m/Y") }}</td>
-                    <td class="text-center">{{ sortie.getInscrits|length }}/{{ sortie.getNbPlaces }}</td>
-                    <td>
-                        {% if  sortie.getDateSortie|date_modify('+' ~sortie.getDuree  ~ 'min')|date("d/m/Y H:i") <= "now"|date("d/m/Y H:i","Europe/Paris") %}
-                            <label>Terminé</label>
-                        {% elseif  sortie.getDateSortie|date("d/m/Y H:i") <= "now"|date("d/m/Y H:i","Europe/Paris") %}
-                            <label>En cours</label>
-                        {% elseif sortie.getDateLimiteInscription|date("d/m/Y") < "now"|date("d/m/Y") %}
-                            <label>Fermé</label>
-                        {% elseif sortie.getInscrits|length < sortie.getNbPlaces %}
-                            <label>Ouvert</label>
-                        {% else %}
-                            <label>Complet</label>
-                        {% endif %}
-                    </td>
-                    <td class="text-center">
-                        {% if app.user in sortie.getInscrits %}
-                            <label>X</label>
-                        {% endif %}
-                    </td>
-                    <td><a href="{{ path('profil_id', {slug: sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo}}</a></td>
-                    <td>
-                        <a class="btn btn-outline-primary" role="button"
-                           href="{{ path('show_sortie', {slug: sortie.getId }) }}">Afficher</a>
-                        {% if sortie.organisateur == app.user %}
-                            <a class="btn btn-outline-primary" role="button"
-                               href="{{ path('modifier_sortie', {id: sortie.getId }) }}">Modifier</a>
-                        {% else %}
-
+                {% if sortie.publiee or sortie.organisateur == app.user and sortie.publiee == false %}
+                    <tr>
+                        <td>{{ sortie.getNom }}</td>
+                        <td>{{ sortie.getDateSortie|date("d/m/Y H:i") }}</td>
+                        <td>{{ sortie.getDateLimiteInscription|date("d/m/Y") }}</td>
+                        <td class="text-center">{{ sortie.getInscrits|length }}/{{ sortie.getNbPlaces }}</td>
+                        <td>
+                            {% if sortie.motifAnnulation is not null %}
+                                <label>Annulé</label>
+                            {% elseif  sortie.getDateSortie|date_modify('+' ~sortie.getDuree  ~ 'min')|date("Y/m/d H:i","Europe/Paris") <= "now"|date("Y/m/d H:i","Europe/Paris") %}
+                                <label>Terminé</label>
+                            {% elseif  sortie.getDateSortie|date("Y/m/d H:i","Europe/Paris") <= "now"|date("Y/m/d H:i","Europe/Paris") %}
+                                <label>En cours</label>
+                            {% elseif sortie.getDateLimiteInscription|date("Y/m/d","Europe/Paris") < "now"|date("Y/m/d","Europe/Paris") %}
+                                <label>Fermé</label>
+                            {% elseif sortie.getInscrits|length < sortie.getNbPlaces %}
+                                <label>Ouvert</label>
+                            {% else %}
+                                <label>Complet</label>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
                             {% if app.user in sortie.getInscrits %}
-                                {% if sortie.getDateSortie|date("d/m/Y H:i") >= "now"|date("d/m/Y H:i","Europe/Paris") %}
+                                <label>X</label>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ path('profil_id', {slug: sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo }}</a>
+                        </td>
+                        <td>
+                            {% if sortie.publiee %}
+                                <a class="btn btn-outline-primary" role="button"
+                                   href="{{ path('show_sortie', {slug: sortie.getId }) }}">Afficher</a>
+                            {% else %}
+                                <a class="btn btn-outline-success" role="button"
+                                   href="{{ path('publiee_sortie', {slug: sortie.getId }) }}">Publier</a>
+                            {% endif %}
+                            {% if sortie.organisateur == app.user %}
+                                {% if sortie.motifAnnulation is empty %}
+                                    <a class="btn btn-outline-primary" role="button"
+                                       href="{{ path('modifier_sortie', {id: sortie.getId }) }}">Modifier</a>
                                     <a class="btn btn-outline-danger" role="button"
-                                        href="{{ path('desinscription', {id: sortie.getId }) }}">Se desister</a>
+                                       href="{{ path('annuler_sortie', {slug: sortie.id }) }}">Annuler</a>
                                 {% endif %}
                             {% else %}
-                                {% if sortie.getDateLimiteInscription|date("d/m/Y")  >= "now"|date("d/m/Y") and sortie.getDateSortie|date("d/m/Y H:i") > "now"|date("d/m/Y H:i","Europe/Paris")  and sortie.getInscrits|length < sortie.getNbPlaces %}
-                                    <a class="btn btn-outline-success" role="button"
-                                        href="{{ path('inscription', {id: sortie.getId }) }}">S'inscrire</a>
+                                {% if app.user in sortie.getInscrits %}
+                                    {% if sortie.getDateSortie >= "now"|date("Y/m/d H:i","Europe/Paris") %}
+                                        <a class="btn btn-outline-danger" role="button"
+                                           href="{{ path('desinscription', {id: sortie.getId }) }}">Se desister</a>
+                                    {% endif %}
+                                {% else %}
+                                    {% if sortie.getDateLimiteInscription  >= "now"|date("Y/m/d","Europe/Paris") and sortie.getDateSortie > "now"|date("Y/m/d H:i","Europe/Paris")  and sortie.getInscrits|length < sortie.getNbPlaces %}
+                                        <a class="btn btn-outline-success" role="button"
+                                           href="{{ path('inscription', {id: sortie.getId }) }}">S'inscrire</a>
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
-                        {% endif %}
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                {% endif %}
             {% endfor %}
             </tbody>
         </table>
     </div>
-
 {% endblock %}

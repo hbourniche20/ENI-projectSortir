@@ -13,15 +13,15 @@
     class ProfilController extends CustomAbstractController {
 
         #[Route('/profil', name: 'profil')]
-        public function index() : Response {
+        public function index(): Response {
             return $this->profil($this->getUserBySession()->getId());
         }
 
         #[Route(path: '/profil/{slug}', name: 'profil_id', requirements: ['slug' => '\d+'])]
-        public function profil(int $slug) : Response {
+        public function profil(int $slug): Response {
             $modifie = ($this->getUserBySession()->getId() == $slug);
             $user = $this->getUserById($slug);
-            if(is_null($user)){
+            if (is_null($user)) {
                 return $this->index();
             }
             return $this->render('profil/index.html.twig', [
@@ -53,26 +53,24 @@
                     }
                 }
                 // Check photo errors
-                if ($photo != null) {
-                    $photoExtension = $photo->guessExtension();
-
-                    //vérifie les données
+                if ($photo) {
                     // Vérification de l'extension de la photo
+                    $photoExtension = $photo->guessExtension();
                     if($photoExtension !== 'jpg' && $photoExtension !== 'jpeg' && $photoExtension !== 'png' && $photoExtension !== 'gif'){
                         array_push($errors,  new FormError('Le format de l\'image est invalide. Utiliser .jpg, .jpeg, .png ou .gif'));
                     }
 
                     // Vérification de la taille de la photo
                     list($width, $height) = getimagesize($photo);
-                    if($width > 1920 || $height > 1080){
+                    if ($width > 1920 || $height > 1080){
                         array_push($errors, new FormError('La dimension de l\'image ne doit pas être supérieur à 1920x1080'));
                     }
                 }
                 if (empty($errors)) {
                     $entityManager = $this->getDoctrine()->getManager();
-                    // verification de si une photo existe
 
-                    if ($photo != null) {
+                    // verification de si une photo existe
+                    if ($photo) {
                         // on gère la photo :
                         $fichier = $user->getPseudo() . '.' . $photoExtension;
                         //copie de l'image
@@ -80,9 +78,8 @@
                             $this->getParameter('images_directory'),
                             $fichier
                         );
-
                         // On stock l'image en bdd si elle n'existe pas
-                        if(is_null($user->getImage())){
+                        if (is_null($user->getImage())) {
                             $img = new Image();
                             $img->setName($fichier);
                             $user->setImage($img);
@@ -101,7 +98,7 @@
             return $this->render('profil/profil_modif.html.twig', [
                 'user' => $user,
                 'userForm' => $form->createView(),
-                'errors' => $errors // TODO Make $errors array<FormError>()
+                'errors' => $errors
             ]);
         }
 
