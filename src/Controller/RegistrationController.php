@@ -18,26 +18,32 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasherInterface->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-            $user->setRoles(["ROLE_USER"]);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-            // do anything else you need here, like send an email
-
-            return $this->redirectToRoute('app_login');
+        $errors = [];
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->persistData($userPasswordHasherInterface, $user, $form);
+                return $this->redirectToRoute('app_login');
+            }
+            $errors = $form->getErrors(true);
         }
 
         return $this->render('registration/register.html.twig', [
             'registerForm' => $form->createView(),
+            'errors' => $errors
         ]);
+    }
+
+    private function persistData(UserPasswordHasherInterface $userPasswordHasherInterface, $user, $form) {
+        // encode the plain password
+        $user->setPassword(
+            $userPasswordHasherInterface->hashPassword(
+                $user,
+                $form->get('password')->getData()
+            )
+        );
+        $user->setRoles(["ROLE_USER"]);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
     }
 }

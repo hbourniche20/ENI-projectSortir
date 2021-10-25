@@ -23,24 +23,12 @@ class UserFormType extends AbstractType
         $builder
             ->add('email')
             //->add('roles')
-            ->add('plainPassword', PasswordType::class, [
+            ->add('password', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
+                'attr' => ['autocomplete' => 'new-password']
             ])
-            ->add('confirmation', PasswordType::class, ['mapped' => false])
             ->add('pseudo')
             ->add('prenom', TextType::class, ['label' => 'Prénom'])
             ->add('nom')

@@ -8,11 +8,12 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"email"}, message="L'email '{{ value }}' est déjà utilisé")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -24,6 +25,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
+     * @Assert\NotBlank(message="L'email est obligatoire")
+     * @Assert\Regex(
+     *     pattern="/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/",
+     *     match=true,
+     *     message="L'email doit correspondre au format 'example@email.com'"
+     * )
+     *
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
@@ -34,27 +42,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $roles = [];
 
     /**
+     * @Assert\NotBlank(message="Le mot de passe est obligatoire")
+     * @Assert\Length(min="6", max="42",
+     *     minMessage="Votre mot de passe doit faire 6 caractères minimum",
+     *     maxMessage="Votre mot de passe doit faire 42 caractères maximum")
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
     private $password;
 
     /**
+     * @Assert\NotBlank(message="Le pseudo est obligatoire")
      * @ORM\Column(type="string", length=255)
      */
     private $pseudo;
 
     /**
+     * @Assert\NotBlank(message="Votre prenom est obligatoire")
      * @ORM\Column(type="string", length=255)
      */
     private $prenom;
 
     /**
+     * @Assert\NotBlank(message="Votre nom est obligatoire")
      * @ORM\Column(type="string", length=255)
      */
     private $nom;
 
     /**
+     * @Assert\NotBlank(message="Le numéro de téléphone est obligatoire")
+     * @Assert\Regex(
+     *     pattern="/^(0|\+33)+[1-9]+( *[0-9]{2}){4}$/",
+     *     match=true,
+     *     message="Le numéro de téléphone doit correspondre au format '0602030405'"
+     * )
      * @ORM\Column(type="string", length=255)
      */
     private $tel;

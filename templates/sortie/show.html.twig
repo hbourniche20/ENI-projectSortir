@@ -5,7 +5,7 @@
 {% block body %}
     <div class="container">
         <div class="row justify-content-center esup">
-            <h1 class="text-center">Afficher une sortie</h1>
+            <h1 class="text-center">{{ sortie.nom }}</h1>
         </div>
         <div class="row justify-content-center esup">
             <div class="col">
@@ -69,10 +69,10 @@
                 </div>
                 <div class="row esup">
                     <div class="col-4">
-                        Lieu :
+                        Lieu (code postal):
                     </div>
                     <div class="col-8">
-                        {{ sortie.villeAccueil.nom }}
+                        {{ sortie.villeAccueil.nom }} ({{ sortie.villeAccueil.codePostal }})
                     </div>
                 </div>
                 <div class="row esup">
@@ -80,12 +80,6 @@
                         Rue :
                     </div>
                     <div class="col-8">{{ sortie.site.rue }}</div>
-                </div>
-                <div class="row esup">
-                    <div class="col-4">
-                        Code postal :
-                    </div>
-                    <div class="col-8">{{ sortie.villeAccueil.codePostal }}</div>
                 </div>
                 <div class="row esup">
                     <div class="col-4">
@@ -99,27 +93,58 @@
                     </div>
                     <div class="col-8">A FAIRE !!!</div>
                 </div>
+                <div class="row-1 esup">
+                    {% if sortie.motifAnnulation is empty %}
+                        {% if idUserConnecte == sortie.organisateur.id and sortie.publiee == false %}
+                            <a class="btn btn-outline-danger" role="button"
+                               href="{{ path('supprimer_sortie', {slug: sortie.id}) }}">Supprimer la sortie</a>
+                        {% elseif idUserConnecte == sortie.organisateur.id %}
+                            <a class="btn btn-outline-danger" role="button"
+                               href="{{ path('annuler_sortie', {slug: sortie.id}) }}">Annuler la sortie</a>
+                        {% endif %}
+                        {% if idUserConnecte != sortie.organisateur.id %}
+                            {% if inscritALaSortie %}
+                                <a class="btn btn-outline-danger" role="button"
+                                   href="{{ path('desinscription', {id: sortie.id }) }}">Se desister</a>
+
+                            {% else %}
+                                <a class="btn btn-outline-success" role="button"
+                                   href="{{ path('inscription', {id: sortie.id }) }}">S'inscrire</a>
+                            {% endif %}
+                        {% else %}
+                            <a class="btn btn-outline-primary" role="button"
+                               href="{{ path('modifier_sortie', {id: sortie.getId }) }}">Modifier</a>
+                        {% endif %}
+                    {% else %}
+                        <div class="row" style="color: red">
+                            <div class="col-4">MOTIF DE L'ANNULATION :</div>
+                            <div class="col">{{ sortie.motifAnnulation }}</div>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
         <div class="row justify-content-start esup">
             <div class="col-4">
-            <table class="table table-striped caption-top">
-                <caption>Liste des inscrits à la sortie</caption>
-                <thead>
-                <tr class="table-primary">
-                    <th class="text-center">Pseudo</th>
-                    <th class="text-center">Prénom NOM</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for inscrit in inscrits %}
-                    <tr>
-                        <td class="text-center"><a href="{{ path('profil_id', {slug: inscrit.id}) }}">{{ inscrit.pseudo }}</a></td>
-                        <td class="text-center">{{ inscrit.prenom }} {{ inscrit.nom|upper }}</td>
+                <table class="table table-striped caption-top">
+                    <caption>Liste des inscrits à la sortie</caption>
+                    <thead>
+                    <tr class="table-primary">
+                        <th class="text-center">Pseudo</th>
+                        <th class="text-center">Prénom NOM</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {% for inscrit in inscrits %}
+                        <tr>
+                            <td class="text-center">
+                                <a href="{{ path('profil_id', {slug: inscrit.id}) }}">{{ inscrit.pseudo }}</a>
+                            </td>
+                            <td class="text-center">{{ inscrit.prenom }} {{ inscrit.nom|upper }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
