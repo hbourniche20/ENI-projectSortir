@@ -45,6 +45,6 @@ class VilleRepository extends ServiceEntityRepository
             ->andWhere('v.nom = :val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
 }

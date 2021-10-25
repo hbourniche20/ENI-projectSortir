@@ -40,7 +40,7 @@
             if ($form->isSubmitted() && $form->isValid()) {
                 $email = trim(strip_tags($form->get('email')->getData()));
                 $confirmation = trim(strip_tags($form->get('confirmation')->getData()));
-                $password = trim(strip_tags($form->get('password')->getData()));
+                $password = trim(strip_tags($form->get('plainPassword')->getData()));
                 $photo = $form->get('photo')->getData();
                 $photoExtension = $photo->guessExtension();
 

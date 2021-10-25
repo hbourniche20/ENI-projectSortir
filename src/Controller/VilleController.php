@@ -38,10 +38,8 @@ class VilleController extends AbstractController
         $ville->setNom($name);
         $ville->setCodePostal($CP);
         $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->add($ville);
         $entityManager->persist($ville);
         $entityManager->flush();
-
         return $this->redirectToRoute('ville');
     }
 
