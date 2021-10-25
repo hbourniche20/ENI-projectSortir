@@ -7,19 +7,7 @@
         <div class="row justify-content-center esup">
             <h1 class="text-center">Mon profil</h1>
         </div>
-        <div class="row justify-content-center esup">
-            <div class="col-3"></div>
-            <div class="col-6">
-                {% if userErrorsForm is not empty %}
-                    <h3 style="color: red;">Erreur(s) : </h3>
-                    <p style="color: red;">
-                        {% for userError in userErrorsForm %}
-                            {{ userError }} <br>
-                        {% endfor %}
-                    </p>
-                {% endif %}
-            </div>
-        </div>
+        {% include '/errors.html.twig' %}
         <div class="row justify-content-center esup">
             <div class="col-3">
                 {% if user.image is null %}
@@ -80,19 +68,10 @@
 
                 <div class="row esup">
                     <div class="col">
-                        {{ form_label(userForm.plainPassword, 'Password') }}
+                        {{ form_label(userForm.password, 'Mot de passe') }}
                     </div>
                     <div class="col">
-                        {{ form_widget(userForm.plainPassword) }}
-                    </div>
-                </div>
-
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(userForm.confirmation) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(userForm.confirmation) }}
+                        {{ form_widget(userForm.password) }}
                     </div>
                 </div>
 

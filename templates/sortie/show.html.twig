@@ -137,8 +137,9 @@
                     <tbody>
                     {% for inscrit in inscrits %}
                         <tr>
-                            <td class="text-center"><a
-                                        href="{{ path('profil_id', {slug: inscrit.id}) }}">{{ inscrit.pseudo }}</a></td>
+                            <td class="text-center">
+                                <a href="{{ path('profil_id', {slug: inscrit.id}) }}">{{ inscrit.pseudo }}</a>
+                            </td>
                             <td class="text-center">{{ inscrit.prenom }} {{ inscrit.nom|upper }}</td>
                         </tr>
                     {% endfor %}

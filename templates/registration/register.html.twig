@@ -7,7 +7,7 @@
         <div class="text-center">
             <h1>S'inscrire</h1>
         </div>
-
+        {% include 'errors.html.twig' %}
         <div class="row justify-content-center esup">
             <div class="col-5">
         {{ form_start(registerForm) }}
@@ -19,22 +19,16 @@
                         {{ form_widget(registerForm.email) }}
                     </div>
                 </div>
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(registerForm.plainPassword, 'Password' )}}
+                {% for passwordField in registerForm.password %}
+                    <div class="row esup">
+                        <div class="col">
+                            {{ form_label(passwordField) }}
+                        </div>
+                        <div class="col">
+                            {{ form_widget(passwordField) }}
+                        </div>
                     </div>
-                    <div class="col">
-                        {{ form_widget(registerForm.plainPassword) }}
-                    </div>
-                </div>
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(registerForm.confirmation) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(registerForm.confirmation) }}
-                    </div>
-                </div>
+                {% endfor %}
                 <div class="row esup">
                     <div class="col">
                         {{ form_label(registerForm.pseudo) }}

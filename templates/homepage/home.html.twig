@@ -6,7 +6,7 @@
     {# Contenu de la page #}
 
     {# Formulaire de recherche #}
-    <div class="container esup">
+    <div class="container">
         <h3>Filtrer les sorties</h3>
         {{ form_start(searchForm) }}
             <table>
@@ -103,7 +103,7 @@
                                 {% if sortie.motifAnnulation is empty %}
                                     <a class="btn btn-outline-primary" role="button"
                                        href="{{ path('modifier_sortie', {id: sortie.getId }) }}">Modifier</a>
-                                    <a class="btn btn-outline-primary" role="button"
+                                    <a class="btn btn-outline-danger" role="button"
                                        href="{{ path('annuler_sortie', {slug: sortie.id }) }}">Annuler</a>
                                 {% endif %}
                             {% else %}

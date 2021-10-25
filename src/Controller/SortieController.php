@@ -11,50 +11,60 @@
     use Symfony\Component\HttpFoundation\Response;
     use Symfony\Component\Routing\Annotation\Route;
 
-    class SortieController extends CustomAbstractController {
-        #[Route('/sortie/create', name: 'creer_sortie')]
-        public function create(Request $request): Response {
-            $sortie = new Sortie($this->getUserBySession());
-            $sortieForm = $this->createForm(SortieType::class, $sortie);
-            $sortieForm->handleRequest($request);
-
-            if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+class SortieController extends CustomAbstractController {
+    #[Route('/sortie/create', name: 'creer_sortie')]
+    public function create(Request $request): Response
+    {
+        $sortie = new Sortie($this->getUserBySession());
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
+        $sortieForm->handleRequest($request);
+        $errors = [];
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+            if($sortieForm->isValid()) {
                 $sortie->setPubliee($request->get('button') === 'publier');
                 $sortie->setMotifAnnulation(null);
                 return $this->validateDataAndRedirect($sortie);
             }
-
-            $sortie->setVilleAccueil(new Ville());
-            $sortie->setSite(new Site());
-
-            return $this->render('sortie/index.html.twig', [
-                'controller_name' => 'SortieController',
-                'sortieForm' => $sortieForm->createView(),
-                'sortie' => $sortie,
-            ]);
+            $errors = $sortieForm->getErrors(true);
         }
+        $sortie->setVilleAccueil(new Ville());
+        $sortie->setSite(new Site());
 
-        #[Route('/sortie/{id}', name: 'modifier_sortie')]
-        public function edit(Request $request, int $id): Response {
-            $sortie = $this->getSortieById($id);
-            if ($sortie == null) {
-                return $this->redirectToRoute('home_page');
-            }
-            $sortieForm = $this->createForm(SortieType::class, $sortie);
-            $sortieForm->handleRequest($request);
+        return $this->render('sortie/index.html.twig', [
+            'controller_name' => 'SortieController',
+            'sortieForm' => $sortieForm->createView(),
+            'errors' => $errors,
+            'sortie' => $sortie,
+//            'villeId' => -1,
+//            'lieuId' => -1
+        ]);
+    }
 
-            if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+    #[Route('/sortie/{id}', name: 'modifier_sortie')]
+    public function edit(Request $request, int $id): Response {
+        $sortie = $this->getSortieById($id);
+        if ($sortie == null) {
+            return $this->redirectToRoute('home_page');
+        }
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
+        $sortieForm->handleRequest($request);
+        $errors = [];
+        if ($sortieForm->isSubmitted()) {
+            if ($sortieForm->isValid()) {
                 return $this->validateDataAndRedirect($sortie);
             }
-
-            return $this->render('sortie/index.html.twig', [
-                'controller_name' => 'SortieController',
-                'sortieForm' => $sortieForm->createView(),
-                'sortie' => $sortie,
-                'villeId' => $sortie->getVilleAccueil()->getId(),
-                'lieuId' => $sortie->getSite()->getId()
-            ]);
+            $errors = $sortieForm->getErrors(true);
         }
+
+        return $this->render('sortie/index.html.twig', [
+            'controller_name' => 'SortieController',
+            'sortieForm' => $sortieForm->createView(),
+            'errors' => $errors,
+            'sortie' => $sortie,
+            'villeId' => $sortie->getVilleAccueil()->getId(),
+            'lieuId' => $sortie->getSite()->getId()
+        ]);
+    }
 
         #[Route(path: '/sortie/publiee/{slug}', name: 'publiee_sortie')]
         public function publiee(int $slug): Response {
