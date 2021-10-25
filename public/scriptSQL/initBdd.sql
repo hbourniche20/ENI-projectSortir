@@ -1,26 +1,26 @@
 -- Quelques données pour la db
 
 -- Init villes
-insert into ville(nom, code_postal) values('Nantes', 44000);
-insert into ville(nom, code_postal) values('Rennes', 35000);
-insert into ville(nom, code_postal) values('Vitré', 35500);
-insert into ville(nom, code_postal) values('Nort-sur-Erdre', 44390);
-insert into ville(nom, code_postal) values('Saint-Nazaire', 44600);
-insert into ville(nom, code_postal) values('Vitry-le-François', 51300);
+insert into ville(id,nom, code_postal) values(1,'Nantes', 44000);
+insert into ville(id,nom, code_postal) values(2,'Rennes', 35000);
+insert into ville(id,nom, code_postal) values(3,'Vitré', 35500);
+insert into ville(id,nom, code_postal) values(4,'Nort-sur-Erdre', 44390);
+insert into ville(id,nom, code_postal) values(5,'Saint-Nazaire', 44600);
+insert into ville(id,nom, code_postal) values(6,'Vitry-le-François', 51300);
 
 -- Init Sites
-insert into site(ville_id, nom, rue) values(1, 'Café des plantes', '24 Bd Stalingrad');
-insert into site(ville_id, nom, rue) values(1, 'Crêperie du Vieux Quimper', '10 Rue de la Baclerie');
-insert into site(ville_id, nom, rue) values(1, 'FNAC', 'Pl. du Commerce');
-insert into site(ville_id, nom, rue) values(2, 'Institut Mirabelle', '24 Rue Poullain Duparc');
-insert into site(ville_id, nom, rue) values(2, 'Restaurant BèJe', '2 Bd de la Tour d''Auvergne');
-insert into site(ville_id, nom, rue) values(2, 'Hôtel de Police', '22 Bd de la Tour d''Auvergne');
-insert into site(ville_id, nom, rue) values(3, 'La Taverne Vitré Table de Caractère', '9 Pl. du Général de Gaulle');
-insert into site(ville_id, nom, rue) values(3, 'Etrier Vitréen', '2 All. des Cavaliers');
-insert into site(ville_id, nom, rue) values(4, 'Chez vapo', '19 Rue du Général Leclerc');
-insert into site(ville_id, nom, rue) values(4, 'Le Bretagne Restaurant LORIN', '41 Rue Aristide Briand');
-insert into site(ville_id, nom, rue) values(6, 'Le Kiosque à Pizzas', '37 Fbg Léon Bourgeois');
-insert into site(ville_id, nom, rue) values(6, 'McDonalds', 'Rn Avenue Du Génral De Gaulle');
+insert into site(id,ville_id, nom, rue) values(1,1, 'Café des plantes', '24 Bd Stalingrad');
+insert into site(id,ville_id, nom, rue) values(2,1, 'Crêperie du Vieux Quimper', '10 Rue de la Baclerie');
+insert into site(id,ville_id, nom, rue) values(3,1, 'FNAC', 'Pl. du Commerce');
+insert into site(id,ville_id, nom, rue) values(4,2, 'Institut Mirabelle', '24 Rue Poullain Duparc');
+insert into site(id,ville_id, nom, rue) values(5,2, 'Restaurant BèJe', '2 Bd de la Tour d''Auvergne');
+insert into site(id,ville_id, nom, rue) values(6,2, 'Hôtel de Police', '22 Bd de la Tour d''Auvergne');
+insert into site(id,ville_id, nom, rue) values(7,3, 'La Taverne Vitré Table de Caractère', '9 Pl. du Général de Gaulle');
+insert into site(id,ville_id, nom, rue) values(8,3, 'Etrier Vitréen', '2 All. des Cavaliers');
+insert into site(id,ville_id, nom, rue) values(9,4, 'Chez vapo', '19 Rue du Général Leclerc');
+insert into site(id,ville_id, nom, rue) values(10,4, 'Le Bretagne Restaurant LORIN', '41 Rue Aristide Briand');
+insert into site(id,ville_id, nom, rue) values(11,6, 'Le Kiosque à Pizzas', '37 Fbg Léon Bourgeois');
+insert into site(id,ville_id, nom, rue) values(12,6, 'McDonalds', 'Rn Avenue Du Génral De Gaulle');
 
 -- Init User password pour tous les utilisateurs est "password"
 INSERT INTO user(id, ville_id, email, pseudo, prenom, nom, tel, roles, password) VALUES (0, 1, 'email@inconnu.inc', 'Inconnu', 'Inconnu','Inconnu','0000000000','[]','');
