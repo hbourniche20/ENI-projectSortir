@@ -48,7 +48,7 @@ class Ville
     {
         $this->sites = new ArrayCollection();
         $this->sorties = new ArrayCollection();
-        $this->sortiesOrganisee = new ArrayCollection();
+        $this->sortiesOrganisees = new ArrayCollection();
     }
 
     public function __toString(): string {

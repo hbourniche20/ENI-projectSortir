@@ -71,7 +71,7 @@ class Sortie
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="sortiesOrganisee")
+     * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="sortiesOrganisees")
      * @ORM\JoinColumn(nullable=false)
      */
     private $villeOrganisatrice;
