@@ -69,10 +69,10 @@
                 </div>
                 <div class="row esup">
                     <div class="col-4">
-                        Lieu (code postal):
+                        Lieu:
                     </div>
                     <div class="col-8">
-                        {{ sortie.villeAccueil.nom }} ({{ sortie.villeAccueil.codePostal }})
+                        {{ sortie.site.nom }}
                     </div>
                 </div>
                 <div class="row esup">
@@ -80,6 +80,14 @@
                         Rue :
                     </div>
                     <div class="col-8">{{ sortie.site.rue }}</div>
+                </div>
+                <div class="row esup">
+                    <div class="col-4">
+                        Ville:
+                    </div>
+                    <div class="col-8">
+                        {{ sortie.villeAccueil.nom }} ({{ sortie.villeAccueil.codePostal }})
+                    </div>
                 </div>
                 <div class="row esup">
                     <div class="col-4">
