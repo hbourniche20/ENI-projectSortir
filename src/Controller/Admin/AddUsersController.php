@@ -113,6 +113,10 @@
                     } else {
                         array_push($errors, "Aucun utilisateur n'a été créé");
                     }
+
+                    if(file_exists($file)){
+                        unlink($file);
+                    }
                 }
             }
             return $this->render('admin/add_users/index.html.twig', [
