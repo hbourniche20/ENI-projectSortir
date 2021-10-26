@@ -35,8 +35,6 @@ class SortieController extends CustomAbstractController {
             'sortieForm' => $sortieForm->createView(),
             'errors' => $errors,
             'sortie' => $sortie,
-//            'villeId' => -1,
-//            'lieuId' => -1
         ]);
     }
 
@@ -140,8 +138,9 @@ class SortieController extends CustomAbstractController {
 
         #[Route(path: '/sortie/show/{id}', name: 'show_sortie', requirements: ['id' => '\d+'])]
         public function afficher(Sortie $sortie): Response {
+            $user = $this->getUserBySession();
             $idUserQuiCreeLaSortie = $sortie->getOrganisateur()->getId();
-            $idUserConnecte = $this->getUserBySession()->getId();
+            $idUserConnecte = $user->getId();
             $inscritALaSortie = false;
 
             foreach ($sortie->getInscrits()->getValues() as $inscrit) {
@@ -156,6 +155,7 @@ class SortieController extends CustomAbstractController {
                 'inscrits' => $sortie->getInscrits()->getValues(),
                 'inscritALaSortie' => $inscritALaSortie,
                 'idUserConnecte' => $idUserConnecte,
+                'isAdmin' => $this->isAdmin($user),
             ]);
         }
 
