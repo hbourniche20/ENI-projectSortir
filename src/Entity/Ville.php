@@ -52,7 +52,7 @@ class Ville
     }
 
     public function __toString(): string {
-        return $this->getNom();
+        return $this->getNom() . ' (' . $this->getCodePostal() . ')';
     }
 
     public function getId(): ?int
@@ -156,7 +156,7 @@ class Ville
     {
         if (!$this->sorties->contains($sortie)) {
             $this->sorties[] = $sortie;
-            $sortie->setVilleAcceuil($this);
+            $sortie->setVilleAccueil($this);
         }
 
         return $this;
@@ -166,8 +166,8 @@ class Ville
     {
         if ($this->sorties->removeElement($sortie)) {
             // set the owning side to null (unless already changed)
-            if ($sortie->getVilleAcceuil() === $this) {
-                $sortie->setVilleAcceuil(null);
+            if ($sortie->getVilleAccueil() === $this) {
+                $sortie->setVilleAccueil(null);
             }
         }
 

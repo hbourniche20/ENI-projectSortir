@@ -57,17 +57,17 @@
         {{ form_start(sortieForm) }}
         <div class="row justify-content-center">
             <div class="col-4">
-                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.nom } %}
-                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.dateSortie } %}
-                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.dateLimiteInscription } %}
-                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.nbPlaces } %}
-                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.duree } %}
-                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.description } %}
+                {% include 'rowForm.html.twig' with { 'form': sortieForm.nom } %}
+                {% include 'rowForm.html.twig' with { 'form': sortieForm.dateSortie } %}
+                {% include 'rowForm.html.twig' with { 'form': sortieForm.dateLimiteInscription } %}
+                {% include 'rowForm.html.twig' with { 'form': sortieForm.nbPlaces } %}
+                {% include 'rowForm.html.twig' with { 'form': sortieForm.duree } %}
+                {% include 'rowForm.html.twig' with { 'form': sortieForm.description } %}
             </div>
             <div class="col-4">
-                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.villeOrganisatrice } %}
-                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.villeAccueil } %}
-                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.site } %}
+                {% include 'rowForm.html.twig' with { 'form': sortieForm.villeOrganisatrice } %}
+                {% include 'rowForm.html.twig' with { 'form': sortieForm.villeAccueil } %}
+                {% include 'rowForm.html.twig' with { 'form': sortieForm.site } %}
             </div>
         </div>
         <div class="row-1 p-3 text-center">

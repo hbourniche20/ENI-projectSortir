@@ -9,20 +9,20 @@
         </div>
         <div class="row justify-content-center esup">
             <div class="col">
-                {% include 'sortie/row.html.twig' with { 'label': 'Nom de la sortie :', 'value':  sortie.nom } %}
-                {% include 'sortie/row.html.twig' with { 'label': 'Date et heure de la sortie :', 'value':  sortie.dateSortie|date("d/m/Y H:i", "Europe/Paris") } %}
-                {% include 'sortie/row.html.twig' with { 'label': 'Date limite d\'inscription :', 'value':  sortie.dateLimiteInscription|date("d/m/Y") } %}
-                {% include 'sortie/row.html.twig' with { 'label': 'Nombre de places :', 'value':  sortie.nbPlaces } %}
-                {% include 'sortie/row.html.twig' with { 'label': 'Durée :', 'value':  sortie.getDureeString } %}
-                {% include 'sortie/row.html.twig' with { 'label': 'Description et infos :', 'value': sortie.description } %}
+                {% include 'row.html.twig' with { 'label': 'Nom de la sortie :', 'value':  sortie.nom } %}
+                {% include 'row.html.twig' with { 'label': 'Date et heure de la sortie :', 'value':  sortie.dateSortie|date("d/m/Y H:i", "Europe/Paris") } %}
+                {% include 'row.html.twig' with { 'label': 'Date limite d\'inscription :', 'value':  sortie.dateLimiteInscription|date("d/m/Y") } %}
+                {% include 'row.html.twig' with { 'label': 'Nombre de places :', 'value':  sortie.nbPlaces } %}
+                {% include 'row.html.twig' with { 'label': 'Durée :', 'value':  sortie.getDureeString } %}
+                {% include 'row.html.twig' with { 'label': 'Description et infos :', 'value': sortie.description } %}
             </div>
             <div class="col">
-                {% include 'sortie/row.html.twig' with { 'label': 'Ville organisatrice :', 'value': sortie.villeOrganisatrice } %}
-                {% include 'sortie/row.html.twig' with { 'label': 'Lieu :', 'value': sortie.site.nom } %}
-                {% include 'sortie/row.html.twig' with { 'label': 'Rue :', 'value': sortie.site.rue } %}
-                {% include 'sortie/row.html.twig' with { 'label': 'Ville :', 'value': sortie.villeAccueil.codePostal } %}
-                {% include 'sortie/row.html.twig' with { 'label': 'Latitude :', 'value': 'TODO' } %}
-                {% include 'sortie/row.html.twig' with { 'label': 'Longitude :', 'value': 'TODO' } %}
+                {% include 'row.html.twig' with { 'label': 'Ville organisatrice :', 'value': sortie.villeOrganisatrice } %}
+                {% include 'row.html.twig' with { 'label': 'Lieu :', 'value': sortie.site.nom } %}
+                {% include 'row.html.twig' with { 'label': 'Rue :', 'value': sortie.site.rue } %}
+                {% include 'row.html.twig' with { 'label': 'Ville :', 'value': sortie.villeAccueil.codePostal } %}
+                {% include 'row.html.twig' with { 'label': 'Latitude :', 'value': 'TODO' } %}
+                {% include 'row.html.twig' with { 'label': 'Longitude :', 'value': 'TODO' } %}
                 <div class="row-1 esup">
                     {% if sortie.motifAnnulation is empty %}
                         {% if idUserConnecte == sortie.organisateur.id and sortie.publiee == false %}
