@@ -15,13 +15,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('creer_sortie') }}">Créer une sortie</a>
                     </li>
+                    {% if 'ROLE_ADMIN' in app.user.roles %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('ville') }}">Villes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('site') }}">Sites</a>
+                    </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('profil') }}">Mon profil</a>
                     </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_login') }}">Se Connecter</a>
-                    </li>
+
                 {% endif %}
             </ul>
             {% if app.user %}

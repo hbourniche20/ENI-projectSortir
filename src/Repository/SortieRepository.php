@@ -20,14 +20,9 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    /*
-    public function delete($id) {
-
-    }/
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
     //  */
-
     /*
     public function findByExampleField($value)
     {

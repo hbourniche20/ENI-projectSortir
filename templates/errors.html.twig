@@ -1,0 +1,13 @@
+<div class="row justify-content-center esup">
+    <div class="col-3"></div>
+    <div class="col-6">
+        {% if errors is not empty %}
+            <h3 style="color: red;">Erreur(s)</h3>
+            <ol style="color: #c51714;">
+                {% for error in errors %}
+                   <li>{{ error.message }}</li>
+                {% endfor %}
+            </ol>
+        {% endif %}
+    </div>
+</div>

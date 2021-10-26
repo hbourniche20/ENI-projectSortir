@@ -50,23 +50,3 @@ insert into sortie_user(user_id,sortie_id) values (3,1);
 insert into sortie_user(user_id,sortie_id) values (1,2);
 insert into sortie_user(user_id,sortie_id) values (1,3);
 insert into sortie_user(user_id,sortie_id) values (1,4);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-;

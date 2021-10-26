@@ -2,10 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Site;
-use App\Entity\Sortie;
 use App\Entity\Ville;
-use App\Repository\SiteRepository;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -34,7 +31,7 @@ class HomeController extends CustomAbstractController
         }
         $searchForm = $this->createFormBuilder()
             //Rajouter les champs du formulaire
-            ->add('villeId', EntityType::class, ['class' => Ville::class, 'label' => 'Site :', 'required' => false])
+            ->add('villeId', EntityType::class, ['class' => Ville::class, 'label' => 'Ville :', 'required' => false])
             ->add('nameSortie', TextType::class, ['required' => false, 'label' => 'Nom sortie contient :'])
             ->add('dateDebut', DateType::class, ['label' => 'Entre :', 'required' => false, 'widget' => 'single_text',])
             ->add('dateFin', DateType::class, ['label' => 'Et :', 'required' => false, 'widget' => 'single_text',])
