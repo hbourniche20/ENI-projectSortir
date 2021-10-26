@@ -4,6 +4,7 @@
 
     use App\Entity\Sortie;
     use App\Entity\User;
+    use App\Entity\Ville;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpFoundation\RequestStack;
     use Symfony\Component\Security\Core\Security;
@@ -15,6 +16,8 @@
             $this->session = $requestStack->getSession();
         }
 
+        // -----------------------------
+        // USER
         protected function getUserBySession(): User {
             $userManager = $this->getDoctrine()->getRepository(User::class);
             $idUser = $this->session->get(Security::LAST_USERNAME);
@@ -31,8 +34,21 @@
             return $userManager->find($id);
         }
 
+        protected function getUserByEmail(string $email) : ?User {
+            return $this->getDoctrine()->getRepository(User::class)->findOneBy([
+                'email' => $email]);
+        }
+
+        // -----------------------------
+        // SORITE
         protected function getSortieById(int $id): Sortie {
             $sortieManager = $this->getDoctrine()->getRepository(Sortie::class);
             return $sortieManager->find($id);
+        }
+
+        // -----------------------------
+        // VILLE
+        protected function getVilleById(int $id) : Ville{
+            return $this->getDoctrine()->getRepository(Ville::class)->find($id);
         }
     }

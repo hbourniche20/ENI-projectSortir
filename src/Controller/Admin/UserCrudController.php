@@ -10,7 +10,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -42,6 +44,28 @@ class UserCrudController extends AbstractCrudController
 
             ->setPageTitle('new', 'Nouveau %entity_label_singular%')
             ->setPageTitle('edit', 'Modifier %entity_label_singular%')
+            ;
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            // PAGE INDEX
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ;
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('id')
+            ->add('email')
+            ->add('pseudo')
+            ->add('prenom')
+            ->add('nom')
+            ->add('tel')
+            ->add('ville')
+            ->add('roles')
             ;
     }
 }

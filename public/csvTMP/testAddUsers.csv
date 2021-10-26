@@ -1,0 +1,3 @@
+email,pseudo,password,prenom,nom,tel,roles,villeid
+pika@t.fr,Pika,password,pikachu,pokemon,0654585978,["ROLE_GESTION""ROLE_USER"],2
+math@t.fr,Math,password,mathÃ©matique,GÃ©nÃ©ral,0314159265,["ROLE_ADMIN"],3
