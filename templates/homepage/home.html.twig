@@ -89,7 +89,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="{{ path('profil_id', {slug: sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo }}</a>
+                            <a href="{{ path('profil_id', {id: sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo }}</a>
                         </td>
                         <td>
                             {% if sortie.publiee %}
