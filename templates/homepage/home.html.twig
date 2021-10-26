@@ -94,23 +94,23 @@
                             <a href="{{ path('profil_id', {slug: sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo }}</a>
                         </td>
                         <td>
-                            {% if sortie.publiee or sortie.dateSortie|date("Y/m/d H:i","Europe/Paris") <= "now"|date("Y/m/d","Europe/Paris") or not sortie.motifAnnulation is empty%}
+                            {% if sortie.publiee or sortie.dateSortie|date("Y/m/d H:i") <= "now"|date("Y/m/d H:i","Europe/Paris") or not sortie.motifAnnulation is empty%}
                                 <a class="btn btn-outline-primary" role="button"
                                    href="{{ path('show_sortie', {slug: sortie.id }) }}">Afficher</a>
                             {% else %}
                                 <a class="btn btn-outline-success" role="button"
                                    href="{{ path('publiee_sortie', {slug: sortie.id }) }}">Publier</a>
                             {% endif %}
-                            {% if sortie.dateSortie|date("Y/m/d H:i","Europe/Paris")  > "now"|date("Y/m/d","Europe/Paris") %}
+                            {% if sortie.dateSortie|date("Y/m/d H:i")  > "now"|date("Y/m/d H:i","Europe/Paris") %}
                                 {% if sortie.motifAnnulation is empty %}
                                     {% if sortie.organisateur != app.user %}
                                         {% if app.user in sortie.inscrits %}
-                                            {% if sortie.dateSortie|date("Y/m/d H:i","Europe/Paris") >= "now"|date("Y/m/d H:i","Europe/Paris") %}
+                                            {% if sortie.dateSortie|date("Y/m/d H:i") >= "now"|date("Y/m/d H:i","Europe/Paris") %}
                                                 <a class="btn btn-outline-danger" role="button"
                                                     href="{{ path('desinscription', {id: sortie.id }) }}">Se desister</a>
                                             {% endif %}
                                         {% else %}
-                                            {% if sortie.dateLimiteInscription|date("Y/m/d H:i","Europe/Paris")  >= "now"|date("Y/m/d","Europe/Paris") and sortie.dateSortie|date("Y/m/d H:i","Europe/Paris") > "now"|date("Y/m/d H:i","Europe/Paris")  and sortie.inscrits|length < sortie.nbPlaces %}
+                                            {% if sortie.dateLimiteInscription|date("Y/m/d")  >= "now"|date("Y/m/d","Europe/Paris") and sortie.dateSortie|date("Y/m/d H:i") > "now"|date("Y/m/d H:i","Europe/Paris")  and sortie.inscrits|length < sortie.nbPlaces %}
                                                 <a class="btn btn-outline-success" role="button"
                                                     href="{{ path('inscription', {id: sortie.id }) }}">S'inscrire</a>
                                             {% endif %}
