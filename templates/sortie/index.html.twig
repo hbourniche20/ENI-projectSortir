@@ -13,6 +13,9 @@
         });
 
         function updateLieux(villeSelectionnee) {
+            if (!villeSelectionnee) {
+                return;
+            }
             let url = "{{ path('select_ville', {id: 'remplacerVilleID'}) }}";
             url = url.replace('remplacerVilleID', villeSelectionnee);
             fetch(url)
@@ -135,15 +138,15 @@
             {% if sortie.publiee == false %}
                 {% if sortie.id %}
                     <a class="btn btn-outline-success" role="button"
-                       href="{{ path('publiee_sortie', {slug: sortie.id}) }}">Publier
+                       href="{{ path('publiee_sortie', {id: sortie.id}) }}">Publier
                         la sortie</a>
                     <a class="btn btn-outline-danger" role="button"
-                       href="{{ path('supprimer_sortie', {slug: sortie.id}) }}">Supprimer la sortie</a>
+                       href="{{ path('supprimer_sortie', {id: sortie.id}) }}">Supprimer la sortie</a>
                 {% else %}
                     <button class="btn btn-outline-success" name="button" value="publier">Publier la sortie</button>
                 {% endif %}
             {% else %}
-                <a class="btn btn-outline-danger" role="button" href="{{ path('annuler_sortie', {slug: sortie.id}) }}">Annuler
+                <a class="btn btn-outline-danger" role="button" href="{{ path('annuler_sortie', {id: sortie.id}) }}">Annuler
                     la sortie</a>
             {% endif %}
 

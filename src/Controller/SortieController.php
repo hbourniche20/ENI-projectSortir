@@ -66,16 +66,14 @@ class SortieController extends CustomAbstractController {
         ]);
     }
 
-        #[Route(path: '/sortie/publiee/{slug}', name: 'publiee_sortie')]
-        public function publiee(int $slug): Response {
-            $sortie = $this->getSortieById($slug);
+        #[Route(path: '/sortie/publiee/{id}', name: 'publiee_sortie')]
+        public function publiee(Sortie $sortie): Response {
             $sortie->setPubliee(true);
             return $this->persistAndRedirect($sortie, 'home_page', null);
         }
 
-        #[Route(path: '/sortie/annuler/{slug}', name: 'annuler_sortie', requirements: ['slug' => '\d+'])]
-        public function anuller(Request $request, int $slug): Response {
-            $sortie = $this->getSortieById($slug);
+        #[Route(path: '/sortie/annuler/{id}', name: 'annuler_sortie', requirements: ['id' => '\d+'])]
+        public function annuler(Request $request, Sortie $sortie): Response {
             $error = '';
             $form = $this->createFormBuilder()
                 ->add('motif', TextareaType::class, ['label' => 'Motif :'])
@@ -96,9 +94,8 @@ class SortieController extends CustomAbstractController {
             ]);
         }
 
-        #[Route('/sortie/remove/{slug}', name: 'supprimer_sortie')]
-        public function supprimer(int $slug): Response {
-            $sortie = $this->getSortieById($slug);
+        #[Route('/sortie/remove/{id}', name: 'supprimer_sortie')]
+        public function supprimer(Sortie $sortie): Response {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($sortie);
             $entityManager->flush();
@@ -106,7 +103,7 @@ class SortieController extends CustomAbstractController {
         }
 
         #[Route('/sortie/inscrire/{id}', name: 'inscription')]
-        public function inscrire(Request $request, int $id): Response {
+        public function inscrire(int $id): Response {
             $user = $this->getUserBySession();
             $sortieInscrit = $this->getSortieById($id);
             $entityManager = $this->getDoctrine()->getManager();
@@ -117,18 +114,17 @@ class SortieController extends CustomAbstractController {
         }
 
         #[Route('/sortie/desister/{id}', name: 'desinscription')]
-        public function desister(Request $request, int $id): Response {
+        public function desister(Sortie $sortie): Response {
             $user = $this->getUserBySession();
-            $sortieInscrits = $this->getSortieById($id);
             $entityManager = $this->getDoctrine()->getManager();
-            $sortieInscrits->removeInscrit($user);
-            $entityManager->persist($sortieInscrits);
+            $sortie->removeInscrit($user);
+            $entityManager->persist($sortie);
             $entityManager->flush();
             return $this->redirectToRoute('home_page');
         }
 
         #[Route('/select/ville/{id}', name: 'select_ville')]
-        public function selectVille(Request $request, int $id) {
+        public function selectVille(int $id) {
             if ($id != null) {
                 $sites = $this->getDoctrine()->getRepository(Site::class)->findByVille($id);
                 $array = [];
@@ -138,22 +134,17 @@ class SortieController extends CustomAbstractController {
                 $response = new Response();
                 $response->setContent(json_encode($array));
                 return $response;
-
             }
             return new Response('Erreur: impossible de récuperer les données');
         }
 
-        #[Route(path: '/sortie/show/{slug}', name: 'show_sortie', requirements: ['slug' => '\d+'])]
-        public function afficher(Request $request, int $slug): Response {
-            $sortie = $this->getSortieById($slug);
-
+        #[Route(path: '/sortie/show/{id}', name: 'show_sortie', requirements: ['id' => '\d+'])]
+        public function afficher(Sortie $sortie): Response {
             $idUserQuiCreeLaSortie = $sortie->getOrganisateur()->getId();
             $idUserConnecte = $this->getUserBySession()->getId();
             $inscritALaSortie = false;
 
             foreach ($sortie->getInscrits()->getValues() as $inscrit) {
-                dump($inscrit->getId());
-                dump($idUserConnecte === $idUserQuiCreeLaSortie);
                 if ($inscrit->getId() === $idUserConnecte) {
                     $inscritALaSortie = true;
                     break;
