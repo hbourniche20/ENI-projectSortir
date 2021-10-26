@@ -21,77 +21,14 @@
             </div>
             <div class="col-6">
                 {{ form_start(userForm) }}
-                <div class="row">
-                    <div class="col">
-                        {{ form_label(userForm.pseudo) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(userForm.pseudo) }}
-                    </div>
-                </div>
-
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(userForm.prenom) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(userForm.prenom) }}
-                    </div>
-                </div>
-
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(userForm.nom) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(userForm.nom) }}
-                    </div>
-                </div>
-
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(userForm.tel) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(userForm.tel) }}
-                    </div>
-                </div>
-
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(userForm.email) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(userForm.email) }}
-                    </div>
-                </div>
-
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(userForm.password, 'Mot de passe') }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(userForm.password) }}
-                    </div>
-                </div>
-
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(userForm.ville) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(userForm.ville) }}
-                    </div>
-                </div>
-
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(userForm.photo) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(userForm.photo) }}
-                    </div>
-                </div>
+                {% include 'rowForm.html.twig' with { 'form': userForm.pseudo } %}
+                {% include 'rowForm.html.twig' with { 'form': userForm.prenom } %}
+                {% include 'rowForm.html.twig' with { 'form': userForm.nom } %}
+                {% include 'rowForm.html.twig' with { 'form': userForm.tel } %}
+                {% include 'rowForm.html.twig' with { 'form': userForm.email } %}
+                {% include 'rowForm.html.twig' with { 'form': userForm.password } %}
+                {% include 'rowForm.html.twig' with { 'form': userForm.ville } %}
+                {% include 'rowForm.html.twig' with { 'form': userForm.photo } %}
 
                 <div class="row esup">
                     <div class="col">

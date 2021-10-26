@@ -21,26 +21,11 @@
                 {% endif %}
             </div>
             <div class="col-6">
-                <div class="row">
-                    <div class="col col-4"> Prénom :</div>
-                    <div class="col">{{ user.prenom }}</div>
-                </div>
-                <div class="row">
-                    <div class="col col-4"> Nom :</div>
-                    <div class="col">{{ user.nom }}</div>
-                </div>
-                <div class="row">
-                    <div class="col col-4"> Téléphone :</div>
-                    <div class="col">{{ user.tel }}</div>
-                </div>
-                <div class="row">
-                    <div class="col col-4"> Email :</div>
-                    <div class="col">{{ user.email }}</div>
-                </div>
-                <div class="row">
-                    <div class="col col-4"> Ville de rattachement :</div>
-                    <div class="col">{{ user.ville.nom }} ({{ user.ville.codePostal }})</div>
-                </div>
+                {% include 'row.html.twig' with { 'label': 'Prénom :', 'value':  user.prenom } %}
+                {% include 'row.html.twig' with { 'label': 'Nom :', 'value':  user.nom } %}
+                {% include 'row.html.twig' with { 'label': 'Téléphone :', 'value':  user.tel } %}
+                {% include 'row.html.twig' with { 'label': 'Email :', 'value':  user.email } %}
+                {% include 'row.html.twig' with { 'label': 'Ville de rattachement :', 'value':  user.ville } %}
             </div>
         </div>
         <div class="row esup">

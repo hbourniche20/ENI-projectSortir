@@ -17,10 +17,10 @@
             return $this->profil($this->getUserBySession()->getId());
         }
 
-        #[Route(path: '/profil/{slug}', name: 'profil_id', requirements: ['slug' => '\d+'])]
-        public function profil(int $slug): Response {
-            $modifie = ($this->getUserBySession()->getId() == $slug);
-            $user = $this->getUserById($slug);
+        #[Route(path: '/profil/{id}', name: 'profil_id', requirements: ['id' => '\d+'])]
+        public function profil(int $id): Response {
+            $modifie = ($this->getUserBySession()->getId() == $id);
+            $user = $this->getUserById($id);
             if (is_null($user)) {
                 return $this->index();
             }

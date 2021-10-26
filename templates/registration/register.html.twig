@@ -8,75 +8,25 @@
             <h1>S'inscrire</h1>
         </div>
         {% include 'errors.html.twig' %}
+        {{ form_start(registerForm) }}
         <div class="row justify-content-center esup">
             <div class="col-5">
-        {{ form_start(registerForm) }}
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(registerForm.email) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(registerForm.email) }}
-                    </div>
-                </div>
+                {% include 'rowForm.html.twig' with { 'form':  registerForm.email } %}
                 {% for passwordField in registerForm.password %}
-                    <div class="row esup">
-                        <div class="col">
-                            {{ form_label(passwordField) }}
-                        </div>
-                        <div class="col">
-                            {{ form_widget(passwordField) }}
-                        </div>
-                    </div>
+                    {% include 'rowForm.html.twig' with { 'form':  passwordField } %}
                 {% endfor %}
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(registerForm.pseudo) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(registerForm.pseudo) }}
-                    </div>
-                </div>
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(registerForm.prenom) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(registerForm.prenom) }}
-                    </div>
-                </div>
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(registerForm.nom) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(registerForm.nom) }}
-                    </div>
-                </div>
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(registerForm.tel) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(registerForm.tel) }}
-                    </div>
-                </div>
-                <div class="row esup">
-                    <div class="col">
-                        {{ form_label(registerForm.ville) }}
-                    </div>
-                    <div class="col">
-                        {{ form_widget(registerForm.ville) }}
-                    </div>
-                </div>
+                {% include 'rowForm.html.twig' with { 'form':  registerForm.pseudo } %}
+                {% include 'rowForm.html.twig' with { 'form':  registerForm.prenom } %}
+                {% include 'rowForm.html.twig' with { 'form':  registerForm.nom } %}
+                {% include 'rowForm.html.twig' with { 'form':  registerForm.tel } %}
+                {% include 'rowForm.html.twig' with { 'form':  registerForm.ville } %}
             </div>
+        </div>
+        <div class="text-center"><br>
+            <button type="submit" class="btn btn-outline-primary">S'inscrire</button>
 
+        </div>
+        {{ form_end(registerForm) }}
     </div>
-    <div class="text-center"><br>
-        <button type="submit" class="btn btn-outline-primary">S'inscrire</button>
-
-    </div>
-    {{ form_end(registerForm) }}
-</div>
 
 {% endblock %}

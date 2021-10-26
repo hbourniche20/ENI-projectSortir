@@ -295,4 +295,12 @@ class Sortie
 
         return $this;
     }
+
+    public function getDureeString() {
+        $string = $this->duree.' minute';
+        if ($this->duree > 1) {
+            $string = $string.'s';
+        }
+        return $string;
+    }
 }
