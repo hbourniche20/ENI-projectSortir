@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Ville;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
@@ -18,6 +19,7 @@ class HomeController extends CustomAbstractController
     #[Route(path: '', name: 'home_page')]
     public function home(SortieRepository $sortieRepository, VilleRepository $villeRepository, Request $request): response
     {
+        $userSession = $this->getUserBySession();
         $sorties = $sortieRepository->findAll();
         $villes = $villeRepository->findAll();
         $sortiesNonArchive = array();
@@ -93,8 +95,6 @@ class HomeController extends CustomAbstractController
                 }
             }
 
-            $userSession = $this->getUserBySession();
-
             // Affiche que les sorties dont l'user est l'organisateur
             if (!empty($organisateur) && $organisateur) {
                 foreach ($sortiesNonArchive as $sortie) {
@@ -140,8 +140,12 @@ class HomeController extends CustomAbstractController
                 }
             }
         }
-        return $this->render('homepage/home.html.twig', ["sorties" => $sortiesNonArchive, "sites" => $villes, "searchForm" => $searchForm->createView()]);
+
+        return $this->render('homepage/home.html.twig', [
+            "sorties" => $sortiesNonArchive,
+            "sites" => $villes,
+            "searchForm" => $searchForm->createView(),
+            "isAdmin" => $this->isAdmin($userSession),
+        ]);
     }
-
-
 }

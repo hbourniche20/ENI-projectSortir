@@ -99,7 +99,7 @@
                                 <a class="btn btn-outline-success" role="button"
                                    href="{{ path('publiee_sortie', {slug: sortie.id }) }}">Publier</a>
                             {% endif %}
-                            {% if sortie.organisateur == app.user %}
+                            {% if sortie.organisateur == app.user or isAdmin %}
                                 {% if sortie.motifAnnulation is empty %}
                                     <a class="btn btn-outline-primary" role="button"
                                        href="{{ path('modifier_sortie', {id: sortie.id }) }}">Modifier</a>

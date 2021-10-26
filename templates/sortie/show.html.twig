@@ -106,7 +106,7 @@
                         {% if idUserConnecte == sortie.organisateur.id and sortie.publiee == false %}
                             <a class="btn btn-outline-danger" role="button"
                                href="{{ path('supprimer_sortie', {slug: sortie.id}) }}">Supprimer la sortie</a>
-                        {% elseif idUserConnecte == sortie.organisateur.id %}
+                        {% elseif idUserConnecte == sortie.organisateur.id or isAdmin %}
                             <a class="btn btn-outline-danger" role="button"
                                href="{{ path('annuler_sortie', {slug: sortie.id}) }}">Annuler la sortie</a>
                         {% endif %}

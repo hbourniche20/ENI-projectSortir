@@ -39,6 +39,14 @@
                 'email' => $email]);
         }
 
+        protected function isAdmin(User $user) : bool {
+            foreach ($user->getRoles() as $role){
+                if($role === 'ROLE_ADMIN'){
+                    return true;
+                }
+            }
+            return false;
+        }
         // -----------------------------
         // SORITE
         protected function getSortieById(int $id): Sortie {
