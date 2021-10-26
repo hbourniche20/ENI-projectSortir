@@ -66,6 +66,7 @@ class Sortie
     private $duree;
 
     /**
+     * @Assert\NotBlank(message="Veuillez donner une brève description de la sortie")
      * @ORM\Column(type="string", length=255)
      */
     private $description;

@@ -2,39 +2,7 @@
 
 {% block javascripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            if ("{{ sortie.villeAccueil.id }}" != -1) {
-                updateLieux({{ sortie.villeAccueil.id }});
-            }
-            $('#sortie_villeAccueil').change((e) => {
-                updateLieux(e.currentTarget.value);
-            });
-        });
-
-        function updateLieux(villeSelectionnee) {
-            if (!villeSelectionnee) {
-                return;
-            }
-            let url = "{{ path('select_ville', {id: 'remplacerVilleID'}) }}";
-            url = url.replace('remplacerVilleID', villeSelectionnee);
-            fetch(url)
-                .then(response => response.json())
-                .then((sites) => {
-                    console.log(sites);
-                    $('#sortie_site').empty();
-                    sites.forEach((element) => {
-                        let site = document.createElement("option");
-                        site.value = element[0];
-                        site.innerText = element[1];
-                        $('#sortie_site').append(site);
-                        if ("{{ sortie.site.id }}" != -1 && "{{ sortie.site.id }}" == element[0]) {
-                            site.setAttribute('selected', 'true');
-                        }
-                    });
-                });
-        }
-    </script>
+    <script src="../js/updateLieux.js"></script>
 {% endblock %}
 
 {% block title %}

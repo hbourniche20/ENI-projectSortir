@@ -18,15 +18,12 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-        $errors = [];
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $this->persistData($userPasswordHasherInterface, $user, $form);
-                return $this->redirectToRoute('app_login');
-            }
-            $errors = $form->getErrors(true);
-        }
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->persistData($userPasswordHasherInterface, $user, $form);
+            return $this->redirectToRoute('app_login');
+        }
+        $errors = $form->getErrors(true);
         return $this->render('registration/register.html.twig', [
             'registerForm' => $form->createView(),
             'errors' => $errors
