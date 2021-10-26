@@ -55,82 +55,19 @@
         </div>
         {% include '/errors.html.twig' %}
         {{ form_start(sortieForm) }}
-        <div class="row justify-content-center esup">
-            <div class="col-4">
-                <div class="row form-group esup">
-                    <div class="col-5">
-                        {{ form_label(sortieForm.nom) }}
-                    </div>
-                    <div class="col-7">
-                        {{ form_widget(sortieForm.nom) }}
-                    </div>
-                </div>
-                <div class="row form-group esup">
-                    <div class="col-5">
-                        {{ form_label(sortieForm.dateSortie) }}
-                    </div>
-                    <div class="col-7">
-                        {{ form_widget(sortieForm.dateSortie) }}
-                    </div>
-                </div>
-                <div class="row form-group esup">
-                    <div class="col-5">
-                        {{ form_label(sortieForm.dateLimiteInscription) }}
-                    </div>
-                    <div class="col-7">
-                        {{ form_widget(sortieForm.dateLimiteInscription) }}
-                    </div>
-                </div>
-                <div class="row form-group esup">
-                    <div class="col col-5">
-                        {{ form_label(sortieForm.nbPlaces) }}
-                    </div>
-                    <div class="col col-7">
-                        {{ form_widget(sortieForm.nbPlaces) }}
-                    </div>
-                </div>
-                <div class="row form-group esup">
-                    <div class="col-5">
-                        {{ form_label(sortieForm.duree) }}
-                    </div>
-                    <div class="col-7">
-                        {{ form_widget(sortieForm.duree) }}
-                    </div>
-                </div>
-                <div class="row form-group esup">
-                    <div class="col-5">
-                        {{ form_label(sortieForm.description) }}
-                    </div>
-                    <div class="col-7">
-                        {{ form_widget(sortieForm.description) }}
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col">
+                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.nom } %}
+                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.dateSortie } %}
+                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.dateLimiteInscription } %}
+                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.nbPlaces } %}
+                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.duree } %}
+                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.description } %}
             </div>
-            <div class="col-4">
-                <div class="row form-group esup">
-                    <div class="col-5">
-                        {{ form_label(sortieForm.villeOrganisatrice) }}
-                    </div>
-                    <div class="col-7">
-                        {{ form_widget(sortieForm.villeOrganisatrice) }}
-                    </div>
-                </div>
-                <div class="row form-group esup">
-                    <div class="col-5">
-                        {{ form_label(sortieForm.villeAccueil) }}
-                    </div>
-                    <div class="col-7">
-                        {{ form_widget(sortieForm.villeAccueil) }}
-                    </div>
-                </div>
-                <div class="row form-group esup drop-down">
-                    <div class="col-5">
-                        {{ form_label(sortieForm.site) }}
-                    </div>
-                    <div class="col-7">
-                        {{ form_widget(sortieForm.site) }}
-                    </div>
-                </div>
+            <div class="col">
+                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.villeOrganisatrice } %}
+                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.villeAccueil } %}
+                {% include 'sortie/rowForm.html.twig' with { 'form': sortieForm.site } %}
             </div>
         </div>
         <div class="row-1 p-3 text-center">
