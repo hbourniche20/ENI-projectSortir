@@ -19,8 +19,8 @@ class SortieController extends CustomAbstractController {
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
         $errors = [];
-        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
-            if($sortieForm->isValid()) {
+        if ($sortieForm->isSubmitted()) {
+            if ($sortieForm->isValid()) {
                 $sortie->setPubliee($request->get('button') === 'publier');
                 $sortie->setMotifAnnulation(null);
                 return $this->validateDataAndRedirect($sortie);
