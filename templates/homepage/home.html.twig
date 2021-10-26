@@ -71,11 +71,13 @@
                         <td>
                             {% if sortie.motifAnnulation is not null %}
                                 <label>Annulé</label>
-                            {% elseif  sortie.dateSortie|date_modify('+' ~sortie.duree  ~ 'min')|date("Y/m/d H:i","Europe/Paris") <= "now"|date("Y/m/d H:i","Europe/Paris") %}
+                            {% elseif  sortie.dateSortie|date_modify('+' ~sortie.duree  ~ 'min')|date("Y/m/d H:i") <= "now"|date("Y/m/d H:i","Europe/Paris") %}
                                 <label>Terminé</label>
-                            {% elseif  sortie.dateSortie|date("Y/m/d H:i","Europe/Paris") <= "now"|date("Y/m/d H:i","Europe/Paris") %}
+                            {% elseif not sortie.publiee %}
+                                <label>En création</label>
+                            {% elseif "now"|date("Y/m/d H:i","Europe/Paris") >= sortie.dateSortie|date("Y/m/d H:i")  %}
                                 <label>En cours</label>
-                            {% elseif sortie.dateLimiteInscription|date("Y/m/d","Europe/Paris") < "now"|date("Y/m/d","Europe/Paris") %}
+                            {% elseif sortie.dateLimiteInscription|date("Y/m/d") < "now"|date("Y/m/d","Europe/Paris") %}
                                 <label>Fermé</label>
                             {% elseif sortie.inscrits|length < sortie.nbPlaces %}
                                 <label>Ouvert</label>
@@ -92,30 +94,36 @@
                             <a href="{{ path('profil_id', {id: sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo }}</a>
                         </td>
                         <td>
-                            {% if sortie.publiee %}
+                            {% if sortie.publiee or sortie.dateSortie|date("Y/m/d H:i") <= "now"|date("Y/m/d H:i","Europe/Paris") or not sortie.motifAnnulation is empty%}
                                 <a class="btn btn-outline-primary" role="button"
                                    href="{{ path('show_sortie', {id: sortie.id }) }}">Afficher</a>
                             {% else %}
                                 <a class="btn btn-outline-success" role="button"
                                    href="{{ path('publiee_sortie', {id: sortie.id }) }}">Publier</a>
                             {% endif %}
-                            {% if sortie.organisateur == app.user or isAdmin %}
+                            {% if sortie.dateSortie|date("Y/m/d H:i")  > "now"|date("Y/m/d H:i","Europe/Paris") %}
                                 {% if sortie.motifAnnulation is empty %}
-                                    <a class="btn btn-outline-primary" role="button"
-                                       href="{{ path('modifier_sortie', {id: sortie.id }) }}">Modifier</a>
-                                    <a class="btn btn-outline-danger" role="button"
-                                       href="{{ path('annuler_sortie', {id: sortie.id }) }}">Annuler</a>
-                                {% endif %}
-                            {% else %}
-                                {% if app.user in sortie.inscrits %}
-                                    {% if sortie.dateSortie >= "now"|date("Y/m/d H:i","Europe/Paris") %}
+                                    {% if sortie.organisateur != app.user %}
+                                        {% if app.user in sortie.inscrits %}
+                                            {% if sortie.dateSortie|date("Y/m/d H:i") >= "now"|date("Y/m/d H:i","Europe/Paris") %}
+                                                <a class="btn btn-outline-danger" role="button"
+                                                   href="{{ path('desinscription', {id: sortie.id }) }}">Se desister</a>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if sortie.dateLimiteInscription|date("Y/m/d")  >= "now"|date("Y/m/d","Europe/Paris") and sortie.dateSortie|date("Y/m/d H:i") > "now"|date("Y/m/d H:i","Europe/Paris")  and sortie.inscrits|length < sortie.nbPlaces %}
+                                                <a class="btn btn-outline-success" role="button"
+                                                   href="{{ path('inscription', {id: sortie.id }) }}">S'inscrire</a>
+                                            {% endif %}
+                                        {% endif %}
+                                        {% if is_granted("ROLE_ADMIN") %}
+                                            <a class="btn btn-outline-danger" role="button"
+                                               href="{{ path('annuler_sortie', {id: sortie.id }) }}">Annuler</a>
+                                        {% endif %}
+                                    {% else %}
+                                        <a class="btn btn-outline-primary" role="button"
+                                           href="{{ path('modifier_sortie', {id: sortie.id }) }}">Modifier</a>
                                         <a class="btn btn-outline-danger" role="button"
-                                           href="{{ path('desinscription', {id: sortie.id }) }}">Se desister</a>
-                                    {% endif %}
-                                {% else %}
-                                    {% if sortie.dateLimiteInscription  >= "now"|date("Y/m/d","Europe/Paris") and sortie.dateSortie > "now"|date("Y/m/d H:i","Europe/Paris")  and sortie.inscrits|length < sortie.nbPlaces %}
-                                        <a class="btn btn-outline-success" role="button"
-                                           href="{{ path('inscription', {id: sortie.id }) }}">S'inscrire</a>
+                                           href="{{ path('annuler_sortie', {id: sortie.id }) }}">Annuler</a>
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
