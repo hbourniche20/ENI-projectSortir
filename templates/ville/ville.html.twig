@@ -48,7 +48,8 @@
                         <td>
                             <input type="submit" class="btn btn-outline-primary" role="button" value="Modifier">
                             <a class="btn btn-outline-primary" role="button"
-                                href="{{ path('supprimer_ville', {id: ville.id}) }}">Supprimer</a>
+                                href="{{ path('supprimer_ville', {id: ville.id}) }}"
+                                onclick="return confirm('Supprimer la ville ?')">Supprimer</a>
                         </td>
                 </tr>
                     </form>

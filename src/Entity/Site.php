@@ -30,7 +30,7 @@
         private $nom;
 
         /**
-         * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="site")
+         * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="site", orphanRemoval=true)
          */
         private $sorties;
 
@@ -57,7 +57,6 @@
 
         public function setVille(?Ville $ville): self {
             $this->ville = $ville;
-
             return $this;
         }
 
@@ -67,7 +66,6 @@
 
         public function setNom(string $nom): self {
             $this->nom = $nom;
-
             return $this;
         }
 
@@ -83,7 +81,6 @@
                 $this->sorties[] = $sorty;
                 $sorty->setSite($this);
             }
-
             return $this;
         }
 
@@ -92,7 +89,6 @@
             if ($this->sorties->removeElement($sorty) && $sorty->getSite() === $this) {
                 $sorty->setSite(null);
             }
-
             return $this;
         }
 
@@ -102,7 +98,6 @@
 
         public function setRue(string $rue): self {
             $this->rue = $rue;
-
             return $this;
         }
     }
