@@ -31,7 +31,7 @@ class Site
     private $nom;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="site")
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="site", orphanRemoval=true)
      */
     private $sorties;
 
