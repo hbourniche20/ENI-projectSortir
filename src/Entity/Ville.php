@@ -40,7 +40,7 @@ class Ville
     private $sortiesOrganisees;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="$villeAccueil", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="villeAccueil", orphanRemoval=true)
      */
     private $sorties;
 
