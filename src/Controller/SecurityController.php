@@ -29,4 +29,9 @@
         public function logout(): void {
             throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
         }
+
+        #[Route(path: '/desactivate', name: 'desactivate')]
+        public function desactivate() : Response {
+            return $this->render('security/desactivate.html.twig');
+        }
     }

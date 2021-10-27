@@ -32,9 +32,9 @@
                 {% endif %}
             </ul>
             {% if app.user %}
-                <span style="color: white"> {{ app.user.pseudo }} &nbsp </span>
+                <span style="color: white"> {{ app.user.pseudo }} &nbsp - &nbsp </span>
             {% endif %}
-            <span style="color: white">Date du jour : {{ "now"|date("d/m/Y") }}</span> &nbsp
+            <span style="color: white">Date du jour : {{ "now"|date("d/m/Y") }} &nbsp - &nbsp </span>
             {% if app.user %}
                 <a class="btn btn-danger" role="button" href="{{ path('app_logout') }}">Se déconnecter</a><br>
             {% else %}
