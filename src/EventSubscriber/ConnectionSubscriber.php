@@ -9,7 +9,6 @@
     use Symfony\Component\HttpFoundation\RedirectResponse;
     use Symfony\Component\HttpFoundation\RequestStack;
     use Symfony\Component\HttpKernel\Event\ControllerEvent;
-    use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
     use Symfony\Component\HttpKernel\KernelEvents;
     use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
     use Symfony\Component\Security\Core\Security;
@@ -42,7 +41,7 @@
                     $user = $userManager->findOneByEmail($idUser);
                     if($user->getDesactiver()){
                         $event->setController(function() {
-                            return new RedirectResponse($this->urlGenerator->generate('app_logout'));
+                            return new RedirectResponse($this->urlGenerator->generate('desactivate'));
                         });
                     }
                 }
