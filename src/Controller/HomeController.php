@@ -22,6 +22,7 @@ class HomeController extends CustomAbstractController
         if($userSession->getDesactiver()){
             return $this->redirectToRoute('app_logout');
         }
+        $device = $userSession->isMobile();
         $sorties = $sortieRepository->findAll();
         $villes = $villeRepository->findAll();
         $sortiesNonArchive = array();
@@ -139,6 +140,14 @@ class HomeController extends CustomAbstractController
                     if ($sortie->getDateSortie() < $dateActuelle) {
                         unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
                     }
+                }
+            }
+        }
+
+        if($device){
+            foreach ($sortiesNonArchive as $sortie) {
+                if ($sortie->getVilleAccueil() != $userSession->getVille() && $sortie->getVilleOrganisatrice() != $userSession->getVille()) {
+                    unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
                 }
             }
         }
