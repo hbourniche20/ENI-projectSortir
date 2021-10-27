@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -33,6 +34,7 @@ class UserCrudController extends AbstractCrudController
             TextField::new('prenom', 'Prenom'),
             TextField::new('nom', 'Nom'),
             TextField::new('tel', 'Téléphone'),
+            BooleanField::new('desactiver', 'Desactiver'),
         ];
     }
 
@@ -66,6 +68,7 @@ class UserCrudController extends AbstractCrudController
             ->add('tel')
             ->add('ville')
             ->add('roles')
+            ->add('desactiver')
             ;
     }
 }

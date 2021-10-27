@@ -101,6 +101,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $image;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $desactiver;
+
     public function __construct()
     {
         $this->sortiesOrga = new ArrayCollection();
@@ -326,6 +331,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getDesactiver(): ?bool
+    {
+        return $this->desactiver;
+    }
+
+    public function setDesactiver(bool $desactiver): self
+    {
+        $this->desactiver = $desactiver;
 
         return $this;
     }

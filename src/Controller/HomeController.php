@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\Ville;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
@@ -20,6 +19,9 @@ class HomeController extends CustomAbstractController
     public function home(SortieRepository $sortieRepository, VilleRepository $villeRepository, Request $request): response
     {
         $userSession = $this->getUserBySession();
+        if($userSession->getDesactiver()){
+            return $this->redirectToRoute('app_logout');
+        }
         $sorties = $sortieRepository->findAll();
         $villes = $villeRepository->findAll();
         $sortiesNonArchive = array();
@@ -67,7 +69,7 @@ class HomeController extends CustomAbstractController
             //Affiche que les sorties avec la chaine de caractère comprise dans le nom de la sortie
             if (!empty($nameSortie)) {
                 foreach ($sortiesNonArchive as $sortie) {
-                    if (strpos(strtolower($sortie->getNom()), strtolower($nameSortie)) === false) {
+                    if (!str_contains(strtolower($sortie->getNom()), strtolower($nameSortie))) {
                         unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
                     }
                 }
