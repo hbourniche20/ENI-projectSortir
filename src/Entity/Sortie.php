@@ -32,7 +32,7 @@ class Sortie
 
     /**
      * @Assert\Type(type="datetime", message="Veuillez entrer une date de sortie valide")
-     * @Assert\GreaterThan("today")
+     * @Assert\GreaterThan("today", message="La date de sortie doit être supérieure ou équivalente à celle d'aujourd'hui")
      * @ORM\Column(type="datetime")
      */
     private \DateTime $dateSortie;
@@ -41,7 +41,7 @@ class Sortie
      * @Assert\Type(type="datetime", message="Veuillez entrer une date limite d'inscription valide")
      * @Assert\Expression(
      *     "this.getDateLimiteInscription() < this.getDateSortie()",
-     *     message="La date fin d'inscriptions ne doit pas être supérieur à la date de début de la sortie"
+     *     message="La date fin d'inscriptions ne doit pas être supérieure à la date de début de la sortie"
      * )
      * @ORM\Column(type="date")
      */
