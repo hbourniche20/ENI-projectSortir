@@ -40,7 +40,7 @@ class Ville
     private $sortiesOrganisees;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="$villeAccueil", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="villeAccueil", orphanRemoval=true)
      */
     private $sorties;
 
@@ -48,7 +48,7 @@ class Ville
     {
         $this->sites = new ArrayCollection();
         $this->sorties = new ArrayCollection();
-        $this->sortiesOrganisee = new ArrayCollection();
+        $this->sortiesOrganisees = new ArrayCollection();
     }
 
     public function __toString(): string {

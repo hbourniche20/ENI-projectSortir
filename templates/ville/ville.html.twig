@@ -9,9 +9,8 @@
         <div class="row justify-content-center esup">
             <h1 class="text-center">Gerer les villes</h1>
         </div>
-
-
-            <form action="{{ path('search_ville') }}" >
+        {% include '/errors.html.twig' %}
+        <form action="{{ path('search_ville') }}" >
             <h3>Filtrer les villes</h3>
             <tr>
                 <td>

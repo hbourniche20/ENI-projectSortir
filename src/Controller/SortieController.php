@@ -12,6 +12,11 @@
     use Symfony\Component\Routing\Annotation\Route;
 
 class SortieController extends CustomAbstractController {
+
+
+    // *****************************************************************************************************************
+    // ROUTES AVEC REDIRECTIONS
+    // *****************************************************************************************************************
     #[Route('/sortie/create', name: 'creer_sortie')]
     public function create(Request $request): Response
     {
@@ -19,14 +24,12 @@ class SortieController extends CustomAbstractController {
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
         $errors = [];
-        if ($sortieForm->isSubmitted()) {
-            if ($sortieForm->isValid()) {
-                $sortie->setPubliee($request->get('button') === 'publier');
-                $sortie->setMotifAnnulation(null);
-                return $this->validateDataAndRedirect($sortie);
-            }
-            $errors = $sortieForm->getErrors(true);
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+            $sortie->setPubliee($request->get('button') === 'publier');
+            $sortie->setMotifAnnulation(null);
+            return $this->validateDataAndRedirect($sortie);
         }
+        $errors = $sortieForm->getErrors(true);
         $sortie->setVilleAccueil(new Ville());
         $sortie->setSite(new Site());
 
@@ -46,14 +49,10 @@ class SortieController extends CustomAbstractController {
         }
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
-        $errors = [];
-        if ($sortieForm->isSubmitted()) {
-            if ($sortieForm->isValid()) {
-                return $this->validateDataAndRedirect($sortie);
-            }
-            $errors = $sortieForm->getErrors(true);
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+            return $this->validateDataAndRedirect($sortie);
         }
-
+        $errors = $sortieForm->getErrors(true);
         return $this->render('sortie/index.html.twig', [
             'controller_name' => 'SortieController',
             'sortieForm' => $sortieForm->createView(),
@@ -121,7 +120,33 @@ class SortieController extends CustomAbstractController {
             return $this->redirectToRoute('home_page');
         }
 
-        #[Route('/select/ville/{id}', name: 'select_ville')]
+        #[Route(path: '/sortie/show/{id}', name: 'show_sortie', requirements: ['id' => '\d+'])]
+        public function afficher(Sortie $sortie): Response {
+            $user = $this->getUserBySession();
+            $idUserQuiCreeLaSortie = $sortie->getOrganisateur()->getId();
+            $idUserConnecte = $user->getId();
+            $inscritALaSortie = false;
+
+            foreach ($sortie->getInscrits()->getValues() as $inscrit) {
+                if ($inscrit->getId() === $idUserConnecte) {
+                    $inscritALaSortie = true;
+                    break;
+                }
+            }
+            return $this->render('sortie/show.html.twig', [
+                'sortie' => $sortie,
+                'inscrits' => $sortie->getInscrits()->getValues(),
+                'inscritALaSortie' => $inscritALaSortie,
+                'idUserConnecte' => $idUserConnecte,
+                'isAdmin' => $this->isAdmin($user),
+            ]);
+        }
+
+        // *****************************************************************************************************************
+        // ROUTES AVEC JSON
+        // *****************************************************************************************************************
+
+        #[Route('/select/ville/{id}', name: 'select_ville')] // Attention ici, cette route est écrite en dur dans le JS
         public function selectVille(int $id) {
             if ($id != null) {
                 $sites = $this->getDoctrine()->getRepository(Site::class)->findByVille($id);
@@ -136,28 +161,21 @@ class SortieController extends CustomAbstractController {
             return new Response('Erreur: impossible de récuperer les données');
         }
 
-        #[Route(path: '/sortie/show/{id}', name: 'show_sortie', requirements: ['id' => '\d+'])]
-        public function afficher(Sortie $sortie): Response {
-            $user = $this->getUserBySession();
-            $idUserQuiCreeLaSortie = $sortie->getOrganisateur()->getId();
-            $idUserConnecte = $user->getId();
-            $inscritALaSortie = false;
+        #[Route('/select/sortie/{id}', name: 'search_sortie')] // Attention ici, cette route est écrite en dur dans le JS
+        public function infos(Sortie $sortie): Response
+        {
+            if ($sortie != null) {
+                $array = [$sortie->getVilleAccueil()->getId(), $sortie->getSite()->getId()];
 
-            foreach ($sortie->getInscrits()->getValues() as $inscrit) {
-                if ($inscrit->getId() === $idUserConnecte) {
-                    $inscritALaSortie = true;
-                    break;
-                }
+                $response = new Response();
+                $response->setContent(json_encode($array));
+                return $response;
             }
-
-            return $this->render('sortie/show.html.twig', [
-                'sortie' => $sortie,
-                'inscrits' => $sortie->getInscrits()->getValues(),
-                'inscritALaSortie' => $inscritALaSortie,
-                'idUserConnecte' => $idUserConnecte,
-                'isAdmin' => $this->isAdmin($user),
-            ]);
+            return new Response('Erreur: impossible de récuperer les données');
         }
+        // *****************************************************************************************************************
+        // PRIVATE FUNCTIONS
+        // *****************************************************************************************************************
 
         private function validateDataAndRedirect(Sortie $sortie): Response {
             $entityManager = $this->getDoctrine()->getManager();
@@ -176,4 +194,5 @@ class SortieController extends CustomAbstractController {
             }
             return $this->redirectToRoute($route);
         }
+
     }

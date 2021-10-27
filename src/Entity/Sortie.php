@@ -32,7 +32,7 @@ class Sortie
 
     /**
      * @Assert\Type(type="datetime", message="Veuillez entrer une date de sortie valide")
-     * @Assert\GreaterThan("today")
+     * @Assert\GreaterThan("today", message="La date de sortie doit être supérieure ou équivalente à celle d'aujourd'hui")
      * @ORM\Column(type="datetime")
      */
     private \DateTime $dateSortie;
@@ -41,7 +41,7 @@ class Sortie
      * @Assert\Type(type="datetime", message="Veuillez entrer une date limite d'inscription valide")
      * @Assert\Expression(
      *     "this.getDateLimiteInscription() < this.getDateSortie()",
-     *     message="La date fin d'inscriptions ne doit pas être supérieur à la date de début de la sortie"
+     *     message="La date fin d'inscriptions ne doit pas être supérieure à la date de début de la sortie"
      * )
      * @ORM\Column(type="date")
      */
@@ -66,12 +66,13 @@ class Sortie
     private $duree;
 
     /**
+     * @Assert\NotBlank(message="Veuillez donner une brève description de la sortie")
      * @ORM\Column(type="string", length=255)
      */
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="sortiesOrganisee")
+     * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="sortiesOrganisees")
      * @ORM\JoinColumn(nullable=false)
      */
     private $villeOrganisatrice;

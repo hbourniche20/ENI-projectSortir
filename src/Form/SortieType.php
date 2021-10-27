@@ -53,7 +53,7 @@ class SortieType extends AbstractType
             ])
             ->add('villeAccueil', EntityType::class, [
                 'class' => Ville::class,
-                'placeholder' => '-- selectionner une ville --',
+                'placeholder' => '-- Selectionner une ville --',
                 'choice_label' => 'nom',
                 'label'=>'Destination',
                 'query_builder' => function (VilleRepository $er) {
@@ -63,9 +63,10 @@ class SortieType extends AbstractType
             ])
             ->add('site', EntityType::class,[
                 'class' => Site::class,
-                'placeholder' => '-- selectionner un lieu --',
+                'placeholder' => '-- Selectionnez une ville --',
                 'choice_label' => 'nom',
-                'label'=>'Lieu'
+                'label'=>'Lieu',
+                'invalid_message' => 'Veuillez choisir un lieux'
             ]);
     }
 
