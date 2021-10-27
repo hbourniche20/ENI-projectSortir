@@ -9,7 +9,7 @@
     use Symfony\Component\HttpFoundation\RequestStack;
     use Symfony\Component\Security\Core\Security;
 
-    abstract class CustomAbstractController extends AbstractController {
+    abstract class CustomAbstractController extends AbstractController implements AuthenticatedController {
         protected $session;
 
         public function __construct(RequestStack $requestStack) {

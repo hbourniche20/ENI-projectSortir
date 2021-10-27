@@ -19,9 +19,6 @@ class HomeController extends CustomAbstractController
     public function home(SortieRepository $sortieRepository, VilleRepository $villeRepository, Request $request): response
     {
         $userSession = $this->getUserBySession();
-        if($userSession->getDesactiver()){
-            return $this->redirectToRoute('app_logout');
-        }
         $device = $userSession->isMobile();
         $sorties = $sortieRepository->findAll();
         $villes = $villeRepository->findAll();
