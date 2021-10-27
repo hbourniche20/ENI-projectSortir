@@ -23,9 +23,9 @@ class HomeController extends CustomAbstractController
         $sorties = $sortieRepository->findAll();
         $villes = $villeRepository->findAll();
         $sortiesNonArchive = array();
-        $dateNow = date("Y-m-d H:i:s");
+        $dateNow = date($this->FORMAT_DATETIME_WITH_SECONDE);
         foreach ($sorties as $sortie) {
-            $date = new \DateTime($sortie->getDateSortie()->format('Y-m-d H:i:s'));
+            $date = new \DateTime($sortie->getDateSortie()->format($this->FORMAT_DATETIME_WITH_SECONDE));
             $date->add(new \DateInterval('P1M'));
             if ($date > $dateNow) {
                 array_push($sortiesNonArchive, $sortie);
@@ -77,19 +77,19 @@ class HomeController extends CustomAbstractController
             if (!empty($dateDebut) && empty($dateFin)) {
 
                 foreach ($sortiesNonArchive as $sortie) {
-                    if (date_format($dateDebut,'Y/m/d') >= date_format($sortie->getDateSortie(), 'Y/m/d')) {
+                    if (date_format($dateDebut,$this->FORMAT_DATE) >= date_format($sortie->getDateSortie(), $this->FORMAT_DATE)) {
                         unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
                     }
                 }
             } else if (empty($dateDebut) && !empty($dateFin)) {
                 foreach ($sortiesNonArchive as $sortie) {
-                    if (date_format($dateFin, 'Y/m/d') <= date_format($sortie->getDateSortie(), 'Y/m/d')) {
+                    if (date_format($dateFin, $this->FORMAT_DATE) <= date_format($sortie->getDateSortie(), $this->FORMAT_DATE)) {
                         unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
                     }
                 }
             } else if (!empty($dateDebut) && !empty($dateFin)) {
                 foreach ($sortiesNonArchive as $sortie) {
-                    if (date_format($dateDebut,'Y/m/d') >= date_format($sortie->getDateSortie(), 'Y/m/d') || date_format($dateFin,'Y/m/d') <= date_format($sortie->getDateSortie(), 'Y/m/d')) {
+                    if (date_format($dateDebut,$this->FORMAT_DATE) >= date_format($sortie->getDateSortie(), $this->FORMAT_DATE) || date_format($dateFin,$this->FORMAT_DATE) <= date_format($sortie->getDateSortie(), $this->FORMAT_DATE)) {
                         unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
                     }
                 }
@@ -132,7 +132,7 @@ class HomeController extends CustomAbstractController
             }
             // affichée que les sorties passées
             if ($sortiePassees) {
-                $dateActuelle = date('Y/m/d H:i');
+                $dateActuelle = date($this->FORMAT_DATETIME);
                 foreach ($sortiesNonArchive as $sortie) {
                     if ($sortie->getDateSortie() < $dateActuelle) {
                         unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);

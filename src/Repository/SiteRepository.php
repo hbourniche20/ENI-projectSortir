@@ -19,9 +19,6 @@ class SiteRepository extends ServiceEntityRepository
         parent::__construct($registry, Site::class);
     }
 
-    // /**
-    //  * @return Site[] Returns an array of Site objects
-    //  */
     public function findByVille($idVille)
     {
         return $this->createQueryBuilder('s')
@@ -54,18 +51,4 @@ class SiteRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-
-
-
-    /*
-    public function findOneBySomeField($value): ?Site
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

@@ -12,12 +12,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class VilleController extends AbstractController
 {
+    private $VIEW = 'ville/ville.html.twig';
+
     #[Route('/ville', name: 'ville')]
     public function index(VilleRepository $villeRepository): Response
     {
 
         $villes = $villeRepository->findAll();
-        return $this->render('ville/ville.html.twig', [
+        return $this->render($this->VIEW, [
             "villes"=>$villes,
             "errors"=>array()
         ]);
@@ -58,7 +60,7 @@ class VilleController extends AbstractController
         $name = $request->query->get('ville_name_search');
         $villes = $this->getDoctrine()->getRepository(Ville::class)->findLikeName($name);
 
-        return $this->render('ville/ville.html.twig', [
+        return $this->render($this->VIEW, [
             "villes"=>$villes
         ]);
     }
@@ -71,7 +73,7 @@ class VilleController extends AbstractController
             array_push($errors, new FormError('Le nom de la ville n\'a pas été renseigné'));
         }
 
-        if( strlen($CP) != 5 or !ctype_digit($CP)  ){
+        if( strlen($CP) != 5 || !ctype_digit($CP)  ){
             array_push($errors, new FormError('Le code postal doit contenir 5 chiffres'));
         }
 
@@ -84,7 +86,7 @@ class VilleController extends AbstractController
 
             return $this->redirectToRoute('ville');
         }
-        return $this->render('ville/ville.html.twig', [
+        return $this->render($this->VIEW, [
             'errors' => $errors,
             "villes"=>$villes
         ]);

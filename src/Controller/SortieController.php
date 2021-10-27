@@ -13,7 +13,6 @@
 
 class SortieController extends CustomAbstractController {
 
-
     // *****************************************************************************************************************
     // ROUTES AVEC REDIRECTIONS
     // *****************************************************************************************************************
@@ -123,7 +122,6 @@ class SortieController extends CustomAbstractController {
         #[Route(path: '/sortie/show/{id}', name: 'show_sortie', requirements: ['id' => '\d+'])]
         public function afficher(Sortie $sortie): Response {
             $user = $this->getUserBySession();
-            $idUserQuiCreeLaSortie = $sortie->getOrganisateur()->getId();
             $idUserConnecte = $user->getId();
             $inscritALaSortie = false;
 

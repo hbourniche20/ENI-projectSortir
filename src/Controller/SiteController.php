@@ -14,12 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SiteController extends AbstractController
 {
+    private $VIEW = 'site/site.html.twig';
+
     #[Route('/site', name: 'site')]
     public function index(SiteRepository $siteRepository,VilleRepository $villeRepository): Response
     {
         $villes = $villeRepository->findAll();
         $sites = $siteRepository->findAllWithVille();
-        return $this->render('site/site.html.twig', [
+        return $this->render($this->VIEW, [
             "sites"=>$sites,
             "villes"=>$villes,
             "errors"=>array()
@@ -60,7 +62,7 @@ class SiteController extends AbstractController
         $sites = $this->getDoctrine()->getRepository(Site::class)->findLikeNameSite($name);
         $villes = $villeRepository->findAll();
 
-        return $this->render('site/site.html.twig', [
+        return $this->render($this->VIEW, [
             "sites"=>$sites,
             "villes"=>$villes
         ]);
@@ -92,7 +94,7 @@ class SiteController extends AbstractController
 
             return $this->redirectToRoute('site');
         }
-        return $this->render('site/site.html.twig', [
+        return $this->render($this->VIEW, [
             'errors' => $errors,
             "sites"=>$sites,
             "villes"=>$villes
