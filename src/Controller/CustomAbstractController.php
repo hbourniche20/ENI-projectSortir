@@ -11,13 +11,14 @@
 
     abstract class CustomAbstractController extends AbstractController implements AuthenticatedController {
         protected $session;
-
         protected $FORMAT_DATE = 'Y/m/d';
         protected $FORMAT_DATETIME = 'Y/m/d H:i';
         protected $FORMAT_DATETIME_WITH_SECONDE = 'Y/m/d H:i:s';
+        protected $isMobile;
 
         public function __construct(RequestStack $requestStack) {
             $this->session = $requestStack->getSession();
+            $this->isMobile = User::isMobileStatic();
         }
 
         // -----------------------------
