@@ -19,10 +19,6 @@ class VilleRepository extends ServiceEntityRepository
         parent::__construct($registry, Ville::class);
     }
 
-    // /**
-    //  * @return Ville[] Returns an array of Ville objects
-    //  */
-
     public function findLikeName($value)
     {
         return $this->createQueryBuilder('v')
@@ -34,7 +30,6 @@ class VilleRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
 
     /**
     * @return Ville Returns an Ville object

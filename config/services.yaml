@@ -23,5 +23,15 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
+    app.listener.redirect_404_to_homepage:
+        class: App\EventSubscriber\Redirect404ToHomepageListener
+        arguments:
+            - "@router"
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+security:
+    access_denied_url: /login

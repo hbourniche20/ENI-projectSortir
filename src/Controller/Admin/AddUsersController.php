@@ -4,7 +4,6 @@
 
     use App\Controller\CustomAbstractController;
     use App\Entity\User;
-    use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\Form\Extension\Core\Type\FileType;
     use Symfony\Component\HttpFoundation\Response;
     use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -46,10 +45,7 @@
                     );
 
                     $normalizers = [new ObjectNormalizer()];
-                    $encoders = [
-                        new CsvEncoder(),
-                    ];
-
+                    $encoders = [new CsvEncoder()];
                     $serializer = new Serializer($normalizers, $encoders);
 
                     /** @var string $fileString */
@@ -59,60 +55,7 @@
                     array_push($sucess, 'Données bien chargées !');
 
                     // Création des utilisateurs en bdd
-                    $usersCreated = 0;
-                    $entityManager = $this->getDoctrine()->getManager();
-
-                    foreach ($data as $row) {
-                        if ($this->checkPropertyCsv('email', $row)) {
-                            $email = $row['email'];
-                            $user = $this->getUserByEmail($email);
-                            if (!$user) {
-                                // check si les properties sont bien présentes
-                                if ($this->checkPropertyCsv('pseudo', $row) && $this->checkPropertyCsv('password', $row)
-                                    && $this->checkPropertyCsv('prenom', $row) && $this->checkPropertyCsv('nom', $row)
-                                    && $this->checkPropertyCsv('tel', $row) && $this->checkPropertyCsv('roles', $row)
-                                    && $this->checkPropertyCsv('villeid', $row)
-                                ) {
-                                    $ville = $this->getVilleById($row['villeid']);
-                                    if ($ville) {
-                                        $user = new User();
-                                        $user->setEmail($email)
-                                            ->setVille($ville)
-                                            ->setTel($row['tel'])
-                                            ->setNom($row['nom'])
-                                            ->setPrenom($row['prenom'])
-                                            ->setPseudo($row['pseudo'])
-                                            ->setRoles($this->rolesToArray($row['roles']))
-                                            ->setPassword($userPasswordHasherInterface->hashPassword(
-                                                $user,
-                                                $row['password']
-                                            ));
-                                        $entityManager->persist($user);
-                                        $usersCreated++;
-                                        array_push($sucess, "{$user->getPseudo()}.{$user->getEmail()} est en création");
-                                    } else {
-                                        array_push($errors, "{$email} n'a pas été créé. Cause : ville n'existe pas");
-                                    }
-                                } else {
-                                    array_push($errors, "{$email} n'a pas été créé. Cause : une propriété n'est pas correcte");
-                                }
-                            } else {
-                                array_push($sucess, "{$user->getId()}.{$user->getPseudo()} existe déjà");
-                            }
-                        } else {
-                            array_push($errors, "Utilisateur non créé. Cause : l'email est absent ou incorrect");
-                        }
-                    }
-
-                    $entityManager->flush();
-
-                    if ($usersCreated > 1) {
-                        array_push($sucess, "{$usersCreated} utilisateurs ont été créé");
-                    } else if ($usersCreated === 1) {
-                        array_push($sucess, "1 utilisateur a été créé");
-                    } else {
-                        array_push($errors, "Aucun utilisateur n'a été créé");
-                    }
+                    $this->createUsers($data, $sucess, $errors, $userPasswordHasherInterface);
 
                     if(file_exists($file)){
                         unlink($file);
@@ -124,6 +67,60 @@
                 'errors' => $errors,
                 'sucess' => $sucess,
             ]);
+        }
+
+        private function createUsers($data, array $sucess, array $errors, UserPasswordHasherInterface $userPasswordHasherInterface){
+            $usersCreated = 0;
+            $entityManager = $this->getDoctrine()->getManager();
+            foreach ($data as $row) {
+                if ($this->checkPropertyCsv('email', $row)) {
+                    $email = $row['email'];
+                    $user = $this->getUserByEmail($email);
+                    if (!$user) {
+                        // check si les properties sont bien présentes
+                        if ($this->checkPropertyCsv('pseudo', $row) && $this->checkPropertyCsv('password', $row)
+                            && $this->checkPropertyCsv('prenom', $row) && $this->checkPropertyCsv('nom', $row)
+                            && $this->checkPropertyCsv('tel', $row) && $this->checkPropertyCsv('roles', $row)
+                            && $this->checkPropertyCsv('villeid', $row)
+                        ) {
+                            $ville = $this->getVilleById($row['villeid']);
+                            if ($ville) {
+                                $user = new User();
+                                $user->setEmail($email)
+                                    ->setVille($ville)
+                                    ->setTel($row['tel'])
+                                    ->setNom($row['nom'])
+                                    ->setPrenom($row['prenom'])
+                                    ->setPseudo($row['pseudo'])
+                                    ->setRoles($this->rolesToArray($row['roles']))
+                                    ->setPassword($userPasswordHasherInterface->hashPassword(
+                                        $user,
+                                        $row['password']
+                                    ));
+                                $entityManager->persist($user);
+                                $usersCreated++;
+                                array_push($sucess, "{$user->getPseudo()}.{$user->getEmail()} est en création");
+                            } else {
+                                array_push($errors, "$email n'a pas été créé. Cause : ville n'existe pas");
+                            }
+                        } else {
+                            array_push($errors, "$email n'a pas été créé. Cause : une propriété n'est pas correcte");
+                        }
+                    } else {
+                        array_push($sucess, "{$user->getId()}.{$user->getPseudo()} existe déjà");
+                    }
+                } else {
+                    array_push($errors, "Utilisateur non créé. Cause : l'email est absent ou incorrect");
+                }
+            }
+
+            $entityManager->flush();
+
+            if ($usersCreated > 0) {
+                array_push($sucess, "$usersCreated utilisateur(s) ont été créé");
+            } else {
+                array_push($errors, "Aucun utilisateur n'a été créé");
+            }
         }
 
         private function checkPropertyCsv(string $column, $row): bool {
