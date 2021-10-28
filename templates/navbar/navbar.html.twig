@@ -1,3 +1,5 @@
+{% set route = app.request.get('_route') %}
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
 
@@ -9,22 +11,22 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ path('home_page') }}">Accueil</a>
+                    <a class="nav-link {% if 'home_page' in route %}active{% endif %}" aria-current="page" href="{{ path('home_page') }}">Accueil</a>
                 </li>
                 {% if app.user %}
                     {% if app.user.isMobile == false %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('creer_sortie') }}">Créer une sortie</a>
+                            <a class="nav-link {% if 'creer_sortie' in route %}active{% endif %}" href="{{ path('creer_sortie') }}">Créer une sortie</a>
                         </li>
                         {% if 'ROLE_ADMIN' in app.user.roles %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('ville') }}">Villes</a>
+                                <a class="nav-link {% if 'ville' in route %}active{% endif %}" href="{{ path('ville') }}">Villes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('site') }}">Sites</a>
+                                <a class="nav-link {% if 'site' in route %}active{% endif %}" href="{{ path('site') }}">Sites</a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link {% if 'admin' in route %}active{% endif %} dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Gestion admin
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -35,7 +37,7 @@
                         {% endif %}
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('profil') }}">Mon profil</a>
+                        <a class="nav-link {% if 'profil' in route %}active{% endif %}" href="{{ path('profil') }}">Mon profil</a>
                     </li>
                 {% endif %}
             </ul>
