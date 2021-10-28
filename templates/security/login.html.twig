@@ -31,8 +31,17 @@
                         <label for="inputPassword" class="form-control-label">Password</label>
                         <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
                     </div>
-                    <div>
-                        <a href="{{ path('app_forgot_password_request') }}" title="reset password">Mot de passe oublié ?</a>
+
+                    <div class="row">
+                        <div class="col">
+
+                        <label>
+                            <input type="checkbox" name="remenberMe" {% if check %}checked{% endif %}> Se souvenir de moi
+                        </label>
+                        </div>
+                        <div class="col-5">
+                            <a href="{{ path('app_forgot_password_request') }}" title="reset password">Mot de passe oublié ?</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -40,8 +49,8 @@
                 <div class="col-lg-1">
                     <a class="btn btn-outline-primary" role="button" href="{{ path('user_register') }}">S'inscrire</a>
                 </div>
-                <div class="col-lg-2">
-                    <button type="submit" class="btn btn-outline-success">Se Connecter</button>
+                <div class="col-lg-1">
+                    <button type="submit" class="btn btn-outline-success">Connexion</button>
                 </div>
             </div>
 

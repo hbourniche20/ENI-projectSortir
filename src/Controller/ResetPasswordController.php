@@ -47,7 +47,8 @@ class ResetPasswordController extends CustomAbstractController
             );
         }
         $user = $this->getUserBySession();
-        if ($user) {
+
+        if ($user->getId() != 0) {
             $form->get('email')->setData($user->getEmail());
         }
 
