@@ -323,7 +323,6 @@
         public static function isTablet() : bool
         {
             $useragent =$_SERVER['HTTP_USER_AGENT'];
-            //dd($useragent);
             return preg_match('/ipad|android|android 3.0|xoom|sch-i800|playbook|tablet|kindle|nexus/',strtolower($useragent));
         }
 
