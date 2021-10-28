@@ -78,19 +78,19 @@ class HomeController extends CustomAbstractController
             if (!empty($dateDebut) && empty($dateFin)) {
 
                 foreach ($sortiesNonArchive as $sortie) {
-                    if (date_format($dateDebut,$this->FORMAT_DATE) >= date_format($sortie->getDateSortie(), $this->FORMAT_DATE)) {
+                    if (date_format($dateDebut,$this->FORMAT_DATE) > date_format($sortie->getDateSortie(), $this->FORMAT_DATE)) {
                         unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
                     }
                 }
             } else if (empty($dateDebut) && !empty($dateFin)) {
                 foreach ($sortiesNonArchive as $sortie) {
-                    if (date_format($dateFin, $this->FORMAT_DATE) <= date_format($sortie->getDateSortie(), $this->FORMAT_DATE)) {
+                    if (date_format($dateFin, $this->FORMAT_DATE) < date_format($sortie->getDateSortie(), $this->FORMAT_DATE)) {
                         unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
                     }
                 }
             } else if (!empty($dateDebut) && !empty($dateFin)) {
                 foreach ($sortiesNonArchive as $sortie) {
-                    if (date_format($dateDebut,$this->FORMAT_DATE) >= date_format($sortie->getDateSortie(), $this->FORMAT_DATE) || date_format($dateFin,$this->FORMAT_DATE) <= date_format($sortie->getDateSortie(), $this->FORMAT_DATE)) {
+                    if (date_format($dateDebut,$this->FORMAT_DATE) > date_format($sortie->getDateSortie(), $this->FORMAT_DATE) || date_format($dateFin,$this->FORMAT_DATE) < date_format($sortie->getDateSortie(), $this->FORMAT_DATE)) {
                         unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
                     }
                 }
