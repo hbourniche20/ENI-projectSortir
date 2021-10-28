@@ -6,9 +6,9 @@ use App\Entity\User;
 use App\Form\ChangePasswordFormType;
 use App\Form\ResetPasswordRequestFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -19,14 +19,15 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 #[Route('/reset-password')]
-class ResetPasswordController extends AbstractController
+class ResetPasswordController extends CustomAbstractController
 {
     use ResetPasswordControllerTrait;
 
     private $resetPasswordHelper;
 
-    public function __construct(ResetPasswordHelperInterface $resetPasswordHelper)
+    public function __construct(RequestStack $requestStack, ResetPasswordHelperInterface $resetPasswordHelper)
     {
+        parent::__construct($requestStack);
         $this->resetPasswordHelper = $resetPasswordHelper;
     }
 
@@ -44,6 +45,10 @@ class ResetPasswordController extends AbstractController
                 $form->get('email')->getData(),
                 $mailer
             );
+        }
+        $user = $this->getUserBySession();
+        if ($user) {
+            $form->get('email')->setData($user->getEmail());
         }
 
         return $this->render('reset_password/request.html.twig', [

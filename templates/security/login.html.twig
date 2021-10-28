@@ -3,52 +3,48 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
-<form method="post">
+    <form method="post">
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
 
-    <div class="container">
-        <div class="row justify-content-center esup">
-            <h1 class="text-center">Connexion</h1>
-        </div>
-        <div class="row justify-content-center esup">
-        <div class="col-4">
-            <!-- Error Message -->
-            {% if error %}
-                <div class="alert-danger p-2">Compte invalide</div>
-            {% endif %}
-        </div>
-        </div>
-
-        <div class="row justify-content-center esup">
-
-            <div class="col-4 login-form">
-                <div class="form-group">
-                    <label for="inputEmail" class="form-control-label">Email</label>
-                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+        <div class="container">
+            <div class="row justify-content-center esup">
+                <h1 class="text-center">Connexion</h1>
+            </div>
+            <div class="row justify-content-center esup">
+                <div class="col-4">
+                    <!-- Error Message -->
+                    {% if error %}
+                        <div class="alert-danger p-2">Compte invalide</div>
+                    {% endif %}
                 </div>
-                <div class="form-group">
-                    <label for="inputPassword" class="form-control-label">Password</label>
-                    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+            </div>
+            <div class="row justify-content-center esup">
+                <div class="col-4 login-form">
+                    <div class="form-group">
+                        <label for="inputEmail" class="form-control-label">Email</label>
+                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword" class="form-control-label">Password</label>
+                        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                    </div>
+                    <div>
+                        <a href="{{ path('app_forgot_password_request') }}" title="reset password">Mot de passe oublié ?</a>
+                    </div>
                 </div>
-                <div>
-                    <a href="{{ path('app_forgot_password_request') }}" title="reset password">Mot de passe oublié ?</a>
+            </div>
+            <div class="row justify-content-center esup">
+                <div class="col-lg-1">
+                    <a class="btn btn-outline-primary" role="button" href="{{ path('user_register') }}">S'inscrire</a>
+                </div>
+                <div class="col-lg-2">
+                    <button type="submit" class="btn btn-outline-success">Se Connecter</button>
                 </div>
             </div>
 
         </div>
-        <div class="row justify-content-center esup">
-            <div class="col-lg-1">
-            <a class="btn btn-outline-primary" role="button" href="{{ path('user_register') }}">S'inscrire</a>
-            </div>
-            <div class="col-lg-2">
-                <button type="submit" class="btn btn-outline-success">Se Connecter</button>
-            </div>
-        </div>
-
-    </div>
-</form>
-
+    </form>
 {% endblock %}

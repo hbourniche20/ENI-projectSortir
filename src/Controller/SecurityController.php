@@ -17,11 +17,12 @@
             // get the login error if there is one
             $error = $authenticationUtils->getLastAuthenticationError();
             // last username entered by the user
-            $lastUsername = $authenticationUtils->getLastUsername();
+            $lastUsername = (array_key_exists('seSouvenirDeMoi', $_COOKIE))? $_COOKIE['seSouvenirDeMoi'] : '';
 
             return $this->render('security/login.html.twig', [
                 'last_username' => $lastUsername,
                 'error' => $error,
+                'check' => ($lastUsername != ''),
             ]);
         }
 

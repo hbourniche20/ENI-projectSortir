@@ -24,6 +24,7 @@ class HomeController extends CustomAbstractController
         $villes = $villeRepository->findAll();
         $sortiesNonArchive = array();
         $dateNow = date($this->FORMAT_DATETIME_WITH_SECONDE);
+        // Archive les sorties s'il elles ont plus d'un mois
         foreach ($sorties as $sortie) {
             $date = new \DateTime($sortie->getDateSortie()->format($this->FORMAT_DATETIME_WITH_SECONDE));
             $date->add(new \DateInterval('P1M'));

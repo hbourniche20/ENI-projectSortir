@@ -23,12 +23,20 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('site') }}">Sites</a>
                             </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Gestion admin
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="{{ path('admin') }}">Administration des utilisateurs</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('admin_add_users') }}">Ajouts de plusieurs utilisateurs</a></li>
+                                </ul>
+                            </li>
                         {% endif %}
                     {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('profil') }}">Mon profil</a>
                     </li>
-
                 {% endif %}
             </ul>
             {% if app.user %}
