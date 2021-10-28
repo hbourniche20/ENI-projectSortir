@@ -47,4 +47,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     *
+     */
+    public function findByVille($villeId)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.ville = :villeId')
+            ->setParameter('villeId', $villeId)
+            ->getQuery()
+            ->getResult();
+    }
 }

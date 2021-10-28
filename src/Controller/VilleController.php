@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Ville;
 use App\Repository\VilleRepository;
 use Symfony\Component\Form\FormError;
@@ -27,6 +28,14 @@ class VilleController extends AbstractController
 
     #[Route('/ville/remove/{id}', name: 'supprimer_ville')]
     public function supprimer(Ville $ville): Response {
+        $repo = $this->getDoctrine()->getRepository(User::class);
+        $users = $repo->findByVille($ville->getId());
+        if (count($users) > 0) {
+            return $this->render($this->VIEW, [
+                "villes"=>$this->getDoctrine()->getRepository(Ville::class)->findAll(),
+                "errors"=>array(new FormError('Impossible de supprimer la ville: des utilisateurs y sont rattachés'))
+            ]);
+        }
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($ville);
         $entityManager->flush();
@@ -61,7 +70,8 @@ class VilleController extends AbstractController
         $villes = $this->getDoctrine()->getRepository(Ville::class)->findLikeName($name);
 
         return $this->render($this->VIEW, [
-            "villes"=>$villes
+            "villes"=>$villes,
+            "errors"=>array()
         ]);
     }
 
