@@ -23,7 +23,8 @@
         </div>
         {% include '/errors.html.twig' %}
         {{ form_start(sortieForm) }}
-        <div class="row justify-content-center">
+        {% if app.user.isTablet == false %}
+         <div class="row justify-content-center">
             <div class="col-4">
                 {% include 'rowForm.html.twig' with { 'form': sortieForm.nom } %}
                 {% include 'rowForm.html.twig' with { 'form': sortieForm.dateSortie } %}
@@ -38,6 +39,20 @@
                 {% include 'rowForm.html.twig' with { 'form': sortieForm.site } %}
             </div>
         </div>
+        {% else %}
+            <div class="row justify-content-center">
+                    {% include 'rowForm.html.twig' with { 'form': sortieForm.nom } %}
+                    {% include 'rowForm.html.twig' with { 'form': sortieForm.dateSortie } %}
+                    {% include 'rowForm.html.twig' with { 'form': sortieForm.dateLimiteInscription } %}
+                    {% include 'rowForm.html.twig' with { 'form': sortieForm.nbPlaces } %}
+                    {% include 'rowForm.html.twig' with { 'form': sortieForm.duree } %}
+                    {% include 'rowForm.html.twig' with { 'form': sortieForm.description } %}
+                    {% include 'rowForm.html.twig' with { 'form': sortieForm.villeOrganisatrice } %}
+                    {% include 'rowForm.html.twig' with { 'form': sortieForm.villeAccueil } %}
+                    {% include 'rowForm.html.twig' with { 'form': sortieForm.site } %}
+
+            </div>
+        {% endif %}
         <div class="row-1 p-3 text-center">
             <button class="btn btn-outline-primary" name="button" value="enregistrer">Enregistrer</button>
             {% if sortie.publiee == false %}
