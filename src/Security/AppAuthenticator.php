@@ -32,6 +32,14 @@
             $email = $request->request->get('email', '');
             $request->getSession()->set(Security::LAST_USERNAME, $email);
 
+            if (array_key_exists('seSouvenirDeMoi', $_COOKIE)) {
+                setcookie('seSouvenirDeMoi');
+            }
+
+            if ($request->request->get('remenberMe',false)) {
+                setcookie('seSouvenirDeMoi',$email,time()+3600*24*31);
+            }
+
             return new Passport(
                 new UserBadge($email),
                 new PasswordCredentials($request->request->get('password', '')),

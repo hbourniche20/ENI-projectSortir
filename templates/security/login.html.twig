@@ -3,42 +3,49 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
-<form method="post">
+    <form method="post">
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
 
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-2"></div>
-            <div class="col-lg-6 col-md-8 login-box">
-                <div class="col-lg-10 login-form">
-                    <div class="form-group">
-                        <label for="inputEmail" class="form-control-label">Email</label>
-                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputPassword" class="form-control-label">Password</label>
-                        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-                    </div>
-                    <div class="col-lg-6 login-btm login-text">
-                        <!-- Error Message -->
-                        {% if error %}
-                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                        {% endif %}
-                    </div>
-                    <div>
-                        <a href="{{ path('app_forgot_password_request') }}" title="reset password">Mot de passe oublié</a>
-                    </div>
-                    <div class="col-lg-6 login-btm login-button esup">
-                        <a class="btn btn-outline-primary" role="button" href="{{ path('user_register') }}">S'inscrire</a>
-                        <button type="submit" class="btn btn-outline-success">Se Connecter</button>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-2"></div>
+                <div class="col-lg-6 col-md-8 login-box">
+                    <div class="col-lg-10 login-form">
+                        <div class="form-group">
+                            <label for="inputEmail" class="form-control-label">Email</label>
+                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
+                                   class="form-control" autocomplete="email" required autofocus>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword" class="form-control-label">Password</label>
+                            <input type="password" name="password" id="inputPassword" class="form-control"
+                                   autocomplete="current-password" required>
+                        </div>
+                        <div class="col-lg-6 login-btm login-text">
+                            <!-- Error Message -->
+                            {% if error %}
+                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label>
+                                <input type="checkbox" name="remenberMe" {% if check %}checked{% endif %}> Se souvenir de moi
+                            </label>
+                            &nbsp;
+                            <a href="{{ path('app_forgot_password_request') }}" title="reset password">Mot de passe
+                                oublié</a>
+                        </div>
+                        <div class="col-lg-6 login-btm login-button esup">
+                            <a class="btn btn-outline-primary" role="button" href="{{ path('user_register') }}">S'inscrire</a>
+                            <button type="submit" class="btn btn-outline-success">Se Connecter</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 
 {% endblock %}
