@@ -42,9 +42,9 @@
 
         /**
          * @Assert\NotBlank(message="Le mot de passe est obligatoire")
-         * @Assert\Length(min="6", max="42",
+         * @Assert\Length(min="6", max="420",
          *     minMessage="Votre mot de passe doit faire 6 caractères minimum",
-         *     maxMessage="Votre mot de passe doit faire 42 caractères maximum")
+         *     maxMessage="Votre mot de passe doit faire 420 caractères maximum")
          * @var string The hashed password
          * @ORM\Column(type="string")
          */

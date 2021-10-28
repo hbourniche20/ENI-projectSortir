@@ -47,7 +47,7 @@
 
                         <td>
                             <input type="submit" class="btn btn-outline-primary" role="button" value="Modifier">
-                            <a class="btn btn-outline-primary" role="button"
+                            <a class="btn btn-outline-danger" role="button"
                                 href="{{ path('supprimer_ville', {id: ville.id}) }}"
                                 onclick="return confirm('Supprimer la ville ?')">Supprimer</a>
                         </td>
@@ -56,10 +56,10 @@
 
             {% endfor %}
             <form action="{{ path('ajouter_ville') }}" >
-                <td><input type="text" name="newNomVille"></td>
-                <td><input type="text" name="newCpVille"></td>
+                <td><input type="text" name="newNomVille" placeholder="Entrez le nom de la ville"></td>
+                <td><input type="text" name="newCpVille"  placeholder="Entrez le code postal"></td>
                 <td>
-                    <input type="submit" class="btn btn-outline-primary" role="button" value="Ajouter">
+                    <input type="submit" class="btn btn-outline-success" role="button" value="Ajouter">
                 </td>
             </form>
             </tbody>
