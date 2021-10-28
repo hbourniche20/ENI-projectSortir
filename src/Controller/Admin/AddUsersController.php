@@ -96,7 +96,8 @@
                                     ->setPassword($userPasswordHasherInterface->hashPassword(
                                         $user,
                                         $row['password']
-                                    ));
+                                    ))
+                                    ->setDesactiver(false);
                                 $entityManager->persist($user);
                                 $usersCreated++;
                                 array_push($sucess, "{$user->getPseudo()}.{$user->getEmail()} est en création");
