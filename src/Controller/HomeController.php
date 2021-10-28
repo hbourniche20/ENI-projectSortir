@@ -155,6 +155,7 @@ class HomeController extends CustomAbstractController
             "sites" => $villes,
             "searchForm" => $searchForm->createView(),
             "isAdmin" => $this->isAdmin($userSession),
+            "isMobile" => $this->isMobile,
         ]);
     }
 }

@@ -4,7 +4,7 @@
 
 {% block body %}
     {# Contenu de la page #}
-    {% if app.user.isMobile == false %}
+    {% if isMobile == false %}
         {# Formulaire de recherche #}
         <div class="container">
             <h3>Filtrer les sorties</h3>
@@ -45,7 +45,7 @@
             {{ form_end(searchForm) }}
         </div>
     {% endif %}
-    {% if app.user.isMobile %}
+    {% if isMobile %}
         <div class="container">
             <h3>Mes Sorties</h3>
         </div>
@@ -58,16 +58,16 @@
             <tr class="table-primary">
                 <th>Nom de la sortie</th>
                 <th>Date de la sortie</th>
-                {% if app.user.isMobile == false %}
+                {% if isMobile == false %}
                     <th>Clôture</th>
                     <th>Inscrits/Places</th>
                     <th>Etat</th>
                 {% endif %}
                 <th>Inscrit</th>
-                {% if app.user.isMobile == false %}
+                {% if isMobile == false %}
                     <th>Organisateur</th>
                 {% endif %}
-                {% if app.user.isMobile %}
+                {% if isMobile %}
                     <th>Lieu</th>
                 {% endif %}
                 <th>Actions</th>
@@ -79,7 +79,7 @@
                     <tr>
                         <td>{{ sortie.nom }}</td>
                         <td>{{ sortie.dateSortie|date("d/m/Y H:i") }}</td>
-                        {% if app.user.isMobile == false %}
+                        {% if isMobile == false %}
                             <td>{{ sortie.dateLimiteInscription|date("d/m/Y") }}</td>
                             <td class="text-center">{{ sortie.inscrits|length }}/{{ sortie.nbPlaces }}</td>
                             <td>
@@ -105,12 +105,12 @@
                                 <label>X</label>
                             {% endif %}
                         </td>
-                        {% if app.user.isMobile == false %}
+                        {% if isMobile == false %}
                             <td>
                                 <a href="{{ path('profil_id', {id: sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo }}</a>
                             </td>
                         {% endif %}
-                        {% if app.user.isMobile %}
+                        {% if isMobile %}
                             <td>
                                 <label>{{ sortie.getVilleAccueil }}</label>
                             </td>
