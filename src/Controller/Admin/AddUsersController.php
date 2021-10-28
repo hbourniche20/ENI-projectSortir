@@ -57,7 +57,7 @@
                     // Création des utilisateurs en bdd
                     $this->createUsers($data, $sucess, $errors, $userPasswordHasherInterface);
 
-                    if(file_exists($file)){
+                    if (file_exists($file)) {
                         unlink($file);
                     }
                 }
@@ -69,7 +69,7 @@
             ]);
         }
 
-        private function createUsers($data, array $sucess, array $errors, UserPasswordHasherInterface $userPasswordHasherInterface){
+        private function createUsers($data, array $sucess, array $errors, UserPasswordHasherInterface $userPasswordHasherInterface) {
             $usersCreated = 0;
             $entityManager = $this->getDoctrine()->getManager();
             foreach ($data as $row) {
