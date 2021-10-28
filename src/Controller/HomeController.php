@@ -15,6 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends CustomAbstractController
 {
+    private $sortiesNonArchive;
+
     #[Route(path: '', name: 'home_page')]
     public function home(SortieRepository $sortieRepository, VilleRepository $villeRepository, Request $request): response
     {
@@ -22,14 +24,14 @@ class HomeController extends CustomAbstractController
         $device = $userSession->isMobile();
         $sorties = $sortieRepository->findAll();
         $villes = $villeRepository->findAll();
-        $sortiesNonArchive = array();
+        $this->sortiesNonArchive = array();
         $dateNow = date($this->FORMAT_DATETIME_WITH_SECONDE);
         // Archive les sorties s'il elles ont plus d'un mois
         foreach ($sorties as $sortie) {
             $date = new \DateTime($sortie->getDateSortie()->format($this->FORMAT_DATETIME_WITH_SECONDE));
             $date->add(new \DateInterval('P1M'));
             if ($date > $dateNow) {
-                array_push($sortiesNonArchive, $sortie);
+                array_push($this->sortiesNonArchive, $sortie);
             }
         }
         $searchForm = $this->createFormBuilder()
@@ -56,106 +58,171 @@ class HomeController extends CustomAbstractController
             $nonInscrit = $searchForm->get('sortieNonInscrit')->getData();
             $sortiePassees = $searchForm->get('sortiePassees')->getData();
 
-            // Affiche que les sorties dont la ville est le site choisi
-            if (!empty($villeId)) {
-                foreach ($sortiesNonArchive as $sortie) {
-                    if ($villeId != $sortie->getVilleAccueil()) {
-                        unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
-                    }
-                }
-            }
-
-            //Affiche que les sorties avec la chaine de caractère comprise dans le nom de la sortie
-            if (!empty($nameSortie)) {
-                foreach ($sortiesNonArchive as $sortie) {
-                    if (!str_contains(strtolower($sortie->getNom()), strtolower($nameSortie))) {
-                        unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
-                    }
-                }
-            }
-
-            //Affiche seulement les sorties comprises entre les deux dates
-            if (!empty($dateDebut) && empty($dateFin)) {
-
-                foreach ($sortiesNonArchive as $sortie) {
-                    if (date_format($dateDebut,$this->FORMAT_DATE) > date_format($sortie->getDateSortie(), $this->FORMAT_DATE)) {
-                        unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
-                    }
-                }
-            } else if (empty($dateDebut) && !empty($dateFin)) {
-                foreach ($sortiesNonArchive as $sortie) {
-                    if (date_format($dateFin, $this->FORMAT_DATE) < date_format($sortie->getDateSortie(), $this->FORMAT_DATE)) {
-                        unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
-                    }
-                }
-            } else if (!empty($dateDebut) && !empty($dateFin)) {
-                foreach ($sortiesNonArchive as $sortie) {
-                    if (date_format($dateDebut,$this->FORMAT_DATE) > date_format($sortie->getDateSortie(), $this->FORMAT_DATE) || date_format($dateFin,$this->FORMAT_DATE) < date_format($sortie->getDateSortie(), $this->FORMAT_DATE)) {
-                        unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
-                    }
-                }
-            }
-
-            // Affiche que les sorties dont l'user est l'organisateur
-            if (!empty($organisateur) && $organisateur) {
-                foreach ($sortiesNonArchive as $sortie) {
-                    if ($sortie->getOrganisateur() != $userSession) {
-                        unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
-                    }
-                }
-            }
-            // affichée que les sorties inscrit et/ou non inscrit
-            if ($inscrit) {
-                $estInscrit = false;
-                foreach ($sortiesNonArchive as $sortie) {
-                    foreach ($sortie->getInscrits() as $ins) {
-                        if ($ins == $userSession) {
-                            $estInscrit = true;
-                            break;
-                        }
-                    }
-                    if (!$estInscrit) {
-                        unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
-                    }
-                    $estInscrit = false;
-                }
-            }
-
-            if ($nonInscrit) {
-                foreach ($sortiesNonArchive as $sortie) {
-                    foreach ($sortie->getInscrits() as $ins) {
-                        if ($ins == $userSession) {
-                            unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
-                            break;
-                        }
-                    }
-                }
-            }
-            // affichée que les sorties passées
-            if ($sortiePassees) {
-                $dateActuelle = date($this->FORMAT_DATETIME);
-                foreach ($sortiesNonArchive as $sortie) {
-                    if ($sortie->getDateSortie() < $dateActuelle) {
-                        unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
-                    }
-                }
-            }
+            $this->filterByVille($villeId);
+            $this->filterBySearch($nameSortie);
+            $this->filterByDate($dateDebut, $dateFin);
+            $this->filterOrganisateur($organisateur, $userSession);
+            $this->filterInscritEtNonInscrit($inscrit, $userSession);
+            $this->filterNonInscrit($nonInscrit, $userSession);
+            $this->filtreSortiesPassees($sortiePassees);
         }
 
         if($device){
-            foreach ($sortiesNonArchive as $sortie) {
+            foreach ($this->sortiesNonArchive as $sortie) {
                 if ($sortie->getVilleAccueil() != $userSession->getVille() && $sortie->getVilleOrganisatrice() != $userSession->getVille()) {
-                    unset($sortiesNonArchive[array_search($sortie, $sortiesNonArchive)]);
+                    unset($this->sortiesNonArchive[array_search($sortie, $this->sortiesNonArchive)]);
                 }
             }
         }
 
         return $this->render('homepage/home.html.twig', [
-            "sorties" => $sortiesNonArchive,
+            "sorties" => $this->sortiesNonArchive,
             "sites" => $villes,
             "searchForm" => $searchForm->createView(),
             "isAdmin" => $this->isAdmin($userSession),
             "isMobile" => $this->isMobile,
         ]);
+    }
+
+    /**
+     * @param mixed $sortiePassees
+     * @return mixed
+     */
+    private function filtreSortiesPassees(mixed $sortiePassees): mixed
+    {
+// affichée que les sorties passées
+        if ($sortiePassees) {
+            $dateActuelle = date($this->FORMAT_DATETIME);
+            foreach ($this->sortiesNonArchive as $sortie) {
+                if ($sortie->getDateSortie() < $dateActuelle) {
+                    unset($this->sortiesNonArchive[array_search($sortie, $this->sortiesNonArchive)]);
+                }
+            }
+        }
+        return $sortie;
+    }
+
+    /**
+     * @param mixed $nonInscrit
+     * @param \App\Entity\User $userSession
+     * @return mixed
+     */
+    private function filterNonInscrit(mixed $nonInscrit, \App\Entity\User $userSession): mixed
+    {
+        if ($nonInscrit) {
+            foreach ($this->sortiesNonArchive as $sortie) {
+                foreach ($sortie->getInscrits() as $ins) {
+                    if ($ins == $userSession) {
+                        unset($this->sortiesNonArchive[array_search($sortie, $this->sortiesNonArchive)]);
+                        break;
+                    }
+                }
+            }
+        }
+        return $sortie;
+    }
+
+    /**
+     * @param mixed $inscrit
+     * @param \App\Entity\User $userSession
+     * @return mixed
+     */
+    private function filterInscritEtNonInscrit(mixed $inscrit, \App\Entity\User $userSession): mixed
+    {
+        if ($inscrit) {
+            $estInscrit = false;
+            foreach ($this->sortiesNonArchive as $sortie) {
+                foreach ($sortie->getInscrits() as $ins) {
+                    if ($ins == $userSession) {
+                        $estInscrit = true;
+                        break;
+                    }
+                }
+                if (!$estInscrit) {
+                    unset($this->sortiesNonArchive[array_search($sortie, $this->sortiesNonArchive)]);
+                }
+                $estInscrit = false;
+            }
+        }
+        return $sortie;
+    }
+
+    /**
+     * @param mixed $organisateur
+     * @param \App\Entity\User $userSession
+     * @return mixed
+     */
+    private function filterOrganisateur(mixed $organisateur, \App\Entity\User $userSession): mixed
+    {
+        if (!empty($organisateur) && $organisateur) {
+            foreach ($this->sortiesNonArchive as $sortie) {
+                if ($sortie->getOrganisateur() != $userSession) {
+                    unset($this->sortiesNonArchive[array_search($sortie, $this->sortiesNonArchive)]);
+                }
+            }
+        }
+        return $sortie;
+    }
+
+    /**
+     * @param mixed $dateDebut
+     * @param mixed $dateFin
+     * @return mixed
+     */
+    private function filterByDate(mixed $dateDebut, mixed $dateFin): mixed
+    {
+        if (!empty($dateDebut) && empty($dateFin)) {
+
+            foreach ($this->sortiesNonArchive as $sortie) {
+                if (date_format($dateDebut, $this->FORMAT_DATE) > date_format($sortie->getDateSortie(), $this->FORMAT_DATE)) {
+                    unset($this->sortiesNonArchive[array_search($sortie, $this->sortiesNonArchive)]);
+                }
+            }
+        } else if (empty($dateDebut) && !empty($dateFin)) {
+            foreach ($this->sortiesNonArchive as $sortie) {
+                if (date_format($dateFin, $this->FORMAT_DATE) < date_format($sortie->getDateSortie(), $this->FORMAT_DATE)) {
+                    unset($this->sortiesNonArchive[array_search($sortie, $this->sortiesNonArchive)]);
+                }
+            }
+        } else if (!empty($dateDebut) && !empty($dateFin)) {
+            foreach ($this->sortiesNonArchive as $sortie) {
+                if (date_format($dateDebut, $this->FORMAT_DATE) > date_format($sortie->getDateSortie(), $this->FORMAT_DATE) || date_format($dateFin, $this->FORMAT_DATE) < date_format($sortie->getDateSortie(), $this->FORMAT_DATE)) {
+                    unset($this->sortiesNonArchive[array_search($sortie, $this->sortiesNonArchive)]);
+                }
+            }
+        }
+        return $sortie;
+    }
+
+    /**
+     * @param string $nameSortie
+     * @return mixed
+     */
+    private function filterBySearch(string $nameSortie): mixed
+    {
+        if (!empty($nameSortie)) {
+            foreach ($this->sortiesNonArchive as $sortie) {
+                if (!str_contains(strtolower($sortie->getNom()), strtolower($nameSortie))) {
+                    unset($this->sortiesNonArchive[array_search($sortie, $this->sortiesNonArchive)]);
+                }
+            }
+        }
+        return $sortie;
+    }
+
+    /**
+     * @param mixed $villeId
+     * @return mixed
+     */
+    private function filterByVille(mixed $villeId): mixed
+    {
+        if (!empty($villeId)) {
+            foreach ($this->sortiesNonArchive as $sortie) {
+                if ($villeId != $sortie->getVilleAccueil()) {
+                    unset($this->sortiesNonArchive[array_search($sortie, $this->sortiesNonArchive)]);
+                }
+            }
+        }
+        return $sortie;
     }
 }
