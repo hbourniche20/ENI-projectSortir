@@ -44,7 +44,8 @@
                 );
             }
             $user = $this->getUserBySession();
-            if ($user) {
+
+            if ($user && $user->getId() != 0) {
                 $form->get('email')->setData($user->getEmail());
             }
 
@@ -154,7 +155,7 @@
             $email = (new TemplatedEmail())
                 ->from(new Address('accounts@sortie.com', 'Mail'))
                 ->to($user->getEmail())
-                ->subject('Your password reset request')
+                ->subject('Demande de réinitialisation de mot de passe')
                 ->htmlTemplate('reset_password/email.html.twig')
                 ->context([
                     'resetToken' => $resetToken,
