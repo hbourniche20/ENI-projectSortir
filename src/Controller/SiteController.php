@@ -64,7 +64,8 @@ class SiteController extends AbstractController
 
         return $this->render($this->VIEW, [
             "sites"=>$sites,
-            "villes"=>$villes
+            "villes"=>$villes,
+            "errors"=>array()
         ]);
     }
     private function checkAndPersistDataSite(String $name, String $rue, String $idVille, Site $site, SiteRepository $siteRepository, VilleRepository $villeRepository){
