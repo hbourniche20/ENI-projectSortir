@@ -28,8 +28,8 @@
                                     Gestion admin
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="#">Administration des utilisateurs</a></li>
-                                    <li><a class="dropdown-item" href="#">Ajouts de plusieurs utilisateurs</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('admin') }}">Administration des utilisateurs</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('admin_add_users') }}">Ajouts de plusieurs utilisateurs</a></li>
                                 </ul>
                             </li>
                         {% endif %}
