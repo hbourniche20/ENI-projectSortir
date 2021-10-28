@@ -70,7 +70,8 @@ class VilleController extends AbstractController
         $villes = $this->getDoctrine()->getRepository(Ville::class)->findLikeName($name);
 
         return $this->render($this->VIEW, [
-            "villes"=>$villes
+            "villes"=>$villes,
+            "errors"=>array()
         ]);
     }
 
