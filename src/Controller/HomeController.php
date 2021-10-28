@@ -86,11 +86,9 @@ class HomeController extends CustomAbstractController
 
     /**
      * @param mixed $sortiePassees
-     * @return mixed
      */
-    private function filtreSortiesPassees(mixed $sortiePassees): mixed
+    private function filtreSortiesPassees(mixed $sortiePassees)
     {
-// affichée que les sorties passées
         if ($sortiePassees) {
             $dateActuelle = date($this->FORMAT_DATETIME);
             foreach ($this->sortiesNonArchive as $sortie) {
@@ -99,15 +97,13 @@ class HomeController extends CustomAbstractController
                 }
             }
         }
-        return $sortie;
     }
 
     /**
      * @param mixed $nonInscrit
      * @param \App\Entity\User $userSession
-     * @return mixed
      */
-    private function filterNonInscrit(mixed $nonInscrit, \App\Entity\User $userSession): mixed
+    private function filterNonInscrit(mixed $nonInscrit, \App\Entity\User $userSession)
     {
         if ($nonInscrit) {
             foreach ($this->sortiesNonArchive as $sortie) {
@@ -119,15 +115,13 @@ class HomeController extends CustomAbstractController
                 }
             }
         }
-        return $sortie;
     }
 
     /**
      * @param mixed $inscrit
      * @param \App\Entity\User $userSession
-     * @return mixed
      */
-    private function filterInscritEtNonInscrit(mixed $inscrit, \App\Entity\User $userSession): mixed
+    private function filterInscritEtNonInscrit(mixed $inscrit, \App\Entity\User $userSession)
     {
         if ($inscrit) {
             $estInscrit = false;
@@ -144,15 +138,13 @@ class HomeController extends CustomAbstractController
                 $estInscrit = false;
             }
         }
-        return $sortie;
     }
 
     /**
      * @param mixed $organisateur
      * @param \App\Entity\User $userSession
-     * @return mixed
      */
-    private function filterOrganisateur(mixed $organisateur, \App\Entity\User $userSession): mixed
+    private function filterOrganisateur(mixed $organisateur, \App\Entity\User $userSession)
     {
         if (!empty($organisateur) && $organisateur) {
             foreach ($this->sortiesNonArchive as $sortie) {
@@ -161,15 +153,13 @@ class HomeController extends CustomAbstractController
                 }
             }
         }
-        return $sortie;
     }
 
     /**
      * @param mixed $dateDebut
      * @param mixed $dateFin
-     * @return mixed
      */
-    private function filterByDate(mixed $dateDebut, mixed $dateFin): mixed
+    private function filterByDate(mixed $dateDebut, mixed $dateFin)
     {
         if (!empty($dateDebut) && empty($dateFin)) {
 
@@ -191,14 +181,12 @@ class HomeController extends CustomAbstractController
                 }
             }
         }
-        return $sortie;
     }
 
     /**
      * @param string $nameSortie
-     * @return mixed
      */
-    private function filterBySearch(string $nameSortie): mixed
+    private function filterBySearch(string $nameSortie)
     {
         if (!empty($nameSortie)) {
             foreach ($this->sortiesNonArchive as $sortie) {
@@ -207,14 +195,12 @@ class HomeController extends CustomAbstractController
                 }
             }
         }
-        return $sortie;
     }
 
     /**
      * @param mixed $villeId
-     * @return mixed
      */
-    private function filterByVille(mixed $villeId): mixed
+    private function filterByVille(mixed $villeId)
     {
         if (!empty($villeId)) {
             foreach ($this->sortiesNonArchive as $sortie) {
@@ -223,6 +209,5 @@ class HomeController extends CustomAbstractController
                 }
             }
         }
-        return $sortie;
     }
 }
