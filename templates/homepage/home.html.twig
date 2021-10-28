@@ -4,11 +4,11 @@
 
 {% block body %}
     {# Contenu de la page #}
-
-    {# Formulaire de recherche #}
-    <div class="container">
-        <h3>Filtrer les sorties</h3>
-        {{ form_start(searchForm) }}
+    {% if app.user.isMobile == false %}
+        {# Formulaire de recherche #}
+        <div class="container">
+            <h3>Filtrer les sorties</h3>
+            {{ form_start(searchForm) }}
             <table>
                 <tr>
                     <td>{{ form_label(searchForm.villeId) }}</td>
@@ -41,9 +41,15 @@
                     <td>{{ form_widget(searchForm.sortiePassees) }}</td>
                 </tr>
             </table>
-        <button class="btn btn-primary" >Rechercher</button>
-        {{ form_end(searchForm) }}
-    </div>
+            <button class="btn btn-primary">Rechercher</button>
+            {{ form_end(searchForm) }}
+        </div>
+    {% endif %}
+    {% if app.user.isMobile %}
+        <div class="container">
+            <h3>Mes Sorties</h3>
+        </div>
+    {% endif %}
     {# Liste des sorties #}
     <div class="container esup">
         <table class="table table-striped caption-top">
@@ -52,11 +58,18 @@
             <tr class="table-primary">
                 <th>Nom de la sortie</th>
                 <th>Date de la sortie</th>
-                <th>Clôture</th>
-                <th>Inscrits/Places</th>
-                <th>Etat</th>
+                {% if app.user.isMobile == false %}
+                    <th>Clôture</th>
+                    <th>Inscrits/Places</th>
+                    <th>Etat</th>
+                {% endif %}
                 <th>Inscrit</th>
-                <th>Organisateur</th>
+                {% if app.user.isMobile == false %}
+                    <th>Organisateur</th>
+                {% endif %}
+                {% if app.user.isMobile %}
+                    <th>Lieu</th>
+                {% endif %}
                 <th>Actions</th>
             </tr>
             </thead>
@@ -66,35 +79,44 @@
                     <tr>
                         <td>{{ sortie.nom }}</td>
                         <td>{{ sortie.dateSortie|date("d/m/Y H:i") }}</td>
-                        <td>{{ sortie.dateLimiteInscription|date("d/m/Y") }}</td>
-                        <td class="text-center">{{ sortie.inscrits|length }}/{{ sortie.nbPlaces }}</td>
-                        <td>
-                            {% if sortie.motifAnnulation is not null %}
-                                <label>Annulé</label>
-                            {% elseif  sortie.dateSortie|date_modify('+' ~sortie.duree  ~ 'min')|date("Y/m/d H:i") <= "now"|date("Y/m/d H:i","Europe/Paris") %}
-                                <label>Terminé</label>
-                            {% elseif not sortie.publiee %}
-                                <label>En création</label>
-                            {% elseif "now"|date("Y/m/d H:i","Europe/Paris") >= sortie.dateSortie|date("Y/m/d H:i")  %}
-                                <label>En cours</label>
-                            {% elseif sortie.dateLimiteInscription|date("Y/m/d") < "now"|date("Y/m/d","Europe/Paris") %}
-                                <label>Fermé</label>
-                            {% elseif sortie.inscrits|length < sortie.nbPlaces %}
-                                <label>Ouvert</label>
-                            {% else %}
-                                <label>Complet</label>
-                            {% endif %}
-                        </td>
+                        {% if app.user.isMobile == false %}
+                            <td>{{ sortie.dateLimiteInscription|date("d/m/Y") }}</td>
+                            <td class="text-center">{{ sortie.inscrits|length }}/{{ sortie.nbPlaces }}</td>
+                            <td>
+                                {% if sortie.motifAnnulation is not null %}
+                                    <label>Annulé</label>
+                                {% elseif  sortie.dateSortie|date_modify('+' ~sortie.duree  ~ 'min')|date("Y/m/d H:i") <= "now"|date("Y/m/d H:i","Europe/Paris") %}
+                                    <label>Terminé</label>
+                                {% elseif not sortie.publiee %}
+                                    <label>En création</label>
+                                {% elseif "now"|date("Y/m/d H:i","Europe/Paris") >= sortie.dateSortie|date("Y/m/d H:i") %}
+                                    <label>En cours</label>
+                                {% elseif sortie.dateLimiteInscription|date("Y/m/d") < "now"|date("Y/m/d","Europe/Paris") %}
+                                    <label>Fermé</label>
+                                {% elseif sortie.inscrits|length < sortie.nbPlaces %}
+                                    <label>Ouvert</label>
+                                {% else %}
+                                    <label>Complet</label>
+                                {% endif %}
+                            </td>
+                        {% endif %}
                         <td class="text-center">
                             {% if app.user in sortie.inscrits %}
                                 <label>X</label>
                             {% endif %}
                         </td>
+                        {% if app.user.isMobile == false %}
+                            <td>
+                                <a href="{{ path('profil_id', {id: sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo }}</a>
+                            </td>
+                        {% endif %}
+                        {% if app.user.isMobile %}
+                            <td>
+                                <label>{{ sortie.getVilleAccueil }}</label>
+                            </td>
+                        {% endif %}
                         <td>
-                            <a href="{{ path('profil_id', {id: sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo }}</a>
-                        </td>
-                        <td>
-                            {% if sortie.publiee or sortie.dateSortie|date("Y/m/d H:i") <= "now"|date("Y/m/d H:i","Europe/Paris") or not sortie.motifAnnulation is empty%}
+                            {% if sortie.publiee or sortie.dateSortie|date("Y/m/d H:i") <= "now"|date("Y/m/d H:i","Europe/Paris") or not sortie.motifAnnulation is empty %}
                                 <a class="btn btn-outline-primary" role="button"
                                    href="{{ path('show_sortie', {id: sortie.id }) }}">Afficher</a>
                             {% else %}
