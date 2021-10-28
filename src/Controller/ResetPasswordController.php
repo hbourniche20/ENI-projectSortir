@@ -45,7 +45,7 @@
             }
             $user = $this->getUserBySession();
 
-            if ($user->getId() != 0) {
+            if ($user && $user->getId() != 0) {
                 $form->get('email')->setData($user->getEmail());
             }
 
