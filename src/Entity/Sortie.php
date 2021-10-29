@@ -298,7 +298,7 @@ class Sortie
     }
 
     public function getDureeString(){
-        $string = $this->duree . 'mintue';
+        $string = $this->duree . ' minute';
         return ($this->duree > 1) ? $string . 's' : $string ;
     }
 }

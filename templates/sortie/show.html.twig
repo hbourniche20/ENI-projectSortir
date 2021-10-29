@@ -21,8 +21,8 @@
                 {% include 'row.html.twig' with { 'label': 'Lieu :', 'value': sortie.site.nom } %}
                 {% include 'row.html.twig' with { 'label': 'Rue :', 'value': sortie.site.rue } %}
                 {% include 'row.html.twig' with { 'label': 'Ville :', 'value': sortie.villeAccueil.codePostal } %}
-                {% include 'row.html.twig' with { 'label': 'Latitude :', 'value': 'TODO' } %}
-                {% include 'row.html.twig' with { 'label': 'Longitude :', 'value': 'TODO' } %}
+                {% include 'row.html.twig' with { 'label': 'Latitude :', 'value': '47.226606' } %}
+                {% include 'row.html.twig' with { 'label': 'Longitude :', 'value': '-1.6207216' } %}
                 <div class="row-1 esup">
                     {% if sortie.motifAnnulation is empty %}
                         {% if idUserConnecte == sortie.organisateur.id and sortie.publiee == false %}
