@@ -16,10 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends CustomAbstractController
 {
     private $sortiesNonArchive;
-
     #[Route(path: '', name: 'home_page')]
     public function home(SortieRepository $sortieRepository, VilleRepository $villeRepository, Request $request): response
     {
+        date_default_timezone_set('Europe/Paris');
         $userSession = $this->getUserBySession();
         $device = $userSession->isMobile();
         $sorties = $sortieRepository->findAll();
@@ -91,9 +91,9 @@ class HomeController extends CustomAbstractController
     private function filtreSortiesPassees(mixed $sortiePassees)
     {
         if ($sortiePassees) {
-            $dateActuelle = date($this->FORMAT_DATETIME);
+            $dateActuelle = new \DateTime(date('Y/m/d H:i'));
             foreach ($this->sortiesNonArchive as $sortie) {
-                if ($sortie->getDateSortie() < $dateActuelle) {
+                if ($sortie->getDateSortie() > $dateActuelle) {
                     unset($this->sortiesNonArchive[array_search($sortie, $this->sortiesNonArchive)]);
                 }
             }
