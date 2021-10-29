@@ -83,7 +83,7 @@
                             <td>{{ sortie.dateLimiteInscription|date("d/m/Y") }}</td>
                             <td class="text-center">{{ sortie.inscrits|length }}/{{ sortie.nbPlaces }}</td>
                             <td>
-                                {% if sortie.motifAnnulation is not null %}
+                                {% if sortie.motifAnnulation is not null or (not sortie.publiee and "now"|date("Y/m/d H:i","Europe/Paris") >= sortie.dateSortie|date("Y/m/d H:i"))%}
                                     <label>Annulé</label>
                                 {% elseif  sortie.dateSortie|date_modify('+' ~sortie.duree  ~ 'min')|date("Y/m/d H:i") <= "now"|date("Y/m/d H:i","Europe/Paris") %}
                                     <label>Terminé</label>
