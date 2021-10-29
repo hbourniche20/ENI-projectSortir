@@ -84,6 +84,9 @@
                             $img->setName($fichier);
                             $user->setImage($img);
                         }
+                        else{
+                            $user->getImage()->setName($fichier);
+                        }
                     }
 
                     $entityManager->persist($user);
