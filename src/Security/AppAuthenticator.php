@@ -33,7 +33,7 @@
             $request->getSession()->set(Security::LAST_USERNAME, $email);
 
             if (array_key_exists('seSouvenirDeMoi', $_COOKIE)) {
-                setcookie('seSouvenirDeMoi');
+                setcookie('seSouvenirDeMoi', "",0,"","",false,true);
             }
 
             if ($request->request->get('remenberMe',false)) {

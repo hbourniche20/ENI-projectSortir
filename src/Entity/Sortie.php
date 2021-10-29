@@ -32,7 +32,7 @@ class Sortie
 
     /**
      * @Assert\Type(type="datetime", message="Veuillez entrer une date de sortie valide")
-     * @Assert\GreaterThan("today", message="La date de sortie doit être supérieure ou équivalente à celle d'aujourd'hui")
+     * @Assert\GreaterThan("+2 hours", message="La date de sortie doit être au minimum prévue dans deux heures")
      * @ORM\Column(type="datetime")
      */
     private \DateTime $dateSortie;
@@ -298,7 +298,7 @@ class Sortie
     }
 
     public function getDureeString(){
-        $string = $this->duree . 'mintue';
+        $string = $this->duree . ' minute';
         return ($this->duree > 1) ? $string . 's' : $string ;
     }
 }
