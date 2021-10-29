@@ -95,6 +95,7 @@ class HomeController extends CustomAbstractController
             foreach ($this->sortiesNonArchive as $sortie) {
                 if ($sortie->getDateSortie() > $dateActuelle) {
                     unset($this->sortiesNonArchive[array_search($sortie, $this->sortiesNonArchive)]);
+
                 }
             }
         }
